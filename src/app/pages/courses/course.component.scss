@@ -1,0 +1,39 @@
+body {
+      background-color: #1f1f1f;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+
+    .btn
+    {
+        height: auto;
+        border-radius: 5px;
+        border: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .border_none,
+    .border_none *
+    {
+        border: none !important;
+    }
+
+    .scroll-x {
+      overflow-x: auto;
+    }
+
+    .pagination .active .page-link {
+      background-color: #28a745;
+      border-color: #28a745;
+      color: white;
+    }
+
+    .table-wrapper {
+      min-width: 1000px;
+    }
+
+    .container-fluid 
+    { 
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }

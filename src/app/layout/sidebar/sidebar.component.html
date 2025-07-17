@@ -1,0 +1,93 @@
+
+  <div class="p-3">
+      <h5><i class="bi bi-box-arrow-in-right me-1"></i> Login</h5>
+      <ul class="nav flex-column mt-3">
+        <!--Home-->
+        <li class="nav-item">
+          <a class="nav-link" routerLink='home'><i class="bi bi-house"></i>Home</a>
+        </li>
+
+        <!--Dashboard-->
+        <li class="nav-item">
+          <a class="nav-link"  routerLink='dashboard' routerLinkActive="active"><i class="bi bi-speedometer2"></i>Dashboard</a>
+        </li>
+
+        <!--User-->
+        <li class="nav-item">
+          <a
+            class="nav-link d-flex justify-content-between align-items-center"
+            href="#usersSubmenu"
+            data-bs-toggle="collapse"
+            role="button"
+            aria-expanded="false"
+            aria-controls="usersSubmenu"
+          >
+            <span><i class="bi bi-people"></i> Users</span>
+            <i class="bi bi-chevron-down small"></i>
+          </a>
+          <div class="collapse" id="usersSubmenu">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li><a routerLink='user' class="nav-link ps-4 bi bi-people">User List</a></li>
+              <!--<li><a routerLink='/adduser' routerLinkActive="active" class="nav-link ps-4 bi bi-people">Add User</a></li>-->
+            </ul>
+          </div>
+        </li>
+
+        <!--Courses-->
+        <li class="nav-item">
+          <a
+            class="nav-link d-flex justify-content-between align-items-center"
+            href="#usersSubmenu1"
+            data-bs-toggle="collapse"
+            role="button"
+            aria-expanded="false"
+            aria-controls="usersSubmenu1"
+          >
+            <span><i class="bi bi-journal-text"></i> Courses</span>
+            <i class="bi bi-chevron-down small"></i>
+          </a>
+          <div class="collapse" id="usersSubmenu1">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li><a routerLink='courses' class="nav-link ps-4 bi bi-journal-text">Courses List</a></li>
+              <li><a routerLink='addcourse' routerLinkActive="active" class="nav-link ps-4 bi bi-journal-text">Add Courses</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <!--Grading-->
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="bi bi-clipboard-check"></i> Grading</a>
+        </li>
+
+        <!--Assignments-->
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="bi bi-file-check"></i> Assignments</a>
+        </li>
+
+        <!--Certificate-->
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="bi bi-patch-check"></i> Certificate</a>
+        </li>
+
+        <!--Settings-->
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="bi bi-gear"></i> Settings</a>
+        </li>
+
+        <!--Logout-->
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="bi bi-box-arrow-in-right"></i> Logout</a>
+        </li>
+
+        <!--Dark/Light-->
+        <li class="nav-item mt-3">
+          <a class="nav-link" id="themeToggleSidebar" (click)="toggleTheme()"><i class="bi bi-circle-half"></i> Dark/Light</a>
+        </li>
+      </ul>
+    </div>
+
+  
+
+  
+
+  

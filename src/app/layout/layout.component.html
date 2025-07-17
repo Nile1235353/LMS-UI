@@ -1,0 +1,22 @@
+<!-- Navbar -->
+  <nav class="navbar navbar-dark bg-dark px-3">
+    <a href="#"><img src="../assets/images/logo.jpg" alt="Logo" class="logo-img me-2 display_none" title="RGL Learning Management System"/></a>
+    <span class="navbar-brand mb-0 h1 display_none">RGL LMS</span>
+    <button class="btn btn-outline-light me-2" id="menuToggle" (click)="isCollapsed = !isCollapsed">☰</button>
+    <div class="ms-auto d-flex align-items-center">
+      <button class="btn btn-outline-light me-2 display_none1" id="themeToggle" title="Toggle Dark/Light" (click)="toggleTheme()">
+        <i class="bi bi-moon-stars"></i>
+      </button>
+      <span class="text-light"><i class="bi bi-person-circle"></i> Account Settings</span>
+    </div>
+  </nav>
+
+<!-- Sidebar -->
+<div id="sidebar" [class.collapsed]="isCollapsed">
+    <app-sidebar></app-sidebar>
+</div>
+
+<!--Main Content-->
+<div id="content"  [class.expanded]="isCollapsed">
+    <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,131 @@
+/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+    :root {
+      --sidebar-width: 250px;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #f1f1f1;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1040;
+    }
+
+    #sidebar {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      width: var(--sidebar-width, 250px);
+      height: 100vh;
+      background-color: #f8f9fa;
+      border-right: 1px solid #ddd;
+      transition: transform 0.3s ease, background-color 0.3s;
+      z-index: 1030;
+    }
+
+    #sidebar.collapsed {
+      transform: translateX(-100%);
+    }
+
+    body.dark-mode #sidebar {
+      background-color: #1e1e1e;
+      border-color: #444;
+    }
+
+    #sidebar h5 {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    #sidebar .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #333;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    /* Sidebar item hover in light mode */
+    #sidebar .nav-link:hover {
+      background-color: #4e73df;
+      color: #fff;
+    }
+
+    /* Sidebar item hover in dark mode */
+    body.dark-mode #sidebar .nav-link {
+      color: #fff !important;
+    }
+
+    body.dark-mode #sidebar .nav-link:hover {
+      background-color: lightgreen;
+      color: #fff;
+    }
+
+    #content {
+      margin-top: 56px;
+      margin-left: 250px;
+      transition: margin-left 0.3s ease;
+      padding: 20px;
+    }
+
+    
+
+    #content.expanded {
+      margin-left: 0;
+    }
+
+    @media (max-width: 767.98px) {
+      #content {
+        margin-left: 0;
+      }
+
+      .display_none
+      {
+        display: none !important;
+      }
+    }
+
+    @media (min-width: 390px)
+    {
+        .display_none1
+        {
+            display: none !important;
+        }
+    }
+
+    .logo-img {
+      height: 32px;
+      width: auto;
+    }
+
+    /* Styling for the dashboard form */
+    .dashboard-form {
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .dashboard-form h3 {
+      margin-bottom: 1.5rem;
+    }
+
+    .dashboard-form input, .dashboard-form select, .dashboard-form button {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .dashboard-form label {
+      font-weight: 600;
+    }
