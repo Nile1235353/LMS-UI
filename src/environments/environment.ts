@@ -1,5 +1,7 @@
 export const environment = {
   production: false,
-  LMSAPIUrl: 'https://localhost:44320/api/',
+  LMSAPIUrl: 'https://localhost:44320/api/'
 
 };
+
+

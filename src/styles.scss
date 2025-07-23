@@ -79,7 +79,7 @@
       padding: 20px;
     }
 
-    
+
 
     #content.expanded {
       margin-left: 0;
@@ -128,4 +128,8 @@
 
     .dashboard-form label {
       font-weight: 600;
+    }
+
+    table {
+      table-layout: auto;
     }
