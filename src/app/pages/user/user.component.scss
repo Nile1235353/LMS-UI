@@ -1,4 +1,4 @@
-body {
+    body {
       background-color: #1f1f1f;
       color: #ffffff;
       font-family: Arial, sans-serif;
@@ -18,9 +18,7 @@ body {
         border: none !important;
     }
 
-    .scroll-x {
-      overflow-x: auto;
-    }
+    
 
     .pagination .active .page-link {
       background-color: #28a745;
@@ -28,16 +26,94 @@ body {
       color: white;
     }
 
+    .scroll-x {
+      overflow-x: auto;
+    }
+
+
     .table-wrapper {
-      min-width: 1000px;
+      min-width: auto;
     }
 
     .container-fluid
     {
+        padding: 20px;
         border-radius: 8px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    table {
-      table-layout: auto;
+    table thead th {
+      // background-color: gray;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
+
+    table tbody tr td {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 10px;
+    }
+
+
+
+    
+    // Table resizable columns
+
+    .resizable {
+        overflow: hidden;
+        // resize: both;
+        resize: horizontal;
+        // display: inline-block;
+        min-width: 6px;
+        // cursor: col-resize;
+        border-right: -2px solid #ddd;
+    }
+
+
+
+    // Table Smooth Design 
+
+//     .responsive-table-wrapper {
+//   overflow-x: auto;
+//   max-width: 100%;
+//   border: 1px solid #ddd;
+//   border-radius: 4px;
+//   scroll-behavior: smooth;
+// }
+
+// .custom-scroll-table {
+//   border-collapse: collapse;
+//   min-width: 1200px; // Enough width to cause horizontal scroll
+//   width: 100%;
+// }
+
+// .custom-scroll-table th,
+// .custom-scroll-table td {
+//   border: 1px solid #ddd;
+//   padding: 8px 12px;
+//   white-space: nowrap; // prevent text wrap
+//   text-align: left;
+// }
+
+// .custom-scroll-table thead th {
+//   position: sticky;
+//   top: 0;
+//   background-color: #f9f9f9;
+//   z-index: 10;
+// }
+
+// /* Optional scrollbar style */
+// .responsive-table-wrapper::-webkit-scrollbar {
+//   height: 10px;
+// }
+// .responsive-table-wrapper::-webkit-scrollbar-thumb {
+//   background-color: gray;
+//   border-radius: 6px;
+// }
+
+
+
+
+

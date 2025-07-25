@@ -6,6 +6,15 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
+interface TableRow {
+  selected?: boolean;
+  // Add other properties as needed, for example:
+  // userId?: string;
+  // fullName?: string;
+  // email?: string;
+  // etc.
+}
+
 @Component({
   selector: 'app-user',
   standalone: true,
@@ -28,6 +37,8 @@ export class UserComponent implements OnInit {
     { label: 'Instructor', value: 1 },
     { label: 'Learner', value: 2 }
   ];
+column: any;
+tableRows: any;
 
   constructor(private fb: FormBuilder, private userService: UserserviceService) {}
 
@@ -93,7 +104,13 @@ export class UserComponent implements OnInit {
   // }
 
   selectUser(user: any) {
-    this.selectedUser = user;
+    if (this.selectedUser?.UserId === user.UserId) {
+    // If already selected, unselect
+    this.selectedUser = null;
+    } else {
+      // Otherwise, select it
+      this.selectedUser = user;
+    }
     console.log("Selected user:", this.selectedUser);
   }
 
@@ -126,7 +143,7 @@ export class UserComponent implements OnInit {
     formData.append('FullName', this.userForm.value.fullName ?? '');
     formData.append('Email', this.userForm.value.email ?? '');
     formData.append('PasswordHash', this.userForm.value.passwordHash ?? '');
-    formData.append('Role', this.userForm.value.role.toString());
+   // formData.append('Role', this.userForm.value.role.toString());
     formData.append('Role', this.userForm.value.role.toString());
     formData.append('NRC', this.userForm.value.nrc ?? '');
     formData.append('PhoneNumber', this.userForm.value.phoneNumber ?? '');
@@ -135,13 +152,14 @@ export class UserComponent implements OnInit {
     formData.append('Position', this.userForm.value.position ?? '');
     formData.append('Remark', this.userForm.value.remark ?? '');
     formData.append('IsActive', this.userForm.value.isActive ? 'true' : 'false');
-
+  
     if (this.currentPages === 3) {
       // Update
       this.userService.updateUser(formData).subscribe({
         next: () => {
           this.loadUsers();
           this.setPage(1);
+            console.log("Form Submitted", this.userForm.value);
         },
         error: err => {
           console.error('Update error:', err);
@@ -178,4 +196,9 @@ export class UserComponent implements OnInit {
     });
     this.selectedUser = null;
   }
+
 }
+
+
+
+
