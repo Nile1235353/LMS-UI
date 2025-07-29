@@ -5,15 +5,17 @@ import { UserComponent } from "./user/user.component";
 import { CourseComponent } from "./courses/course.component";
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'home', component: HomeComponent},
+  { path: '', component: HomeComponent, data: { breadcrumb: 'Home' }  },
+  { path: 'home', component: HomeComponent, data: { breadcrumb: 'Home' } },
 
   // User
-  { path: 'user', component: UserComponent},
+  { path: 'user', component: UserComponent, data: { breadcrumb: 'User' } },
   
   //Course
-  { path: 'courses', component: CourseComponent},
- ];
+  { path: 'courses', component: CourseComponent, data: { breadcrumb: 'Courses' } },
+
+
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

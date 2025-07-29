@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 })
 export class LayoutComponent implements OnInit {
   title = 'LMS';
+  imagePath = '../assets/images/logo.png';
   public isCollapsed: boolean = false;
   public currentTheme: 'light' | 'dark' = 'light';
 
@@ -61,6 +62,23 @@ export class LayoutComponent implements OnInit {
   public toggleTheme() {
     const newTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
     this.applyTheme(newTheme);
+  }
+
+  // Profile dropdown functionality
+  dropdownOpen = false;
+
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+    console.log("Dropdown toggled:", this.dropdownOpen);
+  }
+
+  closeDropdown() {
+    this.dropdownOpen = false;
+  }
+
+  logout() {
+    console.log("Logging out...");
+    // Redirect to login or clear session
   }
 }
 
