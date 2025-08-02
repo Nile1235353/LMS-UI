@@ -7,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  showConfirm: boolean = false;
+  deleteUserId: string | null = null;
 
+  askDeleteUser() {
+    // this.deleteUserId = id;
+    this.showConfirm = true;
+    // console.log("Asking to delete user with ID:", id);
+  }
 }

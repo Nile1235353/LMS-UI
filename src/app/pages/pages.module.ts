@@ -5,18 +5,20 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PagesRoutingModule } from './pages-routing.module';
 import { LayoutComponent } from '../layout/layout.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
   ],
   imports:[
     CommonModule,
     FormsModule,
     PagesRoutingModule,
     LayoutComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ]
 })
 export class PagesModule {

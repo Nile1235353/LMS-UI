@@ -1,76 +1,370 @@
 
+
+
+
   <div class="page-content">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="my-3">
+      <ol class="breadcrumb bg-light p-3 rounded shadow-sm mb-0" style="--bs-breadcrumb-divider: '›';">
+        <li class="breadcrumb-item">
+          <a routerLink="/" class="text-decoration-none text-primary fw-semibold">🏠 Home</a>
+        </li>
+        <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">
+          <!-- <a routerLink="/users" class="text-decoration-none text-primary fw-semibold"> Users</a> -->
+           Users
+        </li>
+        <!-- <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">
+          User List
+        </li> -->
+      </ol>
+    </nav>
 
-    <!-- Page 1: User List -->
-    <div *ngIf="currentPages === 1">
-      <div>
-        <h3>User List</h3>
-      </div>
+
+    <div class="container-fluid">
+      <!-- Page 1: User List -->
+      <div *ngIf="currentPages === 1">
+        <div>
+          <h3>User List</h3>
+        </div>
+
+        <!-- your-component.component.html -->
+        <!-- <button class="btn btn-danger" (click)="openModal()">Delete</button> -->
+
+        <!-- Confirm Box -->
+        <div
+          class="modal fade fade-in"
+          tabindex="-1"
+          [ngClass]="{ 'show d-block': showModal }"
+          style="background-color: rgba(0, 0, 0, 0.4);"
+          *ngIf="showModal"
+          >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-3 shadow">
+
+              <!-- Header -->
+              <div class="modal-header bg-light">
+                <h5 class="modal-title d-flex align-items-center gap-2">
+                  <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+                  Confirm Delete
+                </h5>
+                <button type="button" class="btn-close" (click)="closeModal()"></button>
+              </div>
+
+              <!-- Body -->
+              <div class="modal-body text-center">
+                <p class="mb-0">Are you sure you want to delete this user?</p>
+              </div>
+
+              <!-- Footer -->
+              <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-outline-secondary px-4" (click)="closeModal()">
+                  Cancel
+                </button>
+                <button type="button" class="btn btn-danger px-4" (click)="confirmDelete()">
+                  Delete
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Button Group -->
+        <div class="scroll-x">
+          <div class="table table-responsive table-wrapper">
+            <table class="table border_none">
+              <tr>
+                <th>
+                  <button class="btn btn-outline-dark me-2" (click)="setPage(2)">
+                    <i class="bi bi-plus"></i> New
+                  </button>
+
+                  <button class="btn btn-outline-dark me-2" (click)="setPage(3)" [disabled]="!selectedUser">
+                    <i class="bi bi-pencil"></i> Edit
+                  </button>
+
+                  <button class="btn btn-outline-danger" (click)="openModal(selectedUser?.UserId)"  [disabled]="!selectedUser">
+                    <i class="bi bi-trash"></i> Delete
+                  </button>
+                </th>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+          <div class="responsive-table-wrapper">
+            <table #table class="table table-bordered table-hover table-sm custom-scroll-table">
+              <thead style="min-width: auto;">
+                <tr>
+                  <!-- Checkbox for Select All -->
+                  <th>
+                    <input type="checkbox"
+                    (change)="allSelected('selectAll')"
+                    />
+                  </th>
+
+                  <!-- <th>SrNo</th> -->
+                  <!-- <th (dblclick)="onHeaderDoubleClick('SrNo')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      SrNo
+                      <span *ngIf="sortedColumn === 'SrNo'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th> -->
+
+                  <!-- <th> User ID </th> -->
+                  <th (dblclick)="onHeaderDoubleClick('UserId')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      User ID
+                      <span *ngIf="sortedColumn === 'UserId'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- Full Name -->
+                  <th (dblclick)="onHeaderDoubleClick('FullName')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Full Name
+                      <span *ngIf="sortedColumn === 'FullName'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- Email -->
+                  <th (dblclick)="onHeaderDoubleClick('email')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Email
+                      <span *ngIf="sortedColumn === 'email'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- Password -->
+                  <th (dblclick)="onHeaderDoubleClick('passwordHash')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Password
+                      <span *ngIf="sortedColumn === 'passwordHash'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- Role -->
+                  <th (dblclick)="onHeaderDoubleClick('role')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Role
+                      <span *ngIf="sortedColumn === 'role'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- NRC -->
+                  <th (dblclick)="onHeaderDoubleClick('nrc')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      NRC
+                      <span *ngIf="sortedColumn === 'nrc'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- Phone Number -->
+                  <th (dblclick)="onHeaderDoubleClick('phoneNumber')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Phone Number
+                      <span *ngIf="sortedColumn === 'phoneNumber'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- Employee Id -->
+                  <th (dblclick)="onHeaderDoubleClick('employeeId')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Employee Id
+                      <span *ngIf="sortedColumn === 'employeeId'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- Department -->
+                  <th (dblclick)="onHeaderDoubleClick('department')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Department
+                      <span *ngIf="sortedColumn === 'department'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- Position -->
+                  <th (dblclick)="onHeaderDoubleClick('position')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Position
+                      <span *ngIf="sortedColumn === 'position'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- Remark -->
+                  <th (dblclick)="onHeaderDoubleClick('remark')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Remark
+                      <span *ngIf="sortedColumn === 'remark'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- Is Active -->
+                  <th>
+                    <div class="resizable">Is Active</div>
+                  </th>
 
 
-      <div class="mb-3">
-        <button class="btn btn-outline-dark me-2" (click)="setPage(2)">
-          <i class="bi bi-plus"></i> New
-        </button>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of users; let i = index;let page of paginatedUsers;"
+                    [class.table-active]="selectedUsers.length === users.length"
+                    (click)="selectUser(user)"
+                    [class.table-active]="selectedUser?.UserId === user.UserId">
+                  <td>
+                    <input type="checkbox" [checked]="selectedUser?.UserId === user.UserId"  [checked]="selectedUsers.length === users.length" >
+                  </td>
+                  <!-- <td>{{ i + 1 }}</td> -->
+                  <!-- <td>{{user.SrNo}}</td> -->
+                  <td>{{ user.UserId }}</td>
+                  <td>{{ user.FullName }}</td>
+                  <td>{{ user.Email }}</td>
+                  <td>{{ user.PasswordHash }}</td>
+                  <td>{{user.Role}}</td>
+                  <td>{{ user.NRC}}</td>
+                  <td>{{ user.PhoneNumber }}</td>
+                  <td>{{ user.EmployeeId }}</td>
+                  <td>{{ user.Department }}</td>
+                  <td>{{ user.Position }}</td>
+                  <td>{{ user.Remark }}</td>
+                  <td>{{ user.IsActive}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-        <button class="btn btn-outline-dark me-2" (click)="setPage(3)" [disabled]="!selectedUser">
-          <i class="bi bi-pencil"></i> Edit
-        </button>
+        <!-- Pagination -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3 gap-2">
 
-        <button class="btn btn-outline-danger" (click)="deleteUser(selectedUser?.UserId)" [disabled]="!selectedUser">
-          <i class="bi bi-trash"></i> Delete
-        </button>
-      </div>
+          <!-- Pagination Navigation -->
+          <nav *ngIf="totalPages > 1">
+            <ul class="pagination mb-0 justify-content-center justify-content-md-start">
+              <!-- Previous -->
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
+              </li>
 
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover table-sm" style="width: 100%; table-layout: auto;">
-        <thead>
-          <tr>
-            <th style="white-space: nowrap;">Select</th>
-            <th style="white-space: nowrap;">SrNo</th>
-            <th style="white-space: nowrap;">UserId</th>
-            <th style="white-space: nowrap;">Full Name</th>
-            <th style="white-space: nowrap;">Email</th>
-            <th style="white-space: nowrap;">Password</th>
-            <th style="white-space: nowrap;">Role</th>
-            <th style="white-space: nowrap;">NRC</th>
-            <th style="white-space: nowrap;">Phone</th>
-            <th style="white-space: nowrap;">Employee ID</th>
-            <th style="white-space: nowrap;">Department</th>
-            <th style="white-space: nowrap;">Position</th>
-            <th style="white-space: nowrap;">Remark</th>
-            <th style="white-space: nowrap;">Is Active</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of users; let i = index"
-              (click)="selectUser(user)"
-              [class.table-active]="selectedUser?.UserId === user.UserId">
-            <td>
-              <input type="radio" [checked]="selectedUser?.UserId === user.UserId">
-            </td>
-            <!-- <td>{{ i + 1 }}</td> -->
-            <td>{{user.SrNo}}</td>
-            <td>{{ user.UserId }}</td>
-            <td>{{ user.FullName }}</td>
-            <td>{{ user.Email }}</td>
-            <td>{{ user.PasswordHash }}</td>
-            <td>{{user.Role}}</td>
-            <td>{{ user.NRC}}</td>
-            <td>{{ user.PhoneNumber }}</td>
-            <td>{{ user.EmployeeId }}</td>
-            <td>{{ user.Department }}</td>
-            <td>{{ user.Position }}</td>
-            <td>{{ user.Remark }}</td>
-            <td>{{ user.IsActive}}</td>
-          </tr>
-        </tbody>
-      </table>
+              <!-- Page Numbers -->
+              <li
+                class="page-item"
+                *ngFor="let page of [].constructor(totalPages); let i = index"
+                [class.active]="currentPage === i + 1"
+              >
+                <a class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</a>
+              </li>
+
+              <!-- Next -->
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+              </li>
+            </ul>
+          </nav>
+
+          <!-- Page Info Text -->
+          <div class="text-muted small">
+            Page {{ currentPage }} of {{ totalPages }}
+          </div>
+          <!-- Total Users -->
+          <div class="text-muted small">
+            Total Users: {{ users.length }}
+          </div>
+
+        </div>
+
+
     </div>
-  </div>
 
     <!-- Page 2: Add User -->
     <div *ngIf="currentPages === 2">
+
       <h2>Create New User</h2>
       <button (click)="setPage(1)" class="btn btn-primary mb-3">
         <i class="bi bi-arrow-left"></i> Back
@@ -219,3 +513,6 @@
     </div>
 
   </div>
+
+
+

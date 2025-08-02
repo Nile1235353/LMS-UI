@@ -14,8 +14,9 @@
                 <tr>
                     <th>
                         <a><button class="btn btn-outline-dark" (click)="setPage(2)"><i class="bi bi-plus"></i>&nbsp;&nbsp;New</button></a>
-                        <a><button class="btn btn-outline-dark" (click)="setPage(3)"><i class="bi bi-eye"></i>&nbsp;&nbsp;View</button></a>
-                        <a routerLink=''><button class="btn btn-outline-danger"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</button></a>
+
+                        <a><button class="btn btn-outline-dark" (click)="setPage(3)"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button></a>
+                        <a><button class="btn btn-outline-danger" ><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</button></a>
                     </th>
                 </tr>
               </table>
@@ -31,26 +32,45 @@
                     <th>
                         <input type="checkbox" (change)="toggleAllCheckboxes($event)" [checked]="isAllSelected()" />
                     </th>
-                  <th>ID</th>
+                    <!-- <th>Id</th> -->
+                    <th>CourseId</th>
+                  <th>UserId</th>
                   <th>Name</th>
+                  <th>Department</th>
                   <th>Description</th>
                   <th>Video Link</th>
-                  <th>Department</th>
+                  <th>Title</th>
+                  <th>Role</th>
+                  <th>Created Date</th>
                 </tr>
               </thead>
+
               <tbody>
-                <tr *ngFor="let row of paginatedRows;  let i = index" (click)="toggleCheckbox(i, $event)">
-                    <td>
-                        <input type="checkbox" [checked]="row.selected" (click)="$event.stopPropagation()" (change)="toggleCheckbox(i, $event)" />
-                    </td>
-                  <td>{{ row.ID }}</td>
+                <tr *ngFor="let row of paginatedRows; let i = index" (click)="selectCourse(row)"
+                [class.selected]="selectedCourseId === row.courseId" >
+                  <!-- <td>
+                    <input type="checkbox" [checked]="row.selected" (click)="$event.stopPropagation()" (change)="toggleCheckbox(i, $event)" />
+                  </td> -->
+                  <td>
+                    <input type="checkbox" [checked]="row.selected"
+                           (click)="$event.stopPropagation()"
+                           (change)="toggleCheckbox(i, $event)" />
+                  </td>
+
+                  <td>{{ row.courseId }}</td>
+                  <td>{{ row.userId }}</td>
                   <td>{{ row.name }}</td>
-                  <td>{{ row.description }}</td>
-                  <td><a href="{{row.video_link}}">Yutube Link</a></td>
                   <td>{{ row.department }}</td>
+                  <td>{{ row.description }}</td>
+                  <td><a [href]="row.videoLink" target="_blank">Watch</a></td>
+                  <td>{{ row.title }}</td>
+                  <td>{{ row.role }}</td>
+                  <td>{{ row.createdDate | date:'short' }}</td>
+
+
                 </tr>
-                 <!-- Add more rows here as needed -->
               </tbody>
+
             </table>
           </div>
         </div>
@@ -76,48 +96,145 @@
   </div>
 
   <div *ngIf="currentPages === 2">
-    <h2>Courses</h2>
+    <!-- <h2>Courses</h2> -->
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Courses</h2>
+      <button class="btn btn-secondary" (click)="goBack()">Back</button>
+    </div>
     <div class="dashboard-form">
-        <h5><strong>Create New Course</strong></h5>
-        <form>
+      <h5><strong>Create New Course</strong></h5>
+
+      <form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
+
           <div class="row g-3">
-              <!-- Course Name -->
-              <div class="col-md-6">
-              <label class="form-label">Course Name: <span class="text-danger">*</span></label>
-              <input type="text" id="name" name="name" class="form-control" placeholder="Enter Course Name">
-              </div>
+            <!-- Role -->
 
-              <!-- Description -->
-              <div class="col-md-6">
-              <label class="form-label">Description:</label>
-              <Textarea id="description" name="description" class="form-control"></Textarea>
-              </div>
 
-              <!-- Video Link -->
-              <div class="col-md-6">
-              <label class="form-label">Video Link:</label>
-              <input type="text" id="link_video" name="link_video" class="form-control" placeholder="Enter Video Link">
-              </div>
+            <div class="col-md-6">
+              <label class="form-label">User Role: <span class="text-danger">*</span></label>
+              <select formControlName="Role" class="form-control" (change)="onRoleChange(courseForm.get('Role')?.value)">
+                <!-- <option value="" disabled selected>Select Role</option> -->
+                <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+              </select>
 
-              <!-- Department -->
-              <div class="col-md-6">
-              <label class="form-label">Department:</label>
-              <input type="text" id="department" name="department" class="form-control" placeholder="Enter Department">
-              </div>
+            </div>
 
-              <!-- Save & Clear -->
-              <div class="col-md-12 d-flex align-items-end">
-              <button type="button" class="btn btn-danger me-2">Clear</button>
-              <button type="button" class="btn btn-success">Save</button>
-              </div>
+          <!-- UserId Dropdown -->
 
+          <div class="col-md-6">
+            <label class="form-label">User ID: <span class="text-danger">*</span></label>
+            <select formControlName="UserId" class="form-control">
+              <!-- <option value="">-- Select User ID --</option> -->
+              <option *ngFor="let user of userList" [value]="user.userId">{{ user.userId }}</option>
+            </select>
           </div>
-        </form>
+
+          <!-- Name Field (Auto Displayed) -->
+           <div class="col-md-6">
+          <label class="form-label">Name:</label>
+          <input type="text" class="form-control" formControlName="Name" [readonly]="true" />
+        </div>
+          <!-- Course Title -->
+          <div class="col-md-6">
+            <label class="form-label">Video Title:</label>
+            <input type="text" formControlName="Title" class="form-control" placeholder="Enter Video Title">
+          </div>
+
+          <!-- Video Link -->
+          <div class="col-md-6">
+            <label class="form-label">Video Link:</label>
+            <input type="text" formControlName="VideoLink" class="form-control" placeholder="Enter Video Link">
+          </div>
+
+          <!-- Department -->
+          <div class="col-md-6">
+            <label class="form-label">Department:</label>
+            <input type="text" formControlName="Department" class="form-control" placeholder="Enter Department">
+          </div>
+
+          <!-- Description -->
+          <div class="col-md-12">
+            <label class="form-label">Description:</label>
+            <textarea formControlName="Description" class="form-control" rows="3"></textarea>
+          </div>
+
+          <!-- Buttons -->
+          <div class="col-md-12 d-flex align-items-end">
+            <button type="button" class="btn btn-danger me-2" (click)="courseForm.reset()">Clear</button>
+            <button type="submit" class="btn btn-success">Save</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
-  <!-- Create New Course Section -->
 
   <div *ngIf="currentPages === 3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Edit Course</h2>
+      <button class="btn btn-secondary" (click)="goBack()">Back</button>
+    </div>
+
+    <form [formGroup]="courseForm" (ngSubmit)="onUpdate()">
+      <div class="row g-3">
+        <!-- Role -->
+        <div class="col-md-6">
+          <label class="form-label">User Role: <span class="text-danger">*</span></label>
+          <select formControlName="Role" class="form-control" (change)="onRoleChange(courseForm.get('Role')?.value)">
+            <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+          </select>
+        </div>
+
+        <!-- UserId -->
+        <div class="col-md-6">
+          <label class="form-label">User ID: <span class="text-danger">*</span></label>
+          <select formControlName="UserId" class="form-control">
+            <option *ngFor="let user of userList" [value]="user.userId">{{ user.userId }}</option>
+          </select>
+        </div>
+
+        <!-- Name -->
+        <div class="col-md-6">
+          <label class="form-label">Name:</label>
+          <input type="text" class="form-control" formControlName="Name" readonly />
+        </div>
+
+        <!-- Title -->
+        <div class="col-md-6">
+          <label class="form-label">Video Title:</label>
+          <input type="text" formControlName="Title" class="form-control" placeholder="Enter Video Title" />
+        </div>
+
+        <!-- Video Link -->
+        <div class="col-md-6">
+          <label class="form-label">Video Link:</label>
+          <input type="text" formControlName="VideoLink" class="form-control" placeholder="Enter Video Link" />
+        </div>
+
+        <!-- Department -->
+        <div class="col-md-6">
+          <label class="form-label">Department:</label>
+          <input type="text" formControlName="Department" class="form-control" placeholder="Enter Department" />
+        </div>
+
+        <!-- Description -->
+        <div class="col-md-12">
+          <label class="form-label">Description:</label>
+          <textarea formControlName="Description" class="form-control" rows="3"></textarea>
+        </div>
+
+        <!-- Buttons -->
+        <div class="col-md-12 d-flex align-items-end">
+          <button type="button" class="btn btn-danger me-2" (click)="courseForm.reset()">Clear</button>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Create New Course Section -->
+
+  <!-- <div *ngIf="currentPages === 3">
     <h1>View Course</h1>
     <div class="dashboard-form">
         <div class="video_frame">
@@ -155,5 +272,5 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
