@@ -1,5 +1,5 @@
- 
-  
+
+
 
 
   <div class="page-content">
@@ -90,7 +90,7 @@
               </tr>
             </table>
           </div>
-        </div>  
+        </div>
 
         <!-- Table -->
         <div class="table-responsive">
@@ -101,12 +101,12 @@
                   <!-- Checkbox for Select All -->
                   <th>
                     <input type="checkbox"
-                    (change)="allSelected('selectAll')" 
+                    (change)="allSelected('selectAll')"
                     />
                   </th>
 
                   <!-- <th>SrNo</th> -->
-                  <th (dblclick)="onHeaderDoubleClick('SrNo')">
+                  <!-- <th (dblclick)="onHeaderDoubleClick('SrNo')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       SrNo
                       <span *ngIf="sortedColumn === 'SrNo'">
@@ -118,9 +118,9 @@
                         </i>
                       </span>
                     </div>
-                  </th>
+                  </th> -->
 
-                  <!-- <th> User ID </th>-->
+                  <!-- <th> User ID </th> -->
                   <th (dblclick)="onHeaderDoubleClick('UserId')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       User ID
@@ -302,7 +302,7 @@
                     <input type="checkbox" [checked]="selectedUser?.UserId === user.UserId"  [checked]="selectedUsers.length === users.length" >
                   </td>
                   <!-- <td>{{ i + 1 }}</td> -->
-                  <td>{{user.SrNo}}</td>
+                  <!-- <td>{{user.SrNo}}</td> -->
                   <td>{{ user.UserId }}</td>
                   <td>{{ user.FullName }}</td>
                   <td>{{ user.Email }}</td>
@@ -359,7 +359,7 @@
 
         </div>
 
-        
+
     </div>
 
     <!-- Page 2: Add User -->
@@ -515,4 +515,4 @@
   </div>
 
 
-                          
+
