@@ -1,8 +1,8 @@
 
   <div class="page-content">
     <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb" class="my-3">
-      <ol class="breadcrumb bg-light p-3 rounded shadow-sm mb-0" style="--bs-breadcrumb-divider: '›';">
+    <div aria-label="breadcrumb" class="my-3">
+      <ol class="breadcrumb p-3 rounded mb-0" style="--bs-breadcrumb-divider: '›';">
         <li class="breadcrumb-item">
           <a routerLink="/" class="text-decoration-none text-primary fw-semibold">🏠 Home</a>
         </li>
@@ -14,7 +14,7 @@
           User List
         </li> -->
       </ol>
-    </nav>
+    </div>
 
 
     <div class="container-fluid">
@@ -148,10 +148,10 @@
                   </th>
 
                   <!-- Email -->
-                  <th (dblclick)="onHeaderDoubleClick('email')">
+                  <th (dblclick)="onHeaderDoubleClick('Email')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       Email
-                      <span *ngIf="sortedColumn === 'email'">
+                      <span *ngIf="sortedColumn === 'Email'">
                         <i class="bi"
                           [ngClass]="{
                             'bi-caret-up-fill': sortState === 'asc',
@@ -163,10 +163,10 @@
                   </th>
 
                   <!-- Password -->
-                  <th (dblclick)="onHeaderDoubleClick('passwordHash')">
+                  <th (dblclick)="onHeaderDoubleClick('PasswordHash')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       Password
-                      <span *ngIf="sortedColumn === 'passwordHash'">
+                      <span *ngIf="sortedColumn === 'PasswordHash'">
                         <i class="bi"
                           [ngClass]="{
                             'bi-caret-up-fill': sortState === 'asc',
@@ -178,10 +178,10 @@
                   </th>
 
                   <!-- Role -->
-                  <th (dblclick)="onHeaderDoubleClick('role')">
+                  <th (dblclick)="onHeaderDoubleClick('Role')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       Role
-                      <span *ngIf="sortedColumn === 'role'">
+                      <span *ngIf="sortedColumn === 'Role'">
                         <i class="bi"
                           [ngClass]="{
                             'bi-caret-up-fill': sortState === 'asc',
@@ -193,10 +193,10 @@
                   </th>
 
                   <!-- NRC -->
-                  <th (dblclick)="onHeaderDoubleClick('nrc')">
+                  <th (dblclick)="onHeaderDoubleClick('NRC')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       NRC
-                      <span *ngIf="sortedColumn === 'nrc'">
+                      <span *ngIf="sortedColumn === 'NRC'">
                         <i class="bi"
                           [ngClass]="{
                             'bi-caret-up-fill': sortState === 'asc',
@@ -208,10 +208,10 @@
                   </th>
 
                   <!-- Phone Number -->
-                  <th (dblclick)="onHeaderDoubleClick('phoneNumber')">
+                  <th (dblclick)="onHeaderDoubleClick('PhoneNumber')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       Phone Number
-                      <span *ngIf="sortedColumn === 'phoneNumber'">
+                      <span *ngIf="sortedColumn === 'PhoneNumber'">
                         <i class="bi"
                           [ngClass]="{
                             'bi-caret-up-fill': sortState === 'asc',
@@ -223,10 +223,10 @@
                   </th>
 
                   <!-- Employee Id -->
-                  <th (dblclick)="onHeaderDoubleClick('employeeId')">
+                  <th (dblclick)="onHeaderDoubleClick('EmployeeId')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       Employee Id
-                      <span *ngIf="sortedColumn === 'employeeId'">
+                      <span *ngIf="sortedColumn === 'EmployeeId'">
                         <i class="bi"
                           [ngClass]="{
                             'bi-caret-up-fill': sortState === 'asc',
@@ -238,10 +238,10 @@
                   </th>
 
                   <!-- Department -->
-                  <th (dblclick)="onHeaderDoubleClick('department')">
+                  <th (dblclick)="onHeaderDoubleClick('Department')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       Department
-                      <span *ngIf="sortedColumn === 'department'">
+                      <span *ngIf="sortedColumn === 'Department'">
                         <i class="bi"
                           [ngClass]="{
                             'bi-caret-up-fill': sortState === 'asc',
@@ -253,10 +253,10 @@
                   </th>
 
                   <!-- Position -->
-                  <th (dblclick)="onHeaderDoubleClick('position')">
+                  <th (dblclick)="onHeaderDoubleClick('Position')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       Position
-                      <span *ngIf="sortedColumn === 'position'">
+                      <span *ngIf="sortedColumn === 'Position'">
                         <i class="bi"
                           [ngClass]="{
                             'bi-caret-up-fill': sortState === 'asc',
@@ -268,10 +268,10 @@
                   </th>
 
                   <!-- Remark -->
-                  <th (dblclick)="onHeaderDoubleClick('remark')">
+                  <th (dblclick)="onHeaderDoubleClick('Remark')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       Remark
-                      <span *ngIf="sortedColumn === 'remark'">
+                      <span *ngIf="sortedColumn === 'Remark'">
                         <i class="bi"
                           [ngClass]="{
                             'bi-caret-up-fill': sortState === 'asc',

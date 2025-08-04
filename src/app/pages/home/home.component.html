@@ -1,6 +1,6 @@
 
 
-    <div class="container">
+    <!-- <div class="container">
       <div class="row">
         <div class="dashboard-form col-md-4 col-sm-6">
           <iframe width="100%" height="100%" src="https://www.youtube.com/embed/f3kgzgxRXJg" title="Hello Program " frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -15,13 +15,64 @@
           <iframe width="100%" height="100%" src="https://www.youtube.com/embed/ZBbXUR9PVzw" title="A lonely woman goes fishing in a river deep in the mountains." frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
       </div>
-    </div>
+    </div> -->
 
 <!-- <div>This is Home Page</div>
 <button (click)="askDeleteUser()">
         Hello 
       </button> -->
       
+<div class="container-fluid py-4 bg-light text-dark">
+
+  <!-- Header -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
+    <h4 class="mb-0">🎥 Video Library</h4>
+    <div class="d-flex flex-wrap gap-2">
+      <input type="text" class="form-control form-control-sm" placeholder="Search videos..." [(ngModel)]="searchTerm" />
+      <select class="form-select form-select-sm" [(ngModel)]="selectedCategory">
+        <option value="All">All Categories</option>
+        <option value="Tutorial">Tutorial</option>
+        <option value="Nature">Nature</option>
+        <option value="Adventure">Adventure</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Video Grid -->
+  <div class="row gy-4 gx-4">
+    <div class="col-md-6 col-lg-4" *ngFor="let video of filteredVideos">
+      <div class="card h-100 rounded-4 overflow-hidden shadow-sm border-light"
+           style="cursor: pointer;"
+           (click)="openModal(video)">
+        <div class="ratio ratio-16x9">
+          <img [src]="video.thumbnail" class="img-fluid" alt="Video Thumbnail" />
+        </div>
+        <div class="card-body">
+          <h6 class="card-title text-truncate mb-0" [title]="video.title">{{ video.title }}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade show d-block" *ngIf="showModal" style="background-color: rgba(0,0,0,0.85);">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content border-0 rounded-4 overflow-hidden">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title">{{ selectedVideo?.title }}</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body p-0">
+          <div class="ratio ratio-16x9">
+            <iframe [src]="selectedVideo?.url" frameborder="0" allow="autoplay; encrypted-media;" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 
 
           
