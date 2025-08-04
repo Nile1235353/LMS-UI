@@ -1,0 +1,14 @@
+.form-group {
+  position: relative;
+  overflow: visible;
+}
+
+/* In your global or component styles */
+.selected {
+  background-color: #dbeafe !important; /* light blue */
+}
+
+tr.selected {
+  background-color: #f5c6cb;
+}
+

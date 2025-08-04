@@ -96,6 +96,8 @@ throw new Error('Method not implemented.');
   }
 
   selectUser(user: any) {
+    console.log(user.UserId)
+    console.log(this.selectedUser?.UserId === user.UserId)
     if (this.selectedUser?.UserId === user.UserId) {
     // If already selected, unselect
     this.selectedUser = null;
@@ -158,7 +160,7 @@ throw new Error('Method not implemented.');
     formData.append('Position', this.userForm.value.position ?? '');
     formData.append('Remark', this.userForm.value.remark ?? '');
     formData.append('IsActive', this.userForm.value.isActive ? 'true' : 'false');
-  
+
     if (this.currentPages === 3) {
       // Update
       this.userService.updateUser(formData).subscribe({
@@ -186,15 +188,6 @@ throw new Error('Method not implemented.');
       });
     }
   }
-
-  // deleteUser(id: string) {
-  //   if (confirm('Are you sure to delete?')) {
-  //     this.userService.deleteUser(id).subscribe(() => {
-  //       this.loadUsers();
-  //       this.selectedUser = null;
-  //     });
-  //   }
-  // }
 
   //Custom Confirm Dialog && Delete User
   showModal = false;

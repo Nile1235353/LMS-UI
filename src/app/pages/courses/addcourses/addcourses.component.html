@@ -6,18 +6,26 @@
     </div>
 
     <div class="container-fluid scroll-x">
-
           <!-- Button Group -->
           <div class="scroll-x">
             <div class="table table-responsive table-wrapper">
               <table class="table border_none">
                 <tr>
                     <th>
-                        <a><button class="btn btn-outline-dark" (click)="setPage(2)"><i class="bi bi-plus"></i>&nbsp;&nbsp;New</button></a>
+                        <button class="btn btn-outline-dark" (click)="setPage(2)"><i class="bi bi-plus"></i>&nbsp;&nbsp;New</button>
+                        <!-- <button class="btn btn-outline-dark" (click)="setPage(3)"  [disabled]="!selectedCourseId"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button> -->
+                        <button class="btn btn-outline-dark"
+                        (click)="loadCourseForEdit()"
+                        [disabled]="!selectedCourseId">
+                  <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
+                </button>
 
-                        <a><button class="btn btn-outline-dark" (click)="setPage(3)"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button></a>
-                        <a><button class="btn btn-outline-danger" ><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</button></a>
-                    </th>
+                    <button type="button"class="btn btn-outline-danger"  [disabled]="!selectedCourseId" (click)="confirmDeleteCourse()"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete Selected Course</button>
+
+
+
+
+                  </th>
                 </tr>
               </table>
             </div>
@@ -30,9 +38,10 @@
               <thead>
                 <tr>
                     <th>
-                        <input type="checkbox" (change)="toggleAllCheckboxes($event)" [checked]="isAllSelected()" />
+                        <input type="checkbox" (change)="toggleAllCheckboxes($event)" [checked]="isAllSelected()"/>
+
                     </th>
-                    <!-- <th>Id</th> -->
+
                     <th>CourseId</th>
                   <th>UserId</th>
                   <th>Name</th>
@@ -46,29 +55,23 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let row of paginatedRows; let i = index" (click)="selectCourse(row)"
-                [class.selected]="selectedCourseId === row.courseId" >
-                  <!-- <td>
-                    <input type="checkbox" [checked]="row.selected" (click)="$event.stopPropagation()" (change)="toggleCheckbox(i, $event)" />
-                  </td> -->
+                <tr *ngFor="let course of paginatedRows">
                   <td>
-                    <input type="checkbox" [checked]="row.selected"
-                           (click)="$event.stopPropagation()"
-                           (change)="toggleCheckbox(i, $event)" />
+                    <input type="radio" name="selectedCourse"
+                           [value]="course.id"
+                           [(ngModel)]="selectedCourseId" />
                   </td>
-
-                  <td>{{ row.courseId }}</td>
-                  <td>{{ row.userId }}</td>
-                  <td>{{ row.name }}</td>
-                  <td>{{ row.department }}</td>
-                  <td>{{ row.description }}</td>
-                  <td><a [href]="row.videoLink" target="_blank">Watch</a></td>
-                  <td>{{ row.title }}</td>
-                  <td>{{ row.role }}</td>
-                  <td>{{ row.createdDate | date:'short' }}</td>
-
-
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.userId }}</td>
+                  <td>{{ course.name }}</td>
+                  <td>{{ course.department }}</td>
+                  <td>{{ course.description }}</td>
+                  <td><a [href]="course.videoLink" target="_blank">{{course.title}}</a></td>
+                  <td>{{ course.title }}</td>
+                  <td>{{ course.role }}</td>
+                  <td>{{ course.createdDate | date:'short' }}</td>>
                 </tr>
+
               </tbody>
 
             </table>
@@ -110,59 +113,63 @@
           <div class="row g-3">
             <!-- Role -->
 
-
             <div class="col-md-6">
               <label class="form-label">User Role: <span class="text-danger">*</span></label>
-              <select formControlName="Role" class="form-control" (change)="onRoleChange(courseForm.get('Role')?.value)">
+              <select formControlName="Role"  class="form-control" (change)="onRoleChange(courseForm.get('Role')?.value)">
                 <!-- <option value="" disabled selected>Select Role</option> -->
                 <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
               </select>
-
             </div>
-
           <!-- UserId Dropdown -->
 
           <div class="col-md-6">
             <label class="form-label">User ID: <span class="text-danger">*</span></label>
-            <select formControlName="UserId" class="form-control">
+            <select formControlName="UserId"  class="form-control">
               <!-- <option value="">-- Select User ID --</option> -->
               <option *ngFor="let user of userList" [value]="user.userId">{{ user.userId }}</option>
             </select>
           </div>
 
           <!-- Name Field (Auto Displayed) -->
+
            <div class="col-md-6">
           <label class="form-label">Name:</label>
-          <input type="text" class="form-control" formControlName="Name" [readonly]="true" />
+          <input type="text" class="form-control" formControlName="Name"  [readonly]="true" />
         </div>
+
           <!-- Course Title -->
           <div class="col-md-6">
             <label class="form-label">Video Title:</label>
-            <input type="text" formControlName="Title" class="form-control" placeholder="Enter Video Title">
+            <input type="text" formControlName="Title"  class="form-control" placeholder="Enter Video Title">
           </div>
 
           <!-- Video Link -->
           <div class="col-md-6">
             <label class="form-label">Video Link:</label>
-            <input type="text" formControlName="VideoLink" class="form-control" placeholder="Enter Video Link">
+            <input type="text" formControlName="VideoLink"  class="form-control" placeholder="Enter Video Link">
           </div>
 
           <!-- Department -->
-          <div class="col-md-6">
+
+          <div class="form-group col-md-6" style="position: relative;">
             <label class="form-label">Department:</label>
-            <input type="text" formControlName="Department" class="form-control" placeholder="Enter Department">
+            <select formControlName="Department"  class="form-control form-control-sm">
+              <option *ngFor="let dept of departmentList" [value]="dept">{{ dept }}</option>
+            </select>
           </div>
 
           <!-- Description -->
           <div class="col-md-12">
             <label class="form-label">Description:</label>
-            <textarea formControlName="Description" class="form-control" rows="3"></textarea>
+            <textarea formControlName="Description"  class="form-control" rows="3"></textarea>
           </div>
 
           <!-- Buttons -->
           <div class="col-md-12 d-flex align-items-end">
             <button type="button" class="btn btn-danger me-2" (click)="courseForm.reset()">Clear</button>
-            <button type="submit" class="btn btn-success">Save</button>
+            <!-- <button type="submit" class="btn btn-success">Save</button> -->
+            <button type="submit" class="btn btn-success" [disabled]="courseForm.invalid">Save</button>
+
           </div>
         </div>
       </form>
@@ -175,46 +182,41 @@
       <button class="btn btn-secondary" (click)="goBack()">Back</button>
     </div>
 
-    <form [formGroup]="courseForm" (ngSubmit)="onUpdate()">
+    <!-- <form [formGroup]="courseForm"> -->
+      <form [formGroup]="courseForm" (ngSubmit)="updateCourse()">
+
       <div class="row g-3">
-        <!-- Role -->
-        <div class="col-md-6">
-          <label class="form-label">User Role: <span class="text-danger">*</span></label>
-          <select formControlName="Role" class="form-control" (change)="onRoleChange(courseForm.get('Role')?.value)">
-            <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
-          </select>
-        </div>
 
-        <!-- UserId -->
-        <div class="col-md-6">
-          <label class="form-label">User ID: <span class="text-danger">*</span></label>
-          <select formControlName="UserId" class="form-control">
-            <option *ngFor="let user of userList" [value]="user.userId">{{ user.userId }}</option>
-          </select>
-        </div>
 
-        <!-- Name -->
+
         <div class="col-md-6">
-          <label class="form-label">Name:</label>
-          <input type="text" class="form-control" formControlName="Name" readonly />
+          <label class="form-label">CourseId:</label>
+          <input type="text" formControlName="CourseId" class="form-control" id="CourseId" [readonly]="true" />
         </div>
 
         <!-- Title -->
         <div class="col-md-6">
           <label class="form-label">Video Title:</label>
-          <input type="text" formControlName="Title" class="form-control" placeholder="Enter Video Title" />
+          <input type="text" formControlName="Title" id="Title" class="form-control" placeholder="Enter Video Title" />
         </div>
 
         <!-- Video Link -->
         <div class="col-md-6">
           <label class="form-label">Video Link:</label>
-          <input type="text" formControlName="VideoLink" class="form-control" placeholder="Enter Video Link" />
+          <input type="text" formControlName="VideoLink"id="VideoLink" class="form-control" placeholder="Enter Video Link" />
         </div>
 
         <!-- Department -->
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
           <label class="form-label">Department:</label>
           <input type="text" formControlName="Department" class="form-control" placeholder="Enter Department" />
+        </div> -->
+
+        <div class="form-group col-md-6" style="position: relative;">
+          <label class="form-label">Department:</label>
+          <select formControlName="Department" id="Department" class="form-control form-control-sm">
+            <option *ngFor="let dept of departmentList" [value]="dept">{{ dept }}</option>
+          </select>
         </div>
 
         <!-- Description -->
@@ -226,51 +228,10 @@
         <!-- Buttons -->
         <div class="col-md-12 d-flex align-items-end">
           <button type="button" class="btn btn-danger me-2" (click)="courseForm.reset()">Clear</button>
-          <button type="submit" class="btn btn-primary">Update</button>
+          <button type="submit" class="btn btn-primary" >Update</button>
+
         </div>
       </div>
     </form>
   </div>
-
-  <!-- Create New Course Section -->
-
-  <!-- <div *ngIf="currentPages === 3">
-    <h1>View Course</h1>
-    <div class="dashboard-form">
-        <div class="video_frame">
-            <iframe width="100%" height="500px" src="https://www.youtube.com/embed/VFiHgCjbXx0" title="Nottingham Forest 0-1 Chelsea | HIGHLIGHTS | Premier League 2024/25" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-    </div>
-    <div class="container">
-      <h2>Course Information</h2>
-        <div class="card">
-            <div class="card-header">Football</div>
-                  <div class="card-body">
-                      <form method="get">
-                          <input type="text" value="Football is Everything" class="form-control">
-
-                          <p name="description" id="description" class="form-control" style="min-height: auto;">
-                              Leorm Finance is the vibrant initiative of a team of young professional entrepreneurs with a solid background in the financial sector. We have joined forces and expertise to create a platform that redefines the standards of fairness and efficiency in the financial world. Currently, we aim to be your trusted guide in navigating through complex financial operations. Our ambition does not stop here: we see ourselves becoming the market leader of non-banking financial institutions in Romania and a main player in the non-banking financial market within the European Union.
-
-                              We are dedicated to providing high-quality services.
-                              Provide a vital financial tool that can assist you in your business growth.
-                              Our solutions are efficient, easy to understand and implement.
-
-                          </p>
-                          &nbsp;&nbsp;
-                          <button class="btn btn-success">
-                              <i class="bi bi-check-circle"></i>
-                              Finished
-                          </button>
-                      </form>
-                  </div>
-                <hr>
-                <div class="card-body">
-                    hello
-                </div>
-                <div class="card-footer">Footer</div>
-            </div>
-        </div>
-    </div>
-</div> -->
 

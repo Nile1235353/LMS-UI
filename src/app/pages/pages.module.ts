@@ -1,26 +1,28 @@
-import { HttpClient } from '@angular/common/http';
+
 import { NgModule } from '@angular/core';
-import { HomeComponent } from './home/home.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PagesRoutingModule } from './pages-routing.module';
-import { LayoutComponent } from '../layout/layout.component';
 import { RouterModule } from '@angular/router';
 
+import { HomeComponent } from './home/home.component';
+import { LayoutComponent } from '../layout/layout.component';
+
+import { PagesRoutingModule } from './pages-routing.module';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
     HomeComponent,
+
   ],
-  imports:[
+  imports: [
     CommonModule,
     FormsModule,
-    PagesRoutingModule,
-    LayoutComponent,
     ReactiveFormsModule,
-    RouterModule
-  ]
+    RouterModule,
+    PagesRoutingModule,
+    NgxSpinnerModule,
+    LayoutComponent
+  ],
 })
-export class PagesModule {
-
-}
+export class PagesModule {}
