@@ -1,3 +1,4 @@
+import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common/http';
 
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -8,9 +9,10 @@ import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-addcourses',
+  standalone: true,
   imports: [ CommonModule,
      RouterModule,ReactiveFormsModule,FormsModule,NgxSpinnerModule],
-     standalone: true,
+
   templateUrl: './addcourses.component.html',
   styleUrls: ['./addcourses.component.scss'],
 })

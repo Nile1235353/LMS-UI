@@ -47,7 +47,6 @@ throw new Error('Method not implemented.');
   allselectedUser: boolean = false; // Track if all users are selected
   // For pagination
   currentPages: number = 1;
-
   usersPerPage = 10; // or 5, 20, etc.
   currentPage = 1;
 
