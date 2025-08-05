@@ -1,14 +1,155 @@
-.form-group {
-  position: relative;
-  overflow: visible;
-}
+    body {
+      background-color: #1f1f1f;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
 
-/* In your global or component styles */
-.selected {
-  background-color: #dbeafe !important; /* light blue */
-}
+    .btn
+    {
+        height: auto;
+        border-radius: 5px;
+        border: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
 
-tr.selected {
-  background-color: #f5c6cb;
-}
+    .border_none,
+    .border_none *
+    {
+        border: none !important;
+    }
 
+    .pagination .active .page-link {
+      background-color: #28a745;
+      border-color: #28a745;
+      color: white;
+    }
+
+    .pagination .page-item .page-link {
+      cursor: pointer;
+    }
+
+    .scroll-x {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      white-space: nowrap;
+    }
+
+
+    .table-wrapper {
+      min-width: auto;
+    }
+
+    .container-fluid
+    {
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    table thead th {
+      // background-color: gray;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 10px;
+      // position: sticky;
+      // top: 0;
+    }
+
+    table thead th input[type="checkbox"] {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    table tbody tr td {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 10px;
+    }
+
+    table tbody tr td input[type="checkbox"] {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    table tbody tr {
+      height: 30px;
+      cursor: pointer;
+    }
+
+    // Table resizable columns
+
+    .resizable {
+        overflow: hidden;
+        // resize: both;
+        resize: horizontal;
+        // display: inline-block;
+        min-width: 6px;
+        // cursor: col-resize;
+        border-right: -2px solid #ddd;
+    }
+
+    // Table Smooth Design 
+
+    .responsive-table-wrapper {
+      overflow-x: auto;
+      max-width: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      scroll-behavior: smooth;
+    }
+
+    .custom-scroll-table {
+      border-collapse: collapse;
+      min-width: 2000px; // Enough width to cause horizontal scroll && This can be adjusted based on your content && Table Scroll Main CSS
+      // table-layout: fixed; // Ensures that the table respects the width of its columns
+      width: 100%;
+    }
+
+    .custom-scroll-table th,
+    .custom-scroll-table td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      white-space: nowrap; // prevent text wrap
+      text-align: left;
+    }
+
+    .custom-scroll-table thead th {
+      position: sticky;
+      top: 0;
+      background-color: #f9f9f9;
+      z-index: 10;
+    }
+
+    /* Optional scrollbar style */
+    .responsive-table-wrapper::-webkit-scrollbar {
+      height: 10px;
+    }
+    .responsive-table-wrapper::-webkit-scrollbar-thumb {
+      background-color: gray;
+      border-radius: 6px;
+    }
+
+    /* Confirm Box Fade-in Animation */
+
+    .fade-in {
+      animation: fadeInModal 0.00001s ease-out;
+    }
+
+    @keyframes fadeInModal {
+      from {
+        opacity: 90%;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    /* Breadcrumb Styles */
+    .breadcrumb a:hover {
+      text-decoration: underline;
+      color: #2e59d9 !important;
+    }

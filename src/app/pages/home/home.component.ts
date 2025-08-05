@@ -1,61 +1,62 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
-  standalone:false,
+  standalone: true,
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
+  imports: [
+    CommonModule
+  ]
 })
 export class HomeComponent {
-showModal = false;
-selectedVideo: any = null;
-searchTerm: string = '';
-selectedCategory: string = 'All';
+searchTerm = '';
+  selectedCategory = 'All';
+  showModal = false;
+  selectedVideo: { title: string; url: SafeResourceUrl; thumbnail: string } | null = null;
 
-videos = [
-  {
-    title: 'Hello Program',
-    url: 'https://youtu.be/TJizaGqCQuI?t=1',
-    thumbnail: 'https://img.youtube.com/vi/f3kgzgxRXJg/hqdefault.jpg',
-    category: 'Tutorial'
-  },
-  {
-    title: 'Fishing Woman in the Mountains',
-    url: 'https://www.youtube.com/embed/WCpVoC847Qs',
-    thumbnail: 'https://img.youtube.com/vi/WCpVoC847Qs/hqdefault.jpg',
-    category: 'Nature'
-  },
-  {
-    title: 'Mountain River Fishing',
-    url: 'https://www.youtube.com/embed/grMPM0JhAcQ',
-    thumbnail: 'https://img.youtube.com/vi/grMPM0JhAcQ/hqdefault.jpg',
-    category: 'Nature'
-  },
-  {
-    title: 'Nature Calm Trip',
-    url: 'https://www.youtube.com/embed/ZBbXUR9PVzw',
-    thumbnail: 'https://img.youtube.com/vi/ZBbXUR9PVzw/hqdefault.jpg',
-    category: 'Adventure'
+  videos = [
+    {
+      title: 'Mountain Adventure',
+      url: 'https://www.youtube.com/embed/Scxs7L0vhZ4',
+      category: 'Adventure',
+      thumbnail: 'https://img.youtube.com/vi/Scxs7L0vhZ4/0.jpg'
+    },
+    {
+      title: 'Beautiful Nature',
+      url: 'https://www.youtube.com/embed/TlB_eWDSMt4',
+      category: 'Nature',
+      thumbnail: 'https://img.youtube.com/vi/TlB_eWDSMt4/0.jpg'
+    },
+    {
+      title: 'Angular Tutorial',
+      url: 'https://www.youtube.com/embed/2OHbjep_WjQ',
+      category: 'Tutorial',
+      thumbnail: 'https://img.youtube.com/vi/2OHbjep_WjQ/0.jpg'
+    }
+  ];
+
+  constructor(private sanitizer: DomSanitizer) {}
+
+  get filteredVideos() {
+    return this.videos.filter(video =>
+      (this.selectedCategory === 'All' || video.category === this.selectedCategory) &&
+      video.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
   }
-];
 
-get filteredVideos() {
-  return this.videos.filter(video =>
-    (this.selectedCategory === 'All' || video.category === this.selectedCategory) &&
-    video.title.toLowerCase().includes(this.searchTerm.toLowerCase())
-  );
-}
+  openModal(video: any) {
+    this.selectedVideo = {
+      ...video,
+      url: this.sanitizer.bypassSecurityTrustResourceUrl(video.url)
+    };
+    this.showModal = true;
+  }
 
-openModal(video: any) {
-  const autoplayUrl = video.url.includes('?') ? video.url + '&autoplay=1' : video.url + '?autoplay=1';
-  this.selectedVideo = { ...video, url: autoplayUrl };
-  this.showModal = true;
-}
-
-closeModal() {
-  this.showModal = false;
-  this.selectedVideo = null;
-}
-
-
+  closeModal() {
+    this.showModal = false;
+    this.selectedVideo = null;
+  }
 }

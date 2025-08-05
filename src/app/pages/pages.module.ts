@@ -12,7 +12,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
-    HomeComponent,
 
   ],
   imports: [
@@ -22,7 +21,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     RouterModule,
     PagesRoutingModule,
     NgxSpinnerModule,
-    LayoutComponent
+    LayoutComponent,
+    HomeComponent,
   ],
 })
 export class PagesModule {}

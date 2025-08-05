@@ -12,37 +12,36 @@
               <table class="table border_none">
                 <tr>
                     <th>
-                        <button class="btn btn-outline-dark" (click)="setPage(2)"><i class="bi bi-plus"></i>&nbsp;&nbsp;New</button>
-                        <!-- <button class="btn btn-outline-dark" (click)="setPage(3)"  [disabled]="!selectedCourseId"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button> -->
-                        <button class="btn btn-outline-dark"
+                      <button class="btn btn-outline-dark me-2" (click)="setPage(2)">
+                        <i class="bi bi-plus"></i>&nbsp;&nbsp;New
+                      </button>
+
+                      <button class="btn btn-outline-dark me-2"
                         (click)="loadCourseForEdit()"
                         [disabled]="!selectedCourseId">
-                  <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
-                </button>
+                        <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
+                      </button>
 
-                    <button type="button"class="btn btn-outline-danger"  [disabled]="!selectedCourseId" (click)="confirmDeleteCourse()"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete Selected Course</button>
-
-
-
-
-                  </th>
+                      <button type="button"class="btn btn-outline-danger"  [disabled]="!selectedCourseId" (click)="confirmDeleteCourse()">
+                        <i class="bi bi-trash"></i>&nbsp;&nbsp;Delete
+                      </button>
+                    </th>
                 </tr>
               </table>
             </div>
           </div>
 
         <!-- Scrollable Table -->
-        <div class="scroll-x">
-          <div class="table-wrapper">
-            <table class="table table-bordered table-hover table-sm">
+        <div class="table-responsive">
+          <div class="responsive-table-wrapper">
+            <table class="table table-bordered table-hover table-sm custom-scroll-table">
+
               <thead>
                 <tr>
-                    <th>
-                        <input type="checkbox" (change)="toggleAllCheckboxes($event)" [checked]="isAllSelected()"/>
-
-                    </th>
-
-                    <th>CourseId</th>
+                  <th>
+                    <input type="checkbox" (change)="toggleAllCheckboxes($event)" [checked]="isAllSelected()"/>
+                  </th>
+                  <th>CourseId</th>
                   <th>UserId</th>
                   <th>Name</th>
                   <th>Department</th>
@@ -71,15 +70,13 @@
                   <td>{{ course.role }}</td>
                   <td>{{ course.createdDate | date:'short' }}</td>>
                 </tr>
-
               </tbody>
-
             </table>
           </div>
         </div>
 
-         <!-- Pagination -->
-        <nav>
+      <!-- Pagination -->
+      <nav>
         <ul class="pagination pagination-sm ">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <a class="page-link" href="#" (click)="previousPage(); $event.preventDefault()">«</a>
