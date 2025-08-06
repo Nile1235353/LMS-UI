@@ -1,15 +1,15 @@
 
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { UserserviceService } from './userservice.service';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-
+import { NgxSpinnerModule } from 'ngx-spinner';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 interface TableRow {
   selected?: boolean;
 }
-
 interface User {
   UserId: string;
   FullName: string;
@@ -24,14 +24,11 @@ interface User {
   Remark?: string;
   IsActive: boolean;
 }
-
 @Component({
   selector: 'app-user',
   standalone: true,
   imports: [
-    RouterModule,
-    CommonModule,
-    ReactiveFormsModule
+ CommonModule,ReactiveFormsModule,FormsModule,RouterModule,NgxSpinnerModule
 ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
@@ -45,16 +42,33 @@ throw new Error('Method not implemented.');
   selectedUser: any = null;
   selectedUsers: any[] = []; // Track selected users
   allselectedUser: boolean = false; // Track if all users are selected
-  // For pagination
+
   currentPages: number = 1;
   usersPerPage = 10; // or 5, 20, etc.
   currentPage = 1;
+  userList: any[] = [];
 
   userRoles = [
     { label: 'Admin', value: 0 },
     { label: 'Instructor', value: 1 },
     { label: 'Learner', value: 2 }
   ];
+  departmentList: string[] = [
+    "CS",
+    "BD",
+    "F & A",
+    "IT",
+    "Admin & HR",
+    "QEHS",
+    "ICD",
+    "M & E",
+    "CCA",
+    "M & R",
+    "Warehouse",
+    "Yard & Rail",
+    "Truck"
+  ];
+
   column: any;
   tableRows: any;
 
@@ -306,6 +320,26 @@ throw new Error('Method not implemented.');
     });
   }
 
+  // exportToExcel(): void {
+  //   const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.userList);
+  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(wb, ws, '');
+
+  //   const excelBuffer: any = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+  //   const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+  //   FileSaver.saveAs(data, 'UserList.xlsx');
+  // }
+  exportToExcel(): void {
+    console.log('Exporting userList:', this.userList);  // 👉 check this
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.userList);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Users');
+
+    const excelBuffer: any = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    FileSaver.saveAs(data, 'UserList.xlsx');
+  }
 }
 
 

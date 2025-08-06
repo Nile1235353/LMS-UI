@@ -10,8 +10,7 @@ import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-addcourses',
   standalone: true,
-  imports: [ CommonModule,
-     RouterModule,ReactiveFormsModule,FormsModule,NgxSpinnerModule],
+  imports: [ CommonModule,RouterModule,ReactiveFormsModule,FormsModule,NgxSpinnerModule],
 
   templateUrl: './addcourses.component.html',
   styleUrls: ['./addcourses.component.scss'],
