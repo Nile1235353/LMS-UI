@@ -1,13 +1,69 @@
 <!-- <p>addcourses works!</p> -->
 <div class="page-content">
-  <div *ngIf="currentPages === 1">
-    <div>
-      <h3>Course List</h3>
+
+    <!-- Breadcrumb -->
+    <div aria-label="breadcrumb" class="" style="margin-top: -10px;">
+      <ol class="breadcrumb p-2 rounded mb-0" style="--bs-breadcrumb-divider: '›';">
+        <li class="breadcrumb-item">
+          <a routerLink="/" class="text-decoration-none text-primary fw-semibold">🏠 Home</a>
+        </li>
+        <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">
+          <!-- <a routerLink="/users" class="text-decoration-none text-primary fw-semibold"> Users</a> -->
+           Courses
+        </li>
+        <!-- <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">
+          User List
+        </li> -->
+      </ol>
     </div>
+  <div *ngIf="currentPages === 1">
 
     <div class="container-fluid scroll-x">
+          <div style="margin-top: -7px;">
+            <h4>Course List</h4>
+          </div>
+
+          <!-- Confirm Box -->
+          <div
+            class="modal fade fade-in"
+            tabindex="-1"
+            [ngClass]="{ 'show d-block': showModal }"
+            style="background-color: rgba(0, 0, 0, 0.4);"
+            *ngIf="showModal"
+            >
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content rounded-3 shadow">
+
+                <!-- Header -->
+                <div class="modal-header bg-light">
+                  <h5 class="modal-title d-flex align-items-center gap-2">
+                    <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+                    Confirm Delete
+                  </h5>
+                  <button type="button" class="btn-close" (click)="closeModal()"></button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body text-center">
+                  <p class="mb-0">Are you sure you want to delete this user?</p>
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer justify-content-center">
+                  <button type="button" class="btn btn-outline-secondary px-4" (click)="closeModal()">
+                    Cancel
+                  </button>
+                  <button type="button" class="btn btn-danger px-4" (click)="confirmDeleteCourse()">
+                    Delete
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
           <!-- Button Group -->
-          <div class="scroll-x">
+          <div class="scroll-x mt-3">
             <div class="table table-responsive table-wrapper">
               <table class="table border_none">
                 <tr>
@@ -22,7 +78,7 @@
                         <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
                       </button>
 
-                      <button type="button"class="btn btn-outline-danger"  [disabled]="!selectedCourseId" (click)="confirmDeleteCourse()" (click)="openModal('selectedCourseId === course.id')">
+                      <button type="button"class="btn btn-outline-danger"  [disabled]="!selectedCourseId" (click)="openModal(selectedCourseId?.id)">
                         <i class="bi bi-trash"></i>&nbsp;&nbsp;Delete
                       </button>
                     </th>
@@ -31,7 +87,7 @@
             </div>
           </div>
         <!-- Scrollable Table -->
-        <div class="table-responsive">
+        <div class="table-responsive scrollable-table-wrapper ">
           <div class="responsive-table-wrapper">
             <table class="table table-bordered table-hover table-sm custom-scroll-table">
 

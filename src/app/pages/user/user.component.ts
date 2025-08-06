@@ -48,7 +48,7 @@ throw new Error('Method not implemented.');
   // For pagination
   currentPages: number = 1;
 
-  usersPerPage = 10; // or 5, 20, etc.
+  usersPerPage = 7; // or 5, 20, etc.
   currentPage = 1;
 
   userRoles = [

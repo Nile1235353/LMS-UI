@@ -52,6 +52,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       padding: 10px;
+      pointer-events: auto;
       // position: sticky;
       // top: 0;
     }
@@ -88,6 +89,7 @@
         min-width: 6px;
         // cursor: col-resize;
         border-right: -2px solid #ddd;
+        pointer-events: auto !important;
     }
 
     // Table Smooth Design 
@@ -131,6 +133,15 @@
       border-radius: 6px;
     }
 
+    .scrollable-table-wrapper {
+      max-height: 400px; /* height ကိုလိုသလောက်ပေးနိုင်တယ် */
+      overflow-y: auto;
+    }
+
+    .table-responsive 
+    {
+      margin-bottom: 10px;
+    }
     /* Confirm Box Fade-in Animation */
 
     .fade-in {
@@ -153,4 +164,3 @@
       text-decoration: underline;
       color: #2e59d9 !important;
     }
-

@@ -34,7 +34,7 @@ export class AddcoursesComponent implements OnInit {
   courses: any[] = [];
   // For pagination
 
-  coursesPerPage = 10; // or 5, 20, etc.
+  // coursesPerPage = 10; // or 5, 20, etc.
 
 selectedCourse: any;
   roles: string[] = ['Admin', 'Instructor'];
@@ -60,7 +60,7 @@ selectedCourse: any;
   tableRows: any[] = [];
   paginatedRows: any[] = [];
   currentPages: number = 1;
-  pageSize = 20;
+  pageSize = 7;
   currentPage = 1;
   totalPages = 1;
   paginatedCourses: any[] = [];
@@ -302,33 +302,47 @@ loadCourseForEdit(): void {
     this.userToDeleteId = null;
   }
 
-//Method to confirm before deleting
-confirmDeleteCourse(): void {
 
-  if (!this.selectedCourseId) {
-    alert("Please select a course to delete.");
-    return;
-  }
-  console.log('Selected Course ID', this.selectedCourseId)
-
-  const confirmed = confirm("Are you sure you want to delete this course?");
-  if (confirmed) {
-    console.log('Selected Course ID', this.selectedCourseId)
-    this.courseservice.deleteCourse(this.selectedCourseId).subscribe({
-      next: (res) => {
-        console.log('Selected Course ID', this.selectedCourseId)
-        alert("Course deleted successfully.");
-
-        this.loadCourses(); // Reload updated list after deletion
+  confirmDeleteCourse() {
+    if (this.selectedCourseId) {
+      this.courseservice.deleteCourse(this.selectedCourseId).subscribe(() => {
+        this.loadCourses();
         this.selectedCourseId = null;
-      },
-      error: (err) => {
-        console.error("Delete failed:", err);
-        alert("Failed to delete course.");
-      }
-    });
+        this.closeModal();
+      });
+    }
   }
-}
+//Method to confirm before deleting
+// confirmDeleteCourse(): void {
+
+//   if (!this.selectedCourseId) {
+//     alert("Please select a course to delete.");
+//     return;
+//   }
+//   console.log('Selected Course ID', this.selectedCourseId)
+
+//   this.openModal(this.selectedCourseId);
+
+//   const confirmed = confirm("Are you sure you want to delete this course?");
+  
+
+//   if (confirmed) {
+//     console.log('Selected Course ID', this.selectedCourseId)
+//     this.courseservice.deleteCourse(this.selectedCourseId).subscribe({
+//       next: (res) => {
+//         console.log('Selected Course ID', this.selectedCourseId)
+//         alert("Course deleted successfully.");
+
+//         this.loadCourses(); // Reload updated list after deletion
+//         this.selectedCourseId = null;
+//       },
+//       error: (err) => {
+//         console.error("Delete failed:", err);
+//         alert("Failed to delete course.");
+//       }
+//     });
+//   }
+// }
 
 
 // Method to call service and handle result
@@ -434,12 +448,12 @@ confirmDeleteCourse(): void {
    // Pagination Methods
 
   get paginatedCourse() {
-    const start = (this.currentPage - 1) * this.coursesPerPage;
-    return this.courses.slice(start, start + this.coursesPerPage);
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.courses.slice(start, start + this.pageSize);
   }
 
   get totalPage() {
-    return Math.ceil(this.courses.length / this.coursesPerPage);
+    return Math.ceil(this.courses.length / this.pageSize);
   }
 
   changePage(page: number) {

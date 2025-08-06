@@ -133,6 +133,15 @@
       border-radius: 6px;
     }
 
+    .scrollable-table-wrapper {
+      max-height: 400px; /* height ကိုလိုသလောက်ပေးနိုင်တယ် */
+      overflow-y: auto;
+    }
+
+    .table-responsive 
+    {
+      margin-bottom: 10px;
+    }
     /* Confirm Box Fade-in Animation */
 
     .fade-in {
