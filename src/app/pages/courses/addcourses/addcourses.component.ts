@@ -1,3 +1,4 @@
+import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common/http';
 
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -5,6 +6,8 @@ import { AddcoursesService } from './addcourses.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 
 interface Course {
   courseId: string;
@@ -22,9 +25,9 @@ interface Course {
 
 @Component({
   selector: 'app-addcourses',
-  imports: [ CommonModule,
-     RouterModule,ReactiveFormsModule,FormsModule,NgxSpinnerModule],
-     standalone: true,
+  standalone: true,
+  imports: [ CommonModule,RouterModule,ReactiveFormsModule,FormsModule,NgxSpinnerModule],
+
   templateUrl: './addcourses.component.html',
   styleUrls: ['./addcourses.component.scss'],
 })
@@ -115,11 +118,6 @@ selectedCourse: any;
       }
     });
   }
-
-
-
-
-
 
   paginate(): void {
     const start = (this.currentPage - 1) * this.pageSize;
@@ -303,69 +301,47 @@ loadCourseForEdit(): void {
   }
 
 
-  confirmDeleteCourse() {
-    if (this.selectedCourseId) {
-      this.courseservice.deleteCourse(this.selectedCourseId).subscribe(() => {
-        this.loadCourses();
-        this.selectedCourseId = null;
-        this.closeModal();
-      });
-    }
-  }
+  // confirmDeleteCourse() {
+  //   if (this.selectedCourseId) {
+  //     this.courseservice.deleteCourse(this.selectedCourseId).subscribe(() => {
+  //       this.loadCourses();
+  //       this.selectedCourseId = null;
+  //       this.closeModal();
+  //     });
+  //   }
+  // }
 //Method to confirm before deleting
-// confirmDeleteCourse(): void {
+confirmDeleteCourse(): void {
 
-//   if (!this.selectedCourseId) {
-//     alert("Please select a course to delete.");
-//     return;
-//   }
-//   console.log('Selected Course ID', this.selectedCourseId)
+  if (!this.selectedCourseId) {
+    alert("Please select a course to delete.");
+    return;
+  }
+  console.log('Selected Course ID', this.selectedCourseId)
 
-//   this.openModal(this.selectedCourseId);
+  this.openModal(this.selectedCourseId);
 
-//   const confirmed = confirm("Are you sure you want to delete this course?");
+  const confirmed = confirm("Are you sure you want to delete this course?");
   
 
-//   if (confirmed) {
-//     console.log('Selected Course ID', this.selectedCourseId)
-//     this.courseservice.deleteCourse(this.selectedCourseId).subscribe({
-//       next: (res) => {
-//         console.log('Selected Course ID', this.selectedCourseId)
-//         alert("Course deleted successfully.");
+  if (confirmed) {
+    console.log('Selected Course ID', this.selectedCourseId)
+    this.courseservice.deleteCourse(this.selectedCourseId).subscribe({
+      next: (res) => {
+        console.log('Selected Course ID', this.selectedCourseId)
+        alert("Course deleted successfully.");
 
-//         this.loadCourses(); // Reload updated list after deletion
-//         this.selectedCourseId = null;
-//       },
-//       error: (err) => {
-//         console.error("Delete failed:", err);
-//         alert("Failed to delete course.");
-//       }
-//     });
-//   }
-// }
+        this.loadCourses(); // Reload updated list after deletion
+        this.selectedCourseId = null;
+      },
+      error: (err) => {
+        console.error("Delete failed:", err);
+        alert("Failed to delete course.");
+      }
+    });
+  }
+}
 
-
-// Method to call service and handle result
-// deleteCourseById(CourseId: string): void {
-
-//   if (!CourseId) {
-//     alert("Invalid Course ID.");
-//     return;
-//   }
-
-//   this.courseservice.deleteCourse(CourseId).subscribe({
-//     next: (res) => {
-//       alert("Course deleted successfully.");
-//       //console.log('Is API confirm?');
-//       //this.loadCourses(); // Reload data from server
-//       this.selectedCourseId = null;
-//     },
-//     error: (err) => {
-//       console.error("Delete failed:", err);
-//       alert("Failed to delete course.");
-//     }
-//   });
-// }
 
   toggleCourseSelection(courseId: string): void {
     if (this.selectedCourseId === courseId) {
@@ -407,24 +383,6 @@ loadCourseForEdit(): void {
     this.currentPages = 1; // go back to list view
   }
 
-  // nextPage() {
-  //   if (this.currentPage < this.totalPages) {
-  //     this.currentPage++;
-  //     this.paginate();
-  //   }
-  // }
-
-  // previousPage() {
-  //   if (this.currentPage > 1) {
-  //     this.currentPage--;
-  //     this.paginate();
-  //   }
-  // }
-
-  // goToPage(page: number) {
-  //   this.currentPage = page;
-  //   this.paginate();
-  // }
 
   toggleAllCheckboxes(event: any) {
     const checked = event.target.checked;
@@ -532,5 +490,14 @@ loadCourseForEdit(): void {
     });
   }
 
+  exportToExcel(): void {
+    console.log('Exporting userList:', this.courses);  // 👉 check this
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.courses);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Courses');
+    const excelBuffer: any = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    FileSaver.saveAs(data, 'CourseList.xlsx');
+  }
 
 }

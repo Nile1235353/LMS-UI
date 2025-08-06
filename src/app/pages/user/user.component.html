@@ -83,6 +83,9 @@
                   <button class="btn btn-outline-danger" (click)="openModal(selectedUser?.UserId)"  [disabled]="!selectedUser">
                     <i class="bi bi-trash"></i> Delete
                   </button>
+
+                <button class="btn btn-outline-success" (click)="exportToExcel()"><i class="bi bi-file-earmark-excel"></i>Excel Export</button>
+
                 </th>
               </tr>
             </table>
@@ -414,7 +417,10 @@
           </div>
           <div class="col-md-4">
             <label for="department" class="form-label">Department</label>
-            <input type="text" class="form-control" id="department" formControlName="department">
+            <!-- <input type="text" class="form-control" id="department" formControlName="department"> -->
+            <select formControlName="department"  class="form-control form-control-sm">
+              <option *ngFor="let userdep of departmentList" [value]="userdep">{{ userdep }}</option>
+            </select>
           </div>
           <div class="col-md-4">
             <label for="position" class="form-label">Position</label>
@@ -484,7 +490,10 @@
           </div>
           <div class="col-md-4">
             <label for="department" class="form-label">Department</label>
-            <input type="text" class="form-control" id="department" formControlName="department">
+            <!-- <input type="text" class="form-control" id="department" formControlName="department"> -->
+            <select formControlName="department" id="department" class="form-control form-control-sm">
+              <option *ngFor="let userdep of departmentList" [value]="userdep">{{ userdep }}</option>
+            </select>
           </div>
           <div class="col-md-4">
             <label for="position" class="form-label">Position</label>

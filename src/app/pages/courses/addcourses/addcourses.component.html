@@ -1,29 +1,6 @@
 <!-- <p>addcourses works!</p> -->
 <div class="page-content">
-
-    <!-- Breadcrumb -->
-    <div aria-label="breadcrumb" class="" style="margin-top: -10px;">
-      <ol class="breadcrumb p-2 rounded mb-0" style="--bs-breadcrumb-divider: '›';">
-        <li class="breadcrumb-item">
-          <a routerLink="/" class="text-decoration-none text-primary fw-semibold">🏠 Home</a>
-        </li>
-        <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">
-          <!-- <a routerLink="/users" class="text-decoration-none text-primary fw-semibold"> Users</a> -->
-           Courses
-        </li>
-        <!-- <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">
-          User List
-        </li> -->
-      </ol>
-    </div>
-  <div *ngIf="currentPages === 1">
-
-    <div class="container-fluid scroll-x">
-          <div style="margin-top: -7px;">
-            <h4>Course List</h4>
-          </div>
-
-          <!-- Confirm Box -->
+  <!-- Confirm Box -->
           <div
             class="modal fade fade-in"
             tabindex="-1"
@@ -62,6 +39,30 @@
             </div>
           </div>
 
+    <!-- Breadcrumb -->
+    <div aria-label="breadcrumb" class="" style="margin-top: -10px;">
+      <ol class="breadcrumb p-2 rounded mb-0" style="--bs-breadcrumb-divider: '›';">
+        <li class="breadcrumb-item">
+          <a routerLink="/" class="text-decoration-none text-primary fw-semibold">🏠 Home</a>
+        </li>
+        <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">
+          <!-- <a routerLink="/users" class="text-decoration-none text-primary fw-semibold"> Users</a> -->
+           Courses
+        </li>
+        <!-- <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">
+          User List
+        </li> -->
+      </ol>
+    </div>
+  <div *ngIf="currentPages === 1">
+
+    <div class="container-fluid scroll-x">
+          <div style="margin-top: -7px;">
+            <h4>Course List</h4>
+          </div>
+
+          
+
           <!-- Button Group -->
           <div class="scroll-x mt-3">
             <div class="table table-responsive table-wrapper">
@@ -78,9 +79,11 @@
                         <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
                       </button>
 
-                      <button type="button"class="btn btn-outline-danger"  [disabled]="!selectedCourseId" >
+                      <button type="button" class="btn btn-outline-danger"  [disabled]="!selectedCourseId" (click)="confirmDeleteCourse()" (click)="openModal('selectedCourseId === course.id')">
                         <i class="bi bi-trash"></i>&nbsp;&nbsp;Delete
                       </button>
+
+                      <button class="btn btn-outline-success" (click)="exportToExcel()"><i class="bi bi-file-earmark-excel"></i>&nbsp;&nbsp;Excel Export</button>
                     </th>
                 </tr>
               </table>

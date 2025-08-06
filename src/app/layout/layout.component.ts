@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-layout',
+  standalone: true,
   imports: [
     SidebarComponent,
     RouterModule,
