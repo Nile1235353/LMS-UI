@@ -179,6 +179,7 @@ throw new Error('Method not implemented.');
       // Update
       this.userService.updateUser(formData).subscribe({
         next: () => {
+          this.openSuccessEditModal();
           this.loadUsers();
           this.setPage(1);
             console.log("Form Submitted", this.userForm.value);
@@ -193,6 +194,7 @@ throw new Error('Method not implemented.');
 
       this.userService.saveUser(formData).subscribe({
         next: () => {
+          this.openSuccessCreateModal();
           this.loadUsers();
           this.setPage(1);
         },
@@ -206,6 +208,33 @@ throw new Error('Method not implemented.');
   //Custom Confirm Dialog && Delete User
   showModal = false;
   userToDeleteId: string | null = null;
+  successDeleteModal: boolean = false;
+  successCreateModal: boolean = false;
+  successEditModal: boolean = false
+
+  openSuccessEditModal(){
+    this.successEditModal = true;
+  }
+
+  closeSuccessEditModal(){
+    this.successEditModal = false;
+  }
+
+  openSuccessCreateModal(){
+    this.successCreateModal = true;
+  }
+
+  closeSuccessCreateModal(){
+    this.successCreateModal = false;
+  }
+
+  openSuccessDeleteModal(){
+    this.successDeleteModal = true;
+  }
+
+  closeSuccessDeleteModal(){
+    this.successDeleteModal = false;
+  }
 
   // Open modal and remember which user to delete
   openModal(id: string) {
@@ -225,6 +254,7 @@ throw new Error('Method not implemented.');
       this.userService.deleteUser(this.userToDeleteId).subscribe(() => {
         this.loadUsers();
         this.selectedUser = null;
+        this.openSuccessDeleteModal();
         this.closeModal();
       });
     }

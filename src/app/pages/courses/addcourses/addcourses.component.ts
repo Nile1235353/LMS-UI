@@ -170,7 +170,8 @@ selectedCourse: any;
     formData.append('Description', this.courseForm.value.Description || '');
     this.courseservice.saveCourse(formData).subscribe({
       next: () => {
-        alert('Course Created Successfully!');
+        this.openCreateSuccessModal();
+        // alert('Course Created Successfully!');
         this.courseForm.reset();
         this.loadCourses();
         this.currentPages = 1;
@@ -196,22 +197,23 @@ selectedCourse: any;
     }
 
     const formData = new FormData();
-formData.append('CourseId', this.courseForm.value.CourseId);
-formData.append('Title', this.courseForm.value.Title);
-formData.append('VideoLink', this.courseForm.value.VideoLink);
-formData.append('Department', this.courseForm.value.Department);
-formData.append('Description', this.courseForm.value.Description);
-formData.append('Role', this.courseForm.value.Role);       // if Role is int, send as string
-formData.append('UserId', this.courseForm.value.UserId);
-formData.append('Name', this.courseForm.value.Name);
-//formData.append('IsActive', this.courseForm.value.IsActive.toString());
+    formData.append('CourseId', this.courseForm.value.CourseId);
+    formData.append('Title', this.courseForm.value.Title);
+    formData.append('VideoLink', this.courseForm.value.VideoLink);
+    formData.append('Department', this.courseForm.value.Department);
+    formData.append('Description', this.courseForm.value.Description);
+    formData.append('Role', this.courseForm.value.Role);       // if Role is int, send as string
+    formData.append('UserId', this.courseForm.value.UserId);
+    formData.append('Name', this.courseForm.value.Name);
+    //formData.append('IsActive', this.courseForm.value.IsActive.toString());
 
     this.spinner.show();
     this.courseservice.updateCourse(formData).subscribe({
       next: (res) => {
         this.spinner.hide();
         if (res.status) {
-          alert('Course updated successfully!');
+          // alert('Course updated successfully!');
+          this.openEditSuccessModal();
           this.loadCourses();
           this.resetForm();
           this.setPage(1); // Go back to list
@@ -288,8 +290,36 @@ loadCourseForEdit(): void {
   //Custom Confirm Dialog && Delete User
 
   // Open modal and remember which user to delete
-  openModal(id: string) {
-    this.selectedCourseId = id;
+  createSuccessModal: boolean = false;
+  deleteSuccessModal: boolean = false;
+  editSuccessModal: boolean = false;
+
+  openEditSuccessModal() {
+    this.editSuccessModal = true;
+  }
+
+  closeEditSuccessModal() {
+    this.editSuccessModal = false;
+  }
+
+  openDeleteSuccessModal() {
+    this.deleteSuccessModal = true;
+  }
+
+  closeDeleteSuccessModal() {
+    this.deleteSuccessModal = false;
+  }
+
+  openCreateSuccessModal() {
+    this.createSuccessModal = true;
+  }
+
+  closeCreateSuccessModal() {
+    this.createSuccessModal = false;
+  }
+
+  openModal() {
+    this.selectedCourseId;
     console.log(this.selectedCourseId)
     this.showModal = true;
   }
@@ -301,46 +331,48 @@ loadCourseForEdit(): void {
   }
 
 
-  // confirmDeleteCourse() {
-  //   if (this.selectedCourseId) {
-  //     this.courseservice.deleteCourse(this.selectedCourseId).subscribe(() => {
-  //       this.loadCourses();
-  //       this.selectedCourseId = null;
-  //       this.closeModal();
-  //     });
-  //   }
-  // }
-//Method to confirm before deleting
-confirmDeleteCourse(): void {
-
-  if (!this.selectedCourseId) {
-    alert("Please select a course to delete.");
-    return;
+  confirmDeleteCourse() {
+    if (this.selectedCourseId) {
+      this.courseservice.deleteCourse(this.selectedCourseId).subscribe(() => {
+        this.loadCourses();
+        this.selectedCourseId = null;
+        this.closeModal();
+        this.openDeleteSuccessModal();
+      });
+    }
   }
-  console.log('Selected Course ID', this.selectedCourseId)
 
-  this.openModal(this.selectedCourseId);
+//Method to confirm before deleting
+// confirmDeleteCourse(): void {
 
-  const confirmed = confirm("Are you sure you want to delete this course?");
+//   if (!this.selectedCourseId) {
+//     alert("Please select a course to delete.");
+//     return;
+//   }
+//   console.log('Selected Course ID', this.selectedCourseId)
+
+//   this.openModal(this.selectedCourseId);
+
+//   const confirmed = confirm("Are you sure you want to delete this course?");
   
 
-  if (confirmed) {
-    console.log('Selected Course ID', this.selectedCourseId)
-    this.courseservice.deleteCourse(this.selectedCourseId).subscribe({
-      next: (res) => {
-        console.log('Selected Course ID', this.selectedCourseId)
-        alert("Course deleted successfully.");
+//   if (confirmed) {
+//     console.log('Selected Course ID', this.selectedCourseId)
+//     this.courseservice.deleteCourse(this.selectedCourseId).subscribe({
+//       next: (res) => {
+//         console.log('Selected Course ID', this.selectedCourseId)
+//         alert("Course deleted successfully.");
 
-        this.loadCourses(); // Reload updated list after deletion
-        this.selectedCourseId = null;
-      },
-      error: (err) => {
-        console.error("Delete failed:", err);
-        alert("Failed to delete course.");
-      }
-    });
-  }
-}
+//         this.loadCourses(); // Reload updated list after deletion
+//         this.selectedCourseId = null;
+//       },
+//       error: (err) => {
+//         console.error("Delete failed:", err);
+//         alert("Failed to delete course.");
+//       }
+//     });
+//   }
+// }
 
 
   toggleCourseSelection(courseId: string): void {

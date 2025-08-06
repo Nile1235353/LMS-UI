@@ -30,8 +30,15 @@
 
     .scroll-x {
       overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
       white-space: nowrap;
+
+      /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+      scrollbar-width: none;           /* Firefox */
+      -ms-overflow-style: none;        /* IE and Edge */
+    }
+
+    .scroll-x::-webkit-scrollbar {
+      display: none;                   /* Chrome, Safari, Opera */
     }
 
 
@@ -138,10 +145,6 @@
       overflow-y: auto;
     }
 
-    .table-responsive 
-    {
-      margin-bottom: 10px;
-    }
     /* Confirm Box Fade-in Animation */
 
     .fade-in {
@@ -166,6 +169,4 @@
     }
 
     /* Add any additional styles specific to the add courses component here */
-    .margin-right {
-      margin-right: 5px;
-    }
+    

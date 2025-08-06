@@ -1,22 +1,18 @@
-import { Component, HostListener, OnInit, Renderer2 } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { SidebarComponent } from './sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
-import { NavbarComponent } from "./navbar/navbar.component";
+import { Component, HostListener, Renderer2 } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { ProfileComponent } from '../../pages/profile/profile.component';
 
 @Component({
-  selector: 'app-layout',
-  standalone: true,
+  selector: 'app-navbar',
+  standalone:true,
   imports: [
-    SidebarComponent,
-    RouterModule,
     CommonModule,
-    NavbarComponent
-],
-  templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss'
+    RouterModule
+  ],
+  templateUrl: './navbar.component.html'
 })
-export class LayoutComponent implements OnInit {
+export class NavbarComponent {
   title = 'LMS';
   imagePath = '../assets/images/logo.png';
   public isCollapsed: boolean = false;
@@ -84,6 +80,3 @@ export class LayoutComponent implements OnInit {
     // Redirect to login or clear session
   }
 }
-
-
-

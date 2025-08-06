@@ -30,8 +30,15 @@
 
     .scroll-x {
       overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
       white-space: nowrap;
+
+      /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+      scrollbar-width: none;           /* Firefox */
+      -ms-overflow-style: none;        /* IE and Edge */
+    }
+
+    .scroll-x::-webkit-scrollbar {
+      display: none;                   /* Chrome, Safari, Opera */
     }
 
 
