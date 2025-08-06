@@ -22,7 +22,7 @@
                         <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
                       </button>
 
-                      <button type="button"class="btn btn-outline-danger"  [disabled]="!selectedCourseId" (click)="confirmDeleteCourse()">
+                      <button type="button"class="btn btn-outline-danger"  [disabled]="!selectedCourseId" (click)="confirmDeleteCourse()" (click)="openModal('selectedCourseId === course.id')">
                         <i class="bi bi-trash"></i>&nbsp;&nbsp;Delete
                       </button>
                     </th>
@@ -30,7 +30,6 @@
               </table>
             </div>
           </div>
-
         <!-- Scrollable Table -->
         <div class="table-responsive">
           <div class="responsive-table-wrapper">
@@ -39,26 +38,160 @@
               <thead>
                 <tr>
                   <th>
-                    <input type="checkbox" (change)="toggleAllCheckboxes($event)" [checked]="isAllSelected()"/>
+                    <input type="checkbox" (change)="toggleAllCheckboxes($event)"/>
                   </th>
-                  <th>CourseId</th>
-                  <th>UserId</th>
-                  <th>Name</th>
-                  <th>Department</th>
-                  <th>Description</th>
-                  <th>Video Link</th>
-                  <th>Title</th>
-                  <th>Role</th>
-                  <th>Created Date</th>
+
+                  <!-- <th> Course ID </th> -->
+                  <th (dblclick)="onHeaderDoubleClick('courseId')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Course ID
+                      <span *ngIf="sortedColumn === 'courseId'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- <th>User ID</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('userId')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      User ID
+                      <span *ngIf="sortedColumn === 'userId'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- <th>Name</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('name')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Name
+                      <span *ngIf="sortedColumn === 'name'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- <th>Department</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('department')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Department
+                      <span *ngIf="sortedColumn === 'department'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- <th>Description</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('description')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Description
+                      <span *ngIf="sortedColumn === 'description'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- <th>Video Link</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('videoLink')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Video Link
+                      <span *ngIf="sortedColumn === 'videoLink'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- <thTitle</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('title')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Title
+                      <span *ngIf="sortedColumn === 'title'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- <th>Role</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('role')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      User Role
+                      <span *ngIf="sortedColumn === 'role'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- <th>Created Date</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('createdDate')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Created Date
+                      <span *ngIf="sortedColumn === 'createdDate'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
                 </tr>
               </thead>
 
               <tbody>
-                <tr *ngFor="let course of paginatedRows">
+                <tr *ngFor="let course of courses, let i = index,let page of paginatedCourse;"
+                  (click)="toggleCourseSelection(course.id)"
+                  [class.selected]="selectedCourseId === course.id"
+                >
+
                   <td>
-                    <input type="radio" name="selectedCourse"
+                    <input type="checkbox" name="selectedCourse"
                            [value]="course.id"
-                           [(ngModel)]="selectedCourseId" />
+                           [checked]="selectedCourseId === course.id"
+                           [checked]="isAllSelected()"
+                           (click)="$event.stopPropagation()"
+                           />
                   </td>
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.userId }}</td>
@@ -68,30 +201,50 @@
                   <td><a [href]="course.videoLink" target="_blank">{{course.title}}</a></td>
                   <td>{{ course.title }}</td>
                   <td>{{ course.role }}</td>
-                  <td>{{ course.createdDate | date:'short' }}</td>>
+                  <td>{{ course.createdDate | date:'short' }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
 
-      <!-- Pagination -->
-      <nav>
-        <ul class="pagination pagination-sm ">
-          <li class="page-item" [class.disabled]="currentPage === 1">
-            <a class="page-link" href="#" (click)="previousPage(); $event.preventDefault()">«</a>
-          </li>
-          <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [class.active]="currentPage === i + 1">
-            <a class="page-link" href="#" (click)="goToPage(i + 1); $event.preventDefault()">{{ i + 1 }}</a>
-          </li>
-          <li class="page-item" [class.disabled]="currentPage === totalPages">
-            <a class="page-link" href="#" (click)="nextPage(); $event.preventDefault()">»</a>
-          </li>
-        </ul>
-        <p class="text-center text-muted small">
-          Page {{ currentPage }} of {{ totalPages }} ({{ tableRows.length }} items)
-        </p>
-      </nav>
+        <!-- Pagination -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3 gap-2">
+
+          <!-- Pagination Navigation -->
+          <nav *ngIf="totalPage > 1">
+            <ul class="pagination mb-0 justify-content-center justify-content-md-start">
+              <!-- Previous -->
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
+              </li>
+
+              <!-- Page Numbers -->
+              <li
+                class="page-item"
+                *ngFor="let page of [].constructor(totalPage); let i = index"
+                [class.active]="currentPage === i + 1"
+              >
+                <a class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</a>
+              </li>
+
+              <!-- Next -->
+              <li class="page-item" [class.disabled]="currentPage === totalPage">
+                <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+              </li>
+            </ul>
+          </nav>
+
+          <!-- Page Info Text -->
+          <div class="text-muted small">
+            Page {{ currentPage }} of {{ totalPage }}
+          </div>
+          <!-- Total Users -->
+          <div class="text-muted small">
+            Total Users: {{ courses.length }}
+          </div>
+
+        </div>
     </div>
   </div>
 

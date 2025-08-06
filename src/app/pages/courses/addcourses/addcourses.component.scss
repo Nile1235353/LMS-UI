@@ -52,6 +52,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       padding: 10px;
+      pointer-events: auto;
       // position: sticky;
       // top: 0;
     }
@@ -88,6 +89,7 @@
         min-width: 6px;
         // cursor: col-resize;
         border-right: -2px solid #ddd;
+        pointer-events: auto !important;
     }
 
     // Table Smooth Design 
