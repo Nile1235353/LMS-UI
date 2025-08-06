@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { HomeComponent } from "./home/home.component";
 import { UserComponent } from "./user/user.component";
 import { AddcoursesComponent } from "./courses/addcourses/addcourses.component";
+import { ViewcoursesComponent } from "./courses/viewcourses/viewcourses.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent, data: { breadcrumb: 'Home' }  },
@@ -15,8 +16,9 @@ const routes: Routes = [
    // Course
    //{ path: 'courses', component: CourseComponent},
 
-   //addcourses
-   {path:'addcourses', component:AddcoursesComponent}
+   //Courses
+   {path:'addcourses', component:AddcoursesComponent},
+   {path:'viewcourses', component:ViewcoursesComponent}
  ];
 
 @NgModule({

@@ -261,10 +261,13 @@ throw new Error('Method not implemented.');
   sortState: 'normal' | 'asc' | 'desc' = 'normal';
 
   onHeaderDoubleClick(column: string): void {
+    console.log(column)
+    console.log(this.sortedColumn)
     if (this.sortedColumn !== column) {
       // New column - start with ascending
       this.sortedColumn = column;
       this.sortState = 'asc';
+      // console.log(this.sortedColumn);
     } else {
       // Same column - cycle through states
       switch (this.sortState) {

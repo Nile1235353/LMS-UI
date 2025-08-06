@@ -7,6 +7,20 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 
+interface Course {
+  courseId: string;
+  userId: string;
+  name: string;
+  title: string;
+  department: string;
+  description: string;
+  videoLink: string;
+  role: string;
+  isActive: boolean;
+  createdUser: string;
+  createdDate: string;
+}
+
 @Component({
   selector: 'app-addcourses',
   standalone: true,
@@ -19,6 +33,9 @@ import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 export class AddcoursesComponent implements OnInit {
   courseForm!: FormGroup;
   courses: any[] = [];
+  // For pagination
+
+  coursesPerPage = 10; // or 5, 20, etc.
 
 selectedCourse: any;
   roles: string[] = ['Admin', 'Instructor'];
@@ -38,7 +55,7 @@ selectedCourse: any;
     "Truck"
   ];
 
-userList: any[] = [];
+  userList: any[] = [];
   userIds: string[] = [];
   name: string = '';
   tableRows: any[] = [];
@@ -50,8 +67,9 @@ userList: any[] = [];
   paginatedCourses: any[] = [];
   editingCourseId: string | null = null;
   userToDeleteId: string | null = null;
-showModal: boolean = false;
-selectedCourseId: string | null = null;
+  showModal: boolean = false;
+  selectedCourseId: string | null = null;
+  selected: any = null;
 
   constructor(private spinner: NgxSpinnerService,private fb: FormBuilder, private courseservice: AddcoursesService) {}
 
@@ -87,10 +105,10 @@ selectedCourseId: string | null = null;
         console.log('Loaded Courses:', res);
         this.tableRows = res;
         this.courses = res;
-
         this.paginatedRows = res.slice(0, this.pageSize);
         this.totalPages = Math.ceil(res.length / this.pageSize);
         this.currentPage = 1;
+        this.originalUsers = [...this.courses]; // Store original unsorted data
         //this.selectedCourseId = ''; // Reset selected ID
       },
       error: (err) => {
@@ -269,17 +287,24 @@ loadCourseForEdit(): void {
   });
 }
 
+
+  //Custom Confirm Dialog && Delete User
+
+  // Open modal and remember which user to delete
+  openModal(id: string) {
+    this.selectedCourseId = id;
+    console.log(this.selectedCourseId)
+    this.showModal = true;
+  }
+
+  // Close modal and reset data
+  closeModal() {
+    this.showModal = false;
+    this.userToDeleteId = null;
+  }
+
 //Method to confirm before deleting
 confirmDeleteCourse(): void {
-  // console.log('Selected Course ID', this.selectedCourseId)
-  // if (this.selectedCourseId) {
-  //   console.log('Selected Course ID', this.selectedCourseId)
-  //   this.courseservice.deleteCourse(this.selectedCourseId).subscribe(() => {
-  //     this.loadCourses();
-  //     this.selectedCourseId = null;
-  //     // this.closeModal();
-  //   });
-  // }
 
   if (!this.selectedCourseId) {
     alert("Please select a course to delete.");
@@ -329,6 +354,15 @@ confirmDeleteCourse(): void {
 //   });
 // }
 
+  toggleCourseSelection(courseId: string): void {
+    if (this.selectedCourseId === courseId) {
+      this.selectedCourseId = null; // deselect
+    } else {
+      this.selectedCourseId = courseId; // select
+    }
+    console.log('Selected Course ID:', this.selectedCourseId);
+  }
+
   selectCourse(course: any) {
     this.selectedCourseId = course.courseId;
     this.selectedCourse = course;
@@ -360,24 +394,24 @@ confirmDeleteCourse(): void {
     this.currentPages = 1; // go back to list view
   }
 
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.paginate();
-    }
-  }
+  // nextPage() {
+  //   if (this.currentPage < this.totalPages) {
+  //     this.currentPage++;
+  //     this.paginate();
+  //   }
+  // }
 
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.paginate();
-    }
-  }
+  // previousPage() {
+  //   if (this.currentPage > 1) {
+  //     this.currentPage--;
+  //     this.paginate();
+  //   }
+  // }
 
-  goToPage(page: number) {
-    this.currentPage = page;
-    this.paginate();
-  }
+  // goToPage(page: number) {
+  //   this.currentPage = page;
+  //   this.paginate();
+  // }
 
   toggleAllCheckboxes(event: any) {
     const checked = event.target.checked;
@@ -396,4 +430,94 @@ confirmDeleteCourse(): void {
   goBack() {
     this.currentPages = 1;
   }
+
+
+   // Pagination Methods
+
+  get paginatedCourse() {
+    const start = (this.currentPage - 1) * this.coursesPerPage;
+    return this.courses.slice(start, start + this.coursesPerPage);
+  }
+
+  get totalPage() {
+    return Math.ceil(this.courses.length / this.coursesPerPage);
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPage) {
+      this.currentPage = page;
+    }
+  }
+
+  // Sorting Table Fields
+
+  user: Course[] = [];
+  originalUsers: Course[] = []; // Store original unsorted data
+  sortedColumn: string | null = null;
+  sortState: 'normal' | 'asc' | 'desc' = 'normal';
+
+  onHeaderDoubleClick(column: string): void {
+    console.log(column)
+    console.log(this.sortedColumn)
+    if (this.sortedColumn !== column) {
+      // New column - start with ascending
+      this.sortedColumn = column;
+      this.sortState = 'asc';
+      // console.log(this.sortedColumn);
+    } else {
+      // Same column - cycle through states
+      switch (this.sortState) {
+        case 'normal':
+          this.sortState = 'asc';
+          this.sortedColumn = column;
+          break;
+        case 'asc':
+          this.sortState = 'desc';
+          break;
+        case 'desc':
+          this.sortState = 'normal';
+          this.sortedColumn = null;
+          break;
+      }
+    }
+
+    this.applySorting();
+  }
+
+  applySorting(): void {
+    if (this.sortState === 'normal') {
+      // Reset to original order
+      this.courses = [...this.originalUsers];
+      return;
+    }
+
+    // Create a new array to sort
+    this.courses = [...this.courses].sort((a, b) => {
+      const aValue = a[this.sortedColumn as keyof Course];
+      const bValue = b[this.sortedColumn as keyof Course];
+
+      // For numeric values
+      if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return this.sortState === 'asc' ? aValue - bValue : bValue - aValue;
+      }
+
+      // For string values
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        return this.sortState === 'asc'
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
+      }
+
+      // For date values
+      if (aValue instanceof Date && bValue instanceof Date) {
+        const aTime = aValue.getTime();
+        const bTime = bValue.getTime();
+        return this.sortState === 'asc' ? aTime - bTime : bTime - aTime;
+      }
+
+      return 0;
+    });
+  }
+
+
 }
