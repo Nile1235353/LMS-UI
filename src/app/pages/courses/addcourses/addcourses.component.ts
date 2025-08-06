@@ -6,6 +6,8 @@ import { AddcoursesService } from './addcourses.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 
 interface Course {
   courseId: string;
@@ -116,11 +118,6 @@ selectedCourse: any;
       }
     });
   }
-
-
-
-
-
 
   paginate(): void {
     const start = (this.currentPage - 1) * this.pageSize;
@@ -332,28 +329,6 @@ confirmDeleteCourse(): void {
 }
 
 
-// Method to call service and handle result
-// deleteCourseById(CourseId: string): void {
-
-//   if (!CourseId) {
-//     alert("Invalid Course ID.");
-//     return;
-//   }
-
-//   this.courseservice.deleteCourse(CourseId).subscribe({
-//     next: (res) => {
-//       alert("Course deleted successfully.");
-//       //console.log('Is API confirm?');
-//       //this.loadCourses(); // Reload data from server
-//       this.selectedCourseId = null;
-//     },
-//     error: (err) => {
-//       console.error("Delete failed:", err);
-//       alert("Failed to delete course.");
-//     }
-//   });
-// }
-
   toggleCourseSelection(courseId: string): void {
     if (this.selectedCourseId === courseId) {
       this.selectedCourseId = null; // deselect
@@ -394,24 +369,6 @@ confirmDeleteCourse(): void {
     this.currentPages = 1; // go back to list view
   }
 
-  // nextPage() {
-  //   if (this.currentPage < this.totalPages) {
-  //     this.currentPage++;
-  //     this.paginate();
-  //   }
-  // }
-
-  // previousPage() {
-  //   if (this.currentPage > 1) {
-  //     this.currentPage--;
-  //     this.paginate();
-  //   }
-  // }
-
-  // goToPage(page: number) {
-  //   this.currentPage = page;
-  //   this.paginate();
-  // }
 
   toggleAllCheckboxes(event: any) {
     const checked = event.target.checked;
@@ -519,5 +476,14 @@ confirmDeleteCourse(): void {
     });
   }
 
+  exportToExcel(): void {
+    console.log('Exporting userList:', this.courses);  // 👉 check this
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.courses);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Courses');
+    const excelBuffer: any = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    FileSaver.saveAs(data, 'CourseList.xlsx');
+  }
 
 }

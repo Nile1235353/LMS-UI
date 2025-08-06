@@ -22,9 +22,11 @@
                         <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
                       </button>
 
-                      <button type="button"class="btn btn-outline-danger"  [disabled]="!selectedCourseId" (click)="confirmDeleteCourse()" (click)="openModal('selectedCourseId === course.id')">
+                      <button type="button"class="btn btn-outline-danger me-2"  [disabled]="!selectedCourseId" (click)="confirmDeleteCourse()" (click)="openModal('selectedCourseId === course.id')">
                         <i class="bi bi-trash"></i>&nbsp;&nbsp;Delete
                       </button>
+
+                      <button class="btn btn-outline-success" (click)="exportToExcel()"><i class="bi bi-file-earmark-excel"></i>Excel Export</button>
                     </th>
                 </tr>
               </table>

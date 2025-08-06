@@ -46,7 +46,7 @@ throw new Error('Method not implemented.');
   currentPages: number = 1;
   usersPerPage = 10; // or 5, 20, etc.
   currentPage = 1;
-  userList: any[] = [];
+  //userList: any[] = [];
 
   userRoles = [
     { label: 'Admin', value: 0 },
@@ -323,19 +323,10 @@ throw new Error('Method not implemented.');
     });
   }
 
-  // exportToExcel(): void {
-  //   const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.userList);
-  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
-  //   XLSX.utils.book_append_sheet(wb, ws, '');
-
-  //   const excelBuffer: any = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-  //   const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
-  //   FileSaver.saveAs(data, 'UserList.xlsx');
-  // }
   exportToExcel(): void {
-    console.log('Exporting userList:', this.userList);  // 👉 check this
+    console.log('Exporting userList:', this.users);  // 👉 check this
 
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.userList);
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.users);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Users');
 
