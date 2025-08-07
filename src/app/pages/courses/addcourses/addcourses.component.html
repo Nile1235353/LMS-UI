@@ -1,12 +1,11 @@
-<!-- <p>addcourses works!</p> -->
+
 <div class="page-content">
   <div *ngIf="currentPages === 1">
     <div>
       <h3>Course List</h3>
     </div>
-
     <div class="container-fluid scroll-x">
-          <!-- Button Group -->
+
           <div class="scroll-x">
             <div class="table table-responsive table-wrapper">
               <table class="table border_none">
@@ -32,7 +31,7 @@
               </table>
             </div>
           </div>
-        <!-- Scrollable Table -->
+
         <div class="table-responsive">
           <div class="responsive-table-wrapper">
             <table class="table table-bordered table-hover table-sm custom-scroll-table">
@@ -43,7 +42,6 @@
                     <input type="checkbox" (change)="toggleAllCheckboxes($event)"/>
                   </th>
 
-                  <!-- <th> Course ID </th> -->
                   <th (dblclick)="onHeaderDoubleClick('courseId')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       Course ID
@@ -58,7 +56,6 @@
                     </div>
                   </th>
 
-                  <!-- <th>User ID</th> -->
                   <th (dblclick)="onHeaderDoubleClick('userId')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       User ID
@@ -73,7 +70,6 @@
                     </div>
                   </th>
 
-                  <!-- <th>Name</th> -->
                   <th (dblclick)="onHeaderDoubleClick('name')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       Name
@@ -88,7 +84,6 @@
                     </div>
                   </th>
 
-                  <!-- <th>Department</th> -->
                   <th (dblclick)="onHeaderDoubleClick('department')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       Department
@@ -103,7 +98,6 @@
                     </div>
                   </th>
 
-                  <!-- <th>Description</th> -->
                   <th (dblclick)="onHeaderDoubleClick('description')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       Description
@@ -118,7 +112,7 @@
                     </div>
                   </th>
 
-                  <!-- <th>Video Link</th> -->
+
                   <th (dblclick)="onHeaderDoubleClick('videoLink')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       Video Link
@@ -133,7 +127,6 @@
                     </div>
                   </th>
 
-                  <!-- <thTitle</th> -->
                   <th (dblclick)="onHeaderDoubleClick('title')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       Title
@@ -148,7 +141,6 @@
                     </div>
                   </th>
 
-                  <!-- <th>Role</th> -->
                   <th (dblclick)="onHeaderDoubleClick('role')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       User Role
@@ -163,7 +155,6 @@
                     </div>
                   </th>
 
-                  <!-- <th>Created Date</th> -->
                   <th (dblclick)="onHeaderDoubleClick('createdDate')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       Created Date
@@ -177,16 +168,13 @@
                       </span>
                     </div>
                   </th>
-
                 </tr>
               </thead>
-
               <tbody>
                 <tr *ngFor="let course of courses, let i = index,let page of paginatedCourse;"
                   (click)="toggleCourseSelection(course.id)"
                   [class.selected]="selectedCourseId === course.id"
                 >
-
                   <td>
                     <input type="checkbox" name="selectedCourse"
                            [value]="course.id"
@@ -251,7 +239,7 @@
   </div>
 
   <div *ngIf="currentPages === 2">
-    <!-- <h2>Courses</h2> -->
+
 
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h2>Courses</h2>
@@ -263,7 +251,7 @@
       <form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
 
           <div class="row g-3">
-            <!-- Role -->
+
 
             <div class="col-md-6">
               <label class="form-label">User Role: <span class="text-danger">*</span></label>
@@ -272,7 +260,7 @@
                 <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
               </select>
             </div>
-          <!-- UserId Dropdown -->
+
 
           <div class="col-md-6">
             <label class="form-label">User ID: <span class="text-danger">*</span></label>
@@ -282,26 +270,24 @@
             </select>
           </div>
 
-          <!-- Name Field (Auto Displayed) -->
+
 
            <div class="col-md-6">
           <label class="form-label">Name:</label>
           <input type="text" class="form-control" formControlName="Name"  [readonly]="true" />
         </div>
 
-          <!-- Course Title -->
+
           <div class="col-md-6">
             <label class="form-label">Video Title:</label>
             <input type="text" formControlName="Title"  class="form-control" placeholder="Enter Video Title">
           </div>
 
-          <!-- Video Link -->
+
           <div class="col-md-6">
             <label class="form-label">Video Link:</label>
             <input type="text" formControlName="VideoLink"  class="form-control" placeholder="Enter Video Link">
           </div>
-
-          <!-- Department -->
 
           <div class="form-group col-md-6" style="position: relative;">
             <label class="form-label">Department:</label>
@@ -310,18 +296,15 @@
             </select>
           </div>
 
-          <!-- Description -->
           <div class="col-md-12">
             <label class="form-label">Description:</label>
             <textarea formControlName="Description"  class="form-control" rows="3"></textarea>
           </div>
 
-          <!-- Buttons -->
           <div class="col-md-12 d-flex align-items-end">
             <button type="button" class="btn btn-danger me-2" (click)="courseForm.reset()">Clear</button>
             <!-- <button type="submit" class="btn btn-success">Save</button> -->
             <button type="submit" class="btn btn-success" [disabled]="courseForm.invalid">Save</button>
-
           </div>
         </div>
       </form>
@@ -333,36 +316,25 @@
       <h2>Edit Course</h2>
       <button class="btn btn-secondary" (click)="goBack()">Back</button>
     </div>
-
     <!-- <form [formGroup]="courseForm"> -->
       <form [formGroup]="courseForm" (ngSubmit)="updateCourse()">
 
       <div class="row g-3">
-
-
 
         <div class="col-md-6">
           <label class="form-label">CourseId:</label>
           <input type="text" formControlName="CourseId" class="form-control" id="CourseId" [readonly]="true" />
         </div>
 
-        <!-- Title -->
         <div class="col-md-6">
           <label class="form-label">Video Title:</label>
           <input type="text" formControlName="Title" id="Title" class="form-control" placeholder="Enter Video Title" />
         </div>
 
-        <!-- Video Link -->
         <div class="col-md-6">
           <label class="form-label">Video Link:</label>
           <input type="text" formControlName="VideoLink"id="VideoLink" class="form-control" placeholder="Enter Video Link" />
         </div>
-
-        <!-- Department -->
-        <!-- <div class="col-md-6">
-          <label class="form-label">Department:</label>
-          <input type="text" formControlName="Department" class="form-control" placeholder="Enter Department" />
-        </div> -->
 
         <div class="form-group col-md-6" style="position: relative;">
           <label class="form-label">Department:</label>
@@ -371,13 +343,11 @@
           </select>
         </div>
 
-        <!-- Description -->
         <div class="col-md-12">
           <label class="form-label">Description:</label>
           <textarea formControlName="Description" class="form-control" rows="3"></textarea>
         </div>
 
-        <!-- Buttons -->
         <div class="col-md-12 d-flex align-items-end">
           <button type="button" class="btn btn-danger me-2" (click)="courseForm.reset()">Clear</button>
           <button type="submit" class="btn btn-primary" >Update</button>

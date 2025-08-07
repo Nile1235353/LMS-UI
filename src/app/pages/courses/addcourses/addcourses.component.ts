@@ -1,5 +1,4 @@
 import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common/http';
-
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AddcoursesService } from './addcourses.service';
@@ -143,14 +142,6 @@ selectedCourse: any;
     });
   }
 
-
-  // loadUserIds(role: string) {
-  //   this.courseservice.getUsersByRole(role).subscribe(res => {
-  //     this.userList = res; // full user objects
-  //     this.userIds = res.map((user: any) => user.userId);
-  //   });
-  // }
-
   onSubmit(): void {
     if (this.courseForm.invalid) {
       this.courseForm.markAllAsTouched();
@@ -227,14 +218,6 @@ formData.append('Name', this.courseForm.value.Name);
     });
   }
 
-
-// setPage(pageNumber: number): void {
-//   this.currentPages = pageNumber;
-
-//   if (pageNumber === 3) {
-//     this.loadSelectedCourseToForm();
-//   }
-// }
 
 setPage(pageNumber: number): void {
   this.currentPages = pageNumber;
