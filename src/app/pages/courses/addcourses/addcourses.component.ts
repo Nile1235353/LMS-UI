@@ -36,7 +36,7 @@ export class AddcoursesComponent implements OnInit {
   courses: any[] = [];
   // For pagination
 
-  coursesPerPage = 10; // or 5, 20, etc.
+  // coursesPerPage = 10; // or 5, 20, etc.
 
 selectedCourse: any;
   roles: string[] = ['Admin', 'Instructor'];
@@ -62,7 +62,7 @@ selectedCourse: any;
   tableRows: any[] = [];
   paginatedRows: any[] = [];
   currentPages: number = 1;
-  pageSize = 20;
+  pageSize = 7;
   currentPage = 1;
   totalPages = 1;
   paginatedCourses: any[] = [];
@@ -161,7 +161,8 @@ selectedCourse: any;
     formData.append('Description', this.courseForm.value.Description || '');
     this.courseservice.saveCourse(formData).subscribe({
       next: () => {
-        alert('Course Created Successfully!');
+        this.openCreateSuccessModal();
+        // alert('Course Created Successfully!');
         this.courseForm.reset();
         this.loadCourses();
         this.currentPages = 1;
@@ -187,22 +188,23 @@ selectedCourse: any;
     }
 
     const formData = new FormData();
-formData.append('CourseId', this.courseForm.value.CourseId);
-formData.append('Title', this.courseForm.value.Title);
-formData.append('VideoLink', this.courseForm.value.VideoLink);
-formData.append('Department', this.courseForm.value.Department);
-formData.append('Description', this.courseForm.value.Description);
-formData.append('Role', this.courseForm.value.Role);       // if Role is int, send as string
-formData.append('UserId', this.courseForm.value.UserId);
-formData.append('Name', this.courseForm.value.Name);
-//formData.append('IsActive', this.courseForm.value.IsActive.toString());
+    formData.append('CourseId', this.courseForm.value.CourseId);
+    formData.append('Title', this.courseForm.value.Title);
+    formData.append('VideoLink', this.courseForm.value.VideoLink);
+    formData.append('Department', this.courseForm.value.Department);
+    formData.append('Description', this.courseForm.value.Description);
+    formData.append('Role', this.courseForm.value.Role);       // if Role is int, send as string
+    formData.append('UserId', this.courseForm.value.UserId);
+    formData.append('Name', this.courseForm.value.Name);
+    //formData.append('IsActive', this.courseForm.value.IsActive.toString());
 
     this.spinner.show();
     this.courseservice.updateCourse(formData).subscribe({
       next: (res) => {
         this.spinner.hide();
         if (res.status) {
-          alert('Course updated successfully!');
+          // alert('Course updated successfully!');
+          this.openEditSuccessModal();
           this.loadCourses();
           this.resetForm();
           this.setPage(1); // Go back to list
@@ -271,8 +273,36 @@ loadCourseForEdit(): void {
   //Custom Confirm Dialog && Delete User
 
   // Open modal and remember which user to delete
-  openModal(id: string) {
-    this.selectedCourseId = id;
+  createSuccessModal: boolean = false;
+  deleteSuccessModal: boolean = false;
+  editSuccessModal: boolean = false;
+
+  openEditSuccessModal() {
+    this.editSuccessModal = true;
+  }
+
+  closeEditSuccessModal() {
+    this.editSuccessModal = false;
+  }
+
+  openDeleteSuccessModal() {
+    this.deleteSuccessModal = true;
+  }
+
+  closeDeleteSuccessModal() {
+    this.deleteSuccessModal = false;
+  }
+
+  openCreateSuccessModal() {
+    this.createSuccessModal = true;
+  }
+
+  closeCreateSuccessModal() {
+    this.createSuccessModal = false;
+  }
+
+  openModal() {
+    this.selectedCourseId;
     console.log(this.selectedCourseId)
     this.showModal = true;
   }
@@ -283,33 +313,49 @@ loadCourseForEdit(): void {
     this.userToDeleteId = null;
   }
 
-//Method to confirm before deleting
-confirmDeleteCourse(): void {
 
-  if (!this.selectedCourseId) {
-    alert("Please select a course to delete.");
-    return;
-  }
-  console.log('Selected Course ID', this.selectedCourseId)
-
-  const confirmed = confirm("Are you sure you want to delete this course?");
-  if (confirmed) {
-    console.log('Selected Course ID', this.selectedCourseId)
-    this.courseservice.deleteCourse(this.selectedCourseId).subscribe({
-      next: (res) => {
-        console.log('Selected Course ID', this.selectedCourseId)
-        alert("Course deleted successfully.");
-
-        this.loadCourses(); // Reload updated list after deletion
+  confirmDeleteCourse() {
+    if (this.selectedCourseId) {
+      this.courseservice.deleteCourse(this.selectedCourseId).subscribe(() => {
+        this.loadCourses();
         this.selectedCourseId = null;
-      },
-      error: (err) => {
-        console.error("Delete failed:", err);
-        alert("Failed to delete course.");
-      }
-    });
+        this.closeModal();
+        this.openDeleteSuccessModal();
+      });
+    }
   }
-}
+
+//Method to confirm before deleting
+// confirmDeleteCourse(): void {
+
+//   if (!this.selectedCourseId) {
+//     alert("Please select a course to delete.");
+//     return;
+//   }
+//   console.log('Selected Course ID', this.selectedCourseId)
+
+//   this.openModal(this.selectedCourseId);
+
+//   const confirmed = confirm("Are you sure you want to delete this course?");
+  
+
+//   if (confirmed) {
+//     console.log('Selected Course ID', this.selectedCourseId)
+//     this.courseservice.deleteCourse(this.selectedCourseId).subscribe({
+//       next: (res) => {
+//         console.log('Selected Course ID', this.selectedCourseId)
+//         alert("Course deleted successfully.");
+
+//         this.loadCourses(); // Reload updated list after deletion
+//         this.selectedCourseId = null;
+//       },
+//       error: (err) => {
+//         console.error("Delete failed:", err);
+//         alert("Failed to delete course.");
+//       }
+//     });
+//   }
+// }
 
 
   toggleCourseSelection(courseId: string): void {
@@ -375,12 +421,12 @@ confirmDeleteCourse(): void {
    // Pagination Methods
 
   get paginatedCourse() {
-    const start = (this.currentPage - 1) * this.coursesPerPage;
-    return this.courses.slice(start, start + this.coursesPerPage);
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.courses.slice(start, start + this.pageSize);
   }
 
   get totalPage() {
-    return Math.ceil(this.courses.length / this.coursesPerPage);
+    return Math.ceil(this.courses.length / this.pageSize);
   }
 
   changePage(page: number) {

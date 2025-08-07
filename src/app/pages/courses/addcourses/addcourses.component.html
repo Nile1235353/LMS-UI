@@ -1,9 +1,43 @@
 
 <div class="page-content">
-  <div *ngIf="currentPages === 1">
-    <div>
-      <h3>Course List</h3>
+  <!-- Edit Success Box -->
+  <div
+    class="modal fade fade-in"
+    tabindex="-1"
+    [ngClass]="{ 'show d-block': editSuccessModal }"
+    style="background-color: rgba(0, 0, 0, 0.4);"
+    *ngIf="editSuccessModal"
+    >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-3 shadow">
+
+        <!-- Header -->
+        <div class="modal-header bg-light">
+          <h3 class="modal-title d-flex align-items-center gap-2">
+            <i class="bi bi-check-circle-fill text-primary"></i>
+            Success
+          </h3>
+          <button type="button" class="btn-close" (click)="closeEditSuccessModal()"></button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body text-center">
+          <h5 class="mb-0">Course Edit Successfully!</h5>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-outline-success px-4" (click)="closeEditSuccessModal()">
+            OK !
+          </button>
+          <!-- <button type="button" class="btn btn-danger px-4" (click)="confirmDeleteCourse()">
+            Delete
+          </button> -->
+        </div>
+
+      </div>
     </div>
+<<<<<<< HEAD
     <div class="container-fluid scroll-x">
 
           <div class="scroll-x">
@@ -14,17 +48,161 @@
                       <button class="btn btn-outline-dark me-2" (click)="setPage(2)">
                         <i class="bi bi-plus"></i>&nbsp;&nbsp;New
                       </button>
+=======
+  </div>
 
-                      <button class="btn btn-outline-dark me-2"
-                        (click)="loadCourseForEdit()"
-                        [disabled]="!selectedCourseId">
-                        <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
-                      </button>
+  <!-- Created Success Box -->
+  <div
+    class="modal fade fade-in"
+    tabindex="-1"
+    [ngClass]="{ 'show d-block': createSuccessModal }"
+    style="background-color: rgba(0, 0, 0, 0.4);"
+    *ngIf="createSuccessModal"
+    >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-3 shadow">
 
-                      <button type="button"class="btn btn-outline-danger me-2"  [disabled]="!selectedCourseId" (click)="confirmDeleteCourse()" (click)="openModal('selectedCourseId === course.id')">
-                        <i class="bi bi-trash"></i>&nbsp;&nbsp;Delete
-                      </button>
+        <!-- Header -->
+        <div class="modal-header bg-light">
+          <h3 class="modal-title d-flex align-items-center gap-2">
+            <i class="bi bi-check-circle-fill text-primary"></i>
+            Success
+          </h3>
+          <button type="button" class="btn-close" (click)="closeCreateSuccessModal()"></button>
+        </div>
 
+        <!-- Body -->
+        <div class="modal-body text-center">
+          <h5 class="mb-0">Course Created Successfully!</h5>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-outline-success px-4" (click)="closeCreateSuccessModal()">
+            OK !
+          </button>
+          <!-- <button type="button" class="btn btn-danger px-4" (click)="confirmDeleteCourse()">
+            Delete
+          </button> -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!--Delete Confirm Box -->
+  <div
+    class="modal fade fade-in"
+    tabindex="-1"
+    [ngClass]="{ 'show d-block': showModal }"
+    style="background-color: rgba(0, 0, 0, 0.4);"
+    *ngIf="showModal"
+    >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-3 shadow">
+
+        <!-- Header -->
+        <div class="modal-header bg-light">
+          <h3 class="modal-title d-flex align-items-center gap-2">
+            <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+            Confirm Delete
+          </h3>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body text-center">
+          <h5 class="mb-0">Are you sure you want to delete this user?</h5>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-outline-secondary px-4" (click)="closeModal()">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-danger px-4" (click)="confirmDeleteCourse()">
+            Delete
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Success Box -->
+  <div
+    class="modal fade fade-in"
+    tabindex="-1"
+    [ngClass]="{ 'show d-block': deleteSuccessModal }"
+    style="background-color: rgba(0, 0, 0, 0.4);"
+    *ngIf="deleteSuccessModal"
+    >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-3 shadow">
+
+        <!-- Header -->
+        <div class="modal-header bg-light">
+          <h3 class="modal-title d-flex align-items-center gap-2">
+            <i class="bi bi-check-circle-fill text-primary"></i>
+            Success
+          </h3>
+          <button type="button" class="btn-close" (click)="closeDeleteSuccessModal()"></button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body text-center">
+          <h5 class="mb-0">Course Delete Successfully!</h5>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-outline-success px-4" (click)="closeDeleteSuccessModal()">
+            OK !
+          </button>
+          <!-- <button type="button" class="btn btn-danger px-4" (click)="confirmDeleteCourse()">
+            Delete
+          </button> -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Breadcrumb -->
+  <div aria-label="breadcrumb" class="" style="margin-top: -10px;">
+    <ol class="breadcrumb p-2 rounded mb-0" style="--bs-breadcrumb-divider: '›';">
+      <li class="breadcrumb-item">
+        <a routerLink="/" class="text-decoration-none text-primary fw-semibold">🏠 Home</a>
+      </li>
+      <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">
+        <!-- <a routerLink="/users" class="text-decoration-none text-primary fw-semibold"> Users</a> -->
+        Courses
+      </li>
+      <!-- <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">
+        User List
+      </li> -->
+    </ol>
+  </div>
+
+  <div *ngIf="currentPages === 1">
+
+    <div class="container-fluid scroll-x">
+      <div style="margin-top: -7px;">
+        <h4>Course List</h4>
+      </div>
+>>>>>>> 528da6d6bafd490a9a6258e7fbe4ea012bee88b2
+
+      <!-- Button Group -->
+      <div class="scroll-x mb-3 p-3">
+        <button class="btn btn-outline-dark me-2" (click)="setPage(2)">
+          <i class="bi bi-plus"></i>&nbsp;&nbsp;New
+        </button>
+
+        <button class="btn btn-outline-dark me-2" routerLink="/viewcourses">
+          <i class="bi bi-eye"></i>&nbsp;&nbsp;View
+        </button>
+
+<<<<<<< HEAD
                       <button class="btn btn-outline-success" (click)="exportToExcel()"><i class="bi bi-file-earmark-excel"></i>Excel Export</button>
                     </th>
                 </tr>
@@ -35,13 +213,21 @@
         <div class="table-responsive">
           <div class="responsive-table-wrapper">
             <table class="table table-bordered table-hover table-sm custom-scroll-table">
+=======
+        <button class="btn btn-outline-dark me-2"
+          (click)="loadCourseForEdit()"
+          [disabled]="!selectedCourseId">
+          <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
+        </button>
+>>>>>>> 528da6d6bafd490a9a6258e7fbe4ea012bee88b2
 
-              <thead>
-                <tr>
-                  <th>
-                    <input type="checkbox" (change)="toggleAllCheckboxes($event)"/>
-                  </th>
+        <button type="button" class="btn btn-outline-danger me-2"  
+          [disabled]="!selectedCourseId"  
+          (click)="openModal()">
+          <i class="bi bi-trash"></i>&nbsp;&nbsp;Delete
+        </button>
 
+<<<<<<< HEAD
                   <th (dblclick)="onHeaderDoubleClick('courseId')">
                     <div class="resizable d-flex align-items-center justify-content-between">
                       Course ID
@@ -196,53 +382,235 @@
               </tbody>
             </table>
           </div>
+=======
+        <button class="btn btn-outline-success" (click)="exportToExcel()">
+          <i class="bi bi-file-earmark-excel"></i>&nbsp;&nbsp;Excel Export
+        </button>
+      </div>
+
+      <!-- Scrollable Table -->
+      <div class="table-responsive scrollable-table-wrapper ">
+        <div class="responsive-table-wrapper">
+          <table class="table table-bordered table-hover table-sm custom-scroll-table">
+            <thead>
+              <tr>
+                <th>
+                  <input type="checkbox" (change)="toggleAllCheckboxes($event)"/>
+                </th>
+
+                <!-- <th> Course ID </th> -->
+                <th (dblclick)="onHeaderDoubleClick('courseId')">
+                  <div class="resizable d-flex align-items-center justify-content-between">
+                    Course ID
+                    <span *ngIf="sortedColumn === 'courseId'">
+                      <i class="bi"
+                        [ngClass]="{
+                          'bi-caret-up-fill': sortState === 'asc',
+                          'bi-caret-down-fill': sortState === 'desc'
+                        }">
+                      </i>
+                    </span>
+                  </div>
+                </th>
+
+                <!-- <th>User ID</th> -->
+                <th (dblclick)="onHeaderDoubleClick('userId')">
+                  <div class="resizable d-flex align-items-center justify-content-between">
+                    User ID
+                    <span *ngIf="sortedColumn === 'userId'">
+                      <i class="bi"
+                        [ngClass]="{
+                          'bi-caret-up-fill': sortState === 'asc',
+                          'bi-caret-down-fill': sortState === 'desc'
+                        }">
+                      </i>
+                    </span>
+                  </div>
+                </th>
+
+                <!-- <th>Name</th> -->
+                <th (dblclick)="onHeaderDoubleClick('name')">
+                  <div class="resizable d-flex align-items-center justify-content-between">
+                    Name
+                    <span *ngIf="sortedColumn === 'name'">
+                      <i class="bi"
+                        [ngClass]="{
+                          'bi-caret-up-fill': sortState === 'asc',
+                          'bi-caret-down-fill': sortState === 'desc'
+                        }">
+                      </i>
+                    </span>
+                  </div>
+                </th>
+
+                <!-- <th>Department</th> -->
+                <th (dblclick)="onHeaderDoubleClick('department')">
+                  <div class="resizable d-flex align-items-center justify-content-between">
+                    Department
+                    <span *ngIf="sortedColumn === 'department'">
+                      <i class="bi"
+                        [ngClass]="{
+                          'bi-caret-up-fill': sortState === 'asc',
+                          'bi-caret-down-fill': sortState === 'desc'
+                        }">
+                      </i>
+                    </span>
+                  </div>
+                </th>
+
+                <!-- <th>Description</th> -->
+                <th (dblclick)="onHeaderDoubleClick('description')">
+                  <div class="resizable d-flex align-items-center justify-content-between">
+                    Description
+                    <span *ngIf="sortedColumn === 'description'">
+                      <i class="bi"
+                        [ngClass]="{
+                          'bi-caret-up-fill': sortState === 'asc',
+                          'bi-caret-down-fill': sortState === 'desc'
+                        }">
+                      </i>
+                    </span>
+                  </div>
+                </th>
+
+                <!-- <th>Video Link</th> -->
+                <th (dblclick)="onHeaderDoubleClick('videoLink')">
+                  <div class="resizable d-flex align-items-center justify-content-between">
+                    Video Link
+                    <span *ngIf="sortedColumn === 'videoLink'">
+                      <i class="bi"
+                        [ngClass]="{
+                          'bi-caret-up-fill': sortState === 'asc',
+                          'bi-caret-down-fill': sortState === 'desc'
+                        }">
+                      </i>
+                    </span>
+                  </div>
+                </th>
+
+                <!-- <thTitle</th> -->
+                <th (dblclick)="onHeaderDoubleClick('title')">
+                  <div class="resizable d-flex align-items-center justify-content-between">
+                    Title
+                    <span *ngIf="sortedColumn === 'title'">
+                      <i class="bi"
+                        [ngClass]="{
+                          'bi-caret-up-fill': sortState === 'asc',
+                          'bi-caret-down-fill': sortState === 'desc'
+                        }">
+                      </i>
+                    </span>
+                  </div>
+                </th>
+
+                <!-- <th>Role</th> -->
+                <th (dblclick)="onHeaderDoubleClick('role')">
+                  <div class="resizable d-flex align-items-center justify-content-between">
+                    User Role
+                    <span *ngIf="sortedColumn === 'role'">
+                      <i class="bi"
+                        [ngClass]="{
+                          'bi-caret-up-fill': sortState === 'asc',
+                          'bi-caret-down-fill': sortState === 'desc'
+                        }">
+                      </i>
+                    </span>
+                  </div>
+                </th>
+
+                <!-- <th>Created Date</th> -->
+                <th (dblclick)="onHeaderDoubleClick('createdDate')">
+                  <div class="resizable d-flex align-items-center justify-content-between">
+                    Created Date
+                    <span *ngIf="sortedColumn === 'createdDate'">
+                      <i class="bi"
+                        [ngClass]="{
+                          'bi-caret-up-fill': sortState === 'asc',
+                          'bi-caret-down-fill': sortState === 'desc'
+                        }">
+                      </i>
+                    </span>
+                  </div>
+                </th>
+
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let course of courses, let i = index,let page of paginatedCourse;"
+                (click)="toggleCourseSelection(course.id)"
+                [class.selected]="selectedCourseId === course.id"
+                >
+
+                <td>
+                  <input type="checkbox" name="selectedCourse"
+                    [value]="course.id"
+                    [checked]="selectedCourseId === course.id"
+                    [checked]="isAllSelected()"
+                    (click)="$event.stopPropagation()"
+                      />
+                </td>
+                <td>{{ course.courseId }}</td>
+                <td>{{ course.userId }}</td>
+                <td>{{ course.name }}</td>
+                <td>{{ course.department }}</td>
+                <td>{{ course.description }}</td>
+                <td><a [href]="course.videoLink" target="_blank">{{course.title}}</a></td>
+                <td>{{ course.title }}</td>
+                <td>{{ course.role }}</td>
+                <td>{{ course.createdDate | date:'short' }}</td>
+              </tr>
+            </tbody>
+          </table>
+>>>>>>> 528da6d6bafd490a9a6258e7fbe4ea012bee88b2
         </div>
+      </div>
 
-        <!-- Pagination -->
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3 gap-2">
+      <!-- Pagination -->
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3 gap-2">
 
-          <!-- Pagination Navigation -->
-          <nav *ngIf="totalPage > 1">
-            <ul class="pagination mb-0 justify-content-center justify-content-md-start">
-              <!-- Previous -->
-              <li class="page-item" [class.disabled]="currentPage === 1">
-                <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
-              </li>
+        <!-- Pagination Navigation -->
+        <nav *ngIf="totalPage > 1">
+          <ul class="pagination mb-0 justify-content-center justify-content-md-start">
+            <!-- Previous -->
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
+            </li>
 
-              <!-- Page Numbers -->
-              <li
-                class="page-item"
-                *ngFor="let page of [].constructor(totalPage); let i = index"
-                [class.active]="currentPage === i + 1"
+            <!-- Page Numbers -->
+            <li
+              class="page-item"
+              *ngFor="let page of [].constructor(totalPage); let i = index"
+              [class.active]="currentPage === i + 1"
               >
-                <a class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</a>
-              </li>
+              <a class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</a>
+            </li>
 
               <!-- Next -->
-              <li class="page-item" [class.disabled]="currentPage === totalPage">
-                <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
-              </li>
-            </ul>
-          </nav>
+            <li class="page-item" [class.disabled]="currentPage === totalPage">
+              <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+            </li>
+          </ul>
+        </nav>
 
-          <!-- Page Info Text -->
-          <div class="text-muted small">
-            Page {{ currentPage }} of {{ totalPage }}
-          </div>
-          <!-- Total Users -->
-          <div class="text-muted small">
-            Total Users: {{ courses.length }}
-          </div>
-
+        <!-- Page Info Text -->
+        <div class="text-muted small">
+          Page {{ currentPage }} of {{ totalPage }}
         </div>
+        <!-- Total Users -->
+        <div class="text-muted small">
+          Total Users: {{ courses.length }}
+        </div>
+
+      </div>
     </div>
+
   </div>
 
   <div *ngIf="currentPages === 2">
 
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2>Courses</h2>
       <button class="btn btn-secondary" (click)="goBack()">Back</button>
     </div>
     <div class="dashboard-form">
@@ -250,6 +618,7 @@
 
       <form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
 
+<<<<<<< HEAD
           <div class="row g-3">
 
 
@@ -261,6 +630,19 @@
               </select>
             </div>
 
+=======
+        <div class="row g-3">
+          <!-- Role -->
+
+          <div class="col-md-6">
+            <label class="form-label">User Role: <span class="text-danger">*</span></label>
+            <select formControlName="Role"  class="form-control" (change)="onRoleChange(courseForm.get('Role')?.value)">
+              <!-- <option value="" disabled selected>Select Role</option> -->
+              <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+            </select>
+          </div>
+          <!-- UserId Dropdown -->
+>>>>>>> 528da6d6bafd490a9a6258e7fbe4ea012bee88b2
 
           <div class="col-md-6">
             <label class="form-label">User ID: <span class="text-danger">*</span></label>
@@ -272,7 +654,7 @@
 
 
 
-           <div class="col-md-6">
+          <div class="col-md-6">
           <label class="form-label">Name:</label>
           <input type="text" class="form-control" formControlName="Name"  [readonly]="true" />
         </div>
@@ -302,9 +684,11 @@
           </div>
 
           <div class="col-md-12 d-flex align-items-end">
-            <button type="button" class="btn btn-danger me-2" (click)="courseForm.reset()">Clear</button>
-            <!-- <button type="submit" class="btn btn-success">Save</button> -->
             <button type="submit" class="btn btn-success" [disabled]="courseForm.invalid">Save</button>
+<<<<<<< HEAD
+=======
+            <button type="button" class="btn btn-danger ms-2" (click)="courseForm.reset()">Clear</button>
+>>>>>>> 528da6d6bafd490a9a6258e7fbe4ea012bee88b2
           </div>
         </div>
       </form>
@@ -317,10 +701,13 @@
       <button class="btn btn-secondary" (click)="goBack()">Back</button>
     </div>
     <!-- <form [formGroup]="courseForm"> -->
-      <form [formGroup]="courseForm" (ngSubmit)="updateCourse()">
+    <form [formGroup]="courseForm" (ngSubmit)="updateCourse()">
 
       <div class="row g-3">
+<<<<<<< HEAD
 
+=======
+>>>>>>> 528da6d6bafd490a9a6258e7fbe4ea012bee88b2
         <div class="col-md-6">
           <label class="form-label">CourseId:</label>
           <input type="text" formControlName="CourseId" class="form-control" id="CourseId" [readonly]="true" />
@@ -351,9 +738,8 @@
         <div class="col-md-12 d-flex align-items-end">
           <button type="button" class="btn btn-danger me-2" (click)="courseForm.reset()">Clear</button>
           <button type="submit" class="btn btn-primary" >Update</button>
-
         </div>
       </div>
     </form>
   </div>
-
+</div>

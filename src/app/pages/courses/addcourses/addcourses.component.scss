@@ -30,8 +30,15 @@
 
     .scroll-x {
       overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
       white-space: nowrap;
+
+      /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+      scrollbar-width: none;           /* Firefox */
+      -ms-overflow-style: none;        /* IE and Edge */
+    }
+
+    .scroll-x::-webkit-scrollbar {
+      display: none;                   /* Chrome, Safari, Opera */
     }
 
 
@@ -133,6 +140,11 @@
       border-radius: 6px;
     }
 
+    .scrollable-table-wrapper {
+      max-height: 400px; /* height ကိုလိုသလောက်ပေးနိုင်တယ် */
+      overflow-y: auto;
+    }
+
     /* Confirm Box Fade-in Animation */
 
     .fade-in {
@@ -155,3 +167,6 @@
       text-decoration: underline;
       color: #2e59d9 !important;
     }
+
+    /* Add any additional styles specific to the add courses component here */
+    

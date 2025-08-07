@@ -4,6 +4,7 @@ import { HomeComponent } from "./home/home.component";
 import { UserComponent } from "./user/user.component";
 import { AddcoursesComponent } from "./courses/addcourses/addcourses.component";
 import { ViewcoursesComponent } from "./courses/viewcourses/viewcourses.component";
+import { ProfileComponent } from "./profile/profile.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent, data: { breadcrumb: 'Home' }  },
@@ -18,7 +19,10 @@ const routes: Routes = [
 
    //Courses
    {path:'addcourses', component:AddcoursesComponent},
-   {path:'viewcourses', component:ViewcoursesComponent}
+   {path:'viewcourses', component:ViewcoursesComponent},
+
+   //Profile
+   {path:'profile', component:ProfileComponent},
  ];
 
 @NgModule({
