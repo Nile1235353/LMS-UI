@@ -1,4 +1,4 @@
-<!-- <p>addcourses works!</p> -->
+
 <div class="page-content">
   <!-- Edit Success Box -->
   <div
@@ -201,11 +201,10 @@
           <i class="bi bi-trash"></i>&nbsp;&nbsp;Delete
         </button>
 
-        <button class="btn btn-outline-success" (click)="exportToExcel()">
-          <i class="bi bi-file-earmark-excel"></i>&nbsp;&nbsp;Excel Export
-        </button>
+        <button class="btn btn-outline-success" (click)="exportToExcel()"><i class="bi bi-file-earmark-excel"></i>Excel Export</button>
+                    
       </div>
-
+    </div>
       <!-- Scrollable Table -->
       <div class="table-responsive scrollable-table-wrapper ">
         <div class="responsive-table-wrapper">
@@ -425,7 +424,7 @@
   </div>
 
   <div *ngIf="currentPages === 2">
-    <!-- <h2>Courses</h2> -->
+
 
     <div class="d-flex justify-content-between align-items-center mb-3">
       <button class="btn btn-secondary" (click)="goBack()">Back</button>
@@ -434,7 +433,6 @@
       <h5><strong>Create New Course</strong></h5>
 
       <form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
-
         <div class="row g-3">
           <!-- Role -->
 
@@ -454,27 +452,22 @@
               <option *ngFor="let user of userList" [value]="user.userId">{{ user.userId }}</option>
             </select>
           </div>
-
-          <!-- Name Field (Auto Displayed) -->
-
           <div class="col-md-6">
           <label class="form-label">Name:</label>
           <input type="text" class="form-control" formControlName="Name"  [readonly]="true" />
         </div>
 
-          <!-- Course Title -->
+
           <div class="col-md-6">
             <label class="form-label">Video Title:</label>
             <input type="text" formControlName="Title"  class="form-control" placeholder="Enter Video Title">
           </div>
 
-          <!-- Video Link -->
+
           <div class="col-md-6">
             <label class="form-label">Video Link:</label>
             <input type="text" formControlName="VideoLink"  class="form-control" placeholder="Enter Video Link">
           </div>
-
-          <!-- Department -->
 
           <div class="form-group col-md-6" style="position: relative;">
             <label class="form-label">Department:</label>
@@ -483,13 +476,11 @@
             </select>
           </div>
 
-          <!-- Description -->
           <div class="col-md-12">
             <label class="form-label">Description:</label>
             <textarea formControlName="Description"  class="form-control" rows="3"></textarea>
           </div>
 
-          <!-- Buttons -->
           <div class="col-md-12 d-flex align-items-end">
             <button type="submit" class="btn btn-success" [disabled]="courseForm.invalid">Save</button>
             <button type="button" class="btn btn-danger ms-2" (click)="courseForm.reset()">Clear</button>
@@ -504,7 +495,6 @@
       <h2>Edit Course</h2>
       <button class="btn btn-secondary" (click)="goBack()">Back</button>
     </div>
-
     <!-- <form [formGroup]="courseForm"> -->
     <form [formGroup]="courseForm" (ngSubmit)="updateCourse()">
 
@@ -514,23 +504,15 @@
           <input type="text" formControlName="CourseId" class="form-control" id="CourseId" [readonly]="true" />
         </div>
 
-        <!-- Title -->
         <div class="col-md-6">
           <label class="form-label">Video Title:</label>
           <input type="text" formControlName="Title" id="Title" class="form-control" placeholder="Enter Video Title" />
         </div>
 
-        <!-- Video Link -->
         <div class="col-md-6">
           <label class="form-label">Video Link:</label>
           <input type="text" formControlName="VideoLink"id="VideoLink" class="form-control" placeholder="Enter Video Link" />
         </div>
-
-        <!-- Department -->
-        <!-- <div class="col-md-6">
-          <label class="form-label">Department:</label>
-          <input type="text" formControlName="Department" class="form-control" placeholder="Enter Department" />
-        </div> -->
 
         <div class="form-group col-md-6" style="position: relative;">
           <label class="form-label">Department:</label>
@@ -539,13 +521,11 @@
           </select>
         </div>
 
-        <!-- Description -->
         <div class="col-md-12">
           <label class="form-label">Description:</label>
           <textarea formControlName="Description" class="form-control" rows="3"></textarea>
         </div>
 
-        <!-- Buttons -->
         <div class="col-md-12 d-flex align-items-end">
           <button type="button" class="btn btn-danger me-2" (click)="courseForm.reset()">Clear</button>
           <button type="submit" class="btn btn-primary" >Update</button>
@@ -553,4 +533,3 @@
       </div>
     </form>
   </div>
-</div>
