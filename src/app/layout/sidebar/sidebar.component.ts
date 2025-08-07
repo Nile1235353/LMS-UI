@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit, Renderer2 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -5,7 +6,8 @@ import { RouterModule } from '@angular/router';
   selector: 'app-sidebar',
   standalone: true,
   imports: [
-    RouterModule
+    RouterModule,
+    CommonModule,
   ],
   templateUrl: './sidebar.component.html'
 })
@@ -59,5 +61,20 @@ export class SidebarComponent implements OnInit{
     this.applyTheme(newTheme);
   }
 
-  
+  // Profile dropdown functionality
+  dropdownOpen = false;
+
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+    console.log("Dropdown toggled:", this.dropdownOpen);
+  }
+
+  closeDropdown() {
+    this.dropdownOpen = false;
+  }
+
+  logout() {
+    console.log("Logging out...");
+    // Redirect to login or clear session
+  }
 }

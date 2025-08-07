@@ -2,7 +2,6 @@ import { Component, HostListener, OnInit, Renderer2 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
-import { NavbarComponent } from "./navbar/navbar.component";
 
 @Component({
   selector: 'app-layout',
@@ -10,8 +9,7 @@ import { NavbarComponent } from "./navbar/navbar.component";
   imports: [
     SidebarComponent,
     RouterModule,
-    CommonModule,
-    NavbarComponent
+    CommonModule
 ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'

@@ -1,4 +1,33 @@
 
+  <nav class="navbar navbar-dark bg-dark px-3">
+      <a href="#"><img src="logo.jpg"  alt="Logo" class="logo-img me-2 display_none" title="RGL Learning Management System"/></a>
+      <span class="navbar-brand mb-0 h1 display_none">RGL LMS</span>
+      <button class="btn btn-outline-light me-2" id="menuToggle" (click)="isCollapsed = !isCollapsed">☰</button>
+      <div class="ms-auto d-flex align-items-center">
+        <button class="btn btn-outline-light me-2 display_none1" id="themeToggle" title="Toggle Dark/Light" (click)="toggleTheme()">
+          <i class="bi bi-moon-stars"></i>
+        </button>
+        <div class="user-menu text-light" (click)="toggleDropdown()" tabindex="0" (blur)="closeDropdown()">
+          <span class="username">
+            <i class="bi bi-person-circle"></i> Account Settings
+          </span>
+          <i class="bi bi-caret-down-fill"></i>
+
+          <!-- Dropdown Menu -->
+          <div class="dropdown-menu" *ngIf="this.dropdownOpen">
+            <ul>
+              <li><a class="dropdown-item" routerLink='profile' routerLinkActive="active">Profile</a></li>
+              <li><a class="dropdown-item" href="#">Settings</a></li>
+              <div class="dropdown-divider"></div>
+              <li><a class="dropdown-item text-danger" (click)="logout()">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+  
+  
+  
   <div class="p-3">
       <!-- <h5><i class="bi bi-box-arrow-in-right me-1"></i> Login</h5> -->
       <ul class="nav flex-column">
