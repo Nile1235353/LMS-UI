@@ -1,6 +1,4 @@
-    
-    
-    <!-- Edit Course Modal with Form -->
+
 <div
   class="modal fade fade-in"
   tabindex="-1"
@@ -20,51 +18,87 @@
         <button type="button" class="btn-close" (click)="closeFinishedModal()"></button>
       </div>
 
-      <!-- Body (Form) (ngSubmit)="submitEditForm()" #editForm="ngForm"   -->
-      <form >
+      <!-- Body -->
+      <form>
         <div class="modal-body">
 
+
+          <!-- <div class="mb-3">
+            <label class="form-label">User ID</label>
+            <select class="form-control" [(ngModel)]="selectedUserId" name="UserId" (change)="onUserSelect()">
+
+              <option *ngFor="let user of userList" [value]="user.UserId">
+                {{ user.UserId }}
+              </option>
+            </select>
+          </div> -->
+
+          <!-- <div class="mb-3">
+            <label class="form-label">User Name</label>
+            <select class="form-control" id="fullname" [(ngModel)]="selectedUserName" name="FullName" (change)="onNameSelect()">
+              <option *ngFor="let user of userList" [value]="user.FullName">
+                {{ user.FullName }}
+              </option>
+            </select>
+
+          </div> -->
+
           <div class="mb-3">
-            <label class="form-label">Course Title</label>
-            <input
-              type="text"
-              class="form-control"
-              name="title"
-              value="Testing"
-              required
-            />
+            <label class="form-label">User Name</label>
+            <select class="form-control"
+                    [(ngModel)]="selectedUserName"
+                    name="FullName"
+                    (change)="onNameSelect()">
+              <option *ngFor="let user of userList" [value]="user.FullName">
+                {{ user.FullName }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Auto-filled User Info -->
+
+          <!-- <div class="mb-3">
+            <label class="form-label">User ID</label>
+            <input type="text" class="form-control" id="userId" [value]="userData?.UserId || ''" readonly />
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Description</label>
-            <textarea
-              class="form-control"
-              name="description"
-              rows="3"
-              required
-            > Testing </textarea>
+            <label class="form-label">Department</label>
+            <input type="text" class="form-control" id="department" [value]="userData?.Department || ''" readonly />
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Video Link</label>
-            <input
-              type="text"
-              class="form-control"
-              name="videoLink"
-              value="Testing"
-            />
+            <label class="form-label">Employee ID</label>
+            <input type="text" class="form-control" id="employeeId" [value]="userData?.EmployeeId || ''" readonly />
+          </div> -->
+
+          <div class="mb-3">
+            <label class="form-label">User ID</label>
+            <input type="text" class="form-control" [value]="userData?.UserId || ''" readonly />
           </div>
+
+          <div class="mb-3">
+            <label class="form-label">Department</label>
+            <input type="text" class="form-control" [value]="userData?.Department || ''" readonly />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Employee ID</label>
+            <input type="text" class="form-control" [value]="userData?.EmployeeId || ''" readonly />
+          </div>
+
+
+          <!-- <div class="mb-3">
+            <label class="form-label">Position</label>
+            <input type="text" class="form-control" [value]="userData?.Position || ''" readonly />
+          </div> -->
 
         </div>
 
-        <!-- Footer (click)="closeEditSuccessModal()" [disabled]="!editForm.valid" -->
+        <!-- Footer -->
         <div class="modal-footer justify-content-between px-3">
-          <button type="button" class="btn btn-outline-secondary" (click)="closeFinishedModal()">
-            Cancel
-          </button>
-          <button type="submit" class="btn btn-success" >
-            Done
-          </button>
+          <button type="button" class="btn btn-outline-secondary" (click)="closeFinishedModal()">Cancel</button>
+          <button type="button" class="btn btn-success" (click)="doneFinishedCourse()">Done</button>
         </div>
       </form>
 
@@ -72,10 +106,11 @@
   </div>
 </div>
 
-    
-    
-    
-    
+
+
+
+
+
     <h1>View Course</h1>
     <div class="dashboard-form" *ngIf="courses">
         <div class="video_frame">
@@ -104,7 +139,7 @@
                     <i class="bi bi-check-circle"></i>
                     Finished
                 </button>
-            </div> 
+            </div>
             <hr>
             <!-- <div class="card-body">
                 hello
@@ -115,4 +150,3 @@
         </div>
     </div>
 
-        
