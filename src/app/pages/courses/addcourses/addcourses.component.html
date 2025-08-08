@@ -185,7 +185,9 @@
           <i class="bi bi-plus"></i>&nbsp;&nbsp;New
         </button>
 
-        <button class="btn btn-outline-dark me-2" routerLink="/viewcourses">
+        <button class="btn btn-outline-dark me-2"
+          (click)="ViewCourse()"
+          >
           <i class="bi bi-eye"></i>&nbsp;&nbsp;View
         </button>
 
@@ -371,9 +373,9 @@
                 <td>{{ course.userId }}</td>
                 <td>{{ course.name }}</td>
                 <td>{{ course.department }}</td>
-                <td>{{ course.description }}</td>
-                <td><a [href]="course.videoLink" target="_blank">{{course.title}}</a></td>
-                <td>{{ course.title }}</td>
+                <td class="ellipsis">{{ course.description }}</td>
+                <td class="ellipsis"><a [href]="course.videoLink" target="_blank">{{course.title}}</a></td>
+                <td class="ellipsis">{{ course.title }}</td>
                 <td>{{ course.role }}</td>
                 <td>{{ course.createdDate | date:'short' }}</td>
               </tr>
@@ -498,6 +500,10 @@
     <!-- <form [formGroup]="courseForm"> -->
     <form [formGroup]="courseForm" (ngSubmit)="updateCourse()">
 
+      <div>
+        {{ selectedCourse?.department }}
+      </div>
+
       <div class="row g-3">
         <div class="col-md-6">
           <label class="form-label">CourseId:</label>
@@ -532,4 +538,51 @@
         </div>
       </div>
     </form>
+  </div>
+
+  <div *ngIf="currentPages === 4">
+    <h1>
+      <!-- <input type="text" formControlName="videoLink" id="videoLink" class="form-control" placeholder="Enter Video Link" /> -->
+    </h1>
+    <div class="dashboard-form">
+        <div class="video_frame" formControlName="videoLink">
+            <iframe width="100%" height="500px" src="" id="videoLink" title="Nottingham Forest 0-1 Chelsea | HIGHLIGHTS | Premier League 2024/25" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Course Information</h2>
+        <div class="card">
+            <div class="card-header">
+                Header
+            </div>
+            <div class="card-body">
+                <form method="get">
+                    <input type="text" value="Football is Everything" class="form-control">
+
+                    <input type="text" formControlName="Description" id="Description" class="form-control" style="min-height: auto;" placeholder="Course Description">
+
+                    <!-- <p name="description" id="description" class="form-control" style="min-height: auto;">
+                        Leorm Finance is the vibrant initiative of a team of young professional entrepreneurs with a solid background in the financial sector. We have joined forces and expertise to create a platform that redefines the standards of fairness and efficiency in the financial world. Currently, we aim to be your trusted guide in navigating through complex financial operations. Our ambition does not stop here: we see ourselves becoming the market leader of non-banking financial institutions in Romania and a main player in the non-banking financial market within the European Union.
+
+                        We are dedicated to providing high-quality services.
+                        Provide a vital financial tool that can assist you in your business growth.
+                        Our solutions are efficient, easy to understand and implement.
+
+                    </p> -->
+                    &nbsp;&nbsp;
+                    <button class="btn btn-success">
+                        <i class="bi bi-check-circle"></i>
+                        Finished
+                    </button>
+                </form>
+            </div> 
+            <hr>
+            <div class="card-body">
+                hello
+            </div>
+            <div class="card-footer">
+                Footer
+            </div>
+        </div>
+    </div>
   </div>

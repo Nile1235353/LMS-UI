@@ -2,7 +2,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
 import { LayoutComponent } from '../layout/layout.component';
@@ -26,7 +26,7 @@ import { ProfileComponent } from './profile/profile.component';
     LayoutComponent,
     HomeComponent,
     ViewcoursesComponent,
-    ProfileComponent,
+    ProfileComponent
   ],
 })
 export class PagesModule {}

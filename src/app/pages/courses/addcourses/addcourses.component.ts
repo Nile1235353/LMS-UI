@@ -3,10 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AddcoursesService } from './addcourses.service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+import { title } from 'process';
 
 interface Course {
   courseId: string;
@@ -70,9 +71,11 @@ selectedCourse: any;
   userToDeleteId: string | null = null;
   showModal: boolean = false;
   selectedCourseId: string | null = null;
+  selectedViewCourseId: string | null = null;
   selected: any = null;
+  selectedId: string | null = null; // For storing selected course ID
 
-  constructor(private spinner: NgxSpinnerService,private fb: FormBuilder, private courseservice: AddcoursesService) {}
+  constructor(private spinner: NgxSpinnerService,private fb: FormBuilder, private courseservice: AddcoursesService,private router: Router) {}
 
   ngOnInit(): void {
     this.courseForm = this.fb.group({
@@ -234,6 +237,20 @@ onUserIdChange(userId: string): void {
   this.courseForm.patchValue({ Name: user?.name || '' });
 }
 
+ID = '123'; // Example ID, replace with actual logic to get selected course ID
+ToViewCourse: any ;
+
+ViewCourse(): void {
+  if (!this.selectedCourseId) { 
+    alert('Please select a course to view.');
+    return;
+  }
+  console.log('Selected ID:', this.selectedId);
+  console.log('Selected Course ID:', this.selectedCourseId);
+
+  this.router.navigate(['/viewcourses', this.selectedCourseId]);
+} 
+
 
 loadCourseForEdit(): void {
   if (this.selectedCourseId === null) {
@@ -248,6 +265,8 @@ loadCourseForEdit(): void {
         return;
       }
 
+      this.selectedCourse = course;
+
       this.courseForm.patchValue({
         CourseId: course.courseId,
         Title: course.title,
@@ -260,6 +279,8 @@ loadCourseForEdit(): void {
         IsActive: course.isActive
       });
 
+      
+
       this.setPage(3); // Go to edit form
     },
     error: (err) => {
@@ -268,6 +289,8 @@ loadCourseForEdit(): void {
     }
   });
 }
+
+
 
 
   //Custom Confirm Dialog && Delete User
@@ -324,39 +347,6 @@ loadCourseForEdit(): void {
       });
     }
   }
-
-//Method to confirm before deleting
-// confirmDeleteCourse(): void {
-
-//   if (!this.selectedCourseId) {
-//     alert("Please select a course to delete.");
-//     return;
-//   }
-//   console.log('Selected Course ID', this.selectedCourseId)
-
-//   this.openModal(this.selectedCourseId);
-
-//   const confirmed = confirm("Are you sure you want to delete this course?");
-  
-
-//   if (confirmed) {
-//     console.log('Selected Course ID', this.selectedCourseId)
-//     this.courseservice.deleteCourse(this.selectedCourseId).subscribe({
-//       next: (res) => {
-//         console.log('Selected Course ID', this.selectedCourseId)
-//         alert("Course deleted successfully.");
-
-//         this.loadCourses(); // Reload updated list after deletion
-//         this.selectedCourseId = null;
-//       },
-//       error: (err) => {
-//         console.error("Delete failed:", err);
-//         alert("Failed to delete course.");
-//       }
-//     });
-//   }
-// }
-
 
   toggleCourseSelection(courseId: string): void {
     if (this.selectedCourseId === courseId) {

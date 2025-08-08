@@ -18,31 +18,35 @@
 
   <!-- Video Grid -->
   <div class="row gy-4 gx-4">
-    <div class="col-md-6 col-lg-4" *ngFor="let video of filteredVideos">
-      <div class="card h-100 rounded-4 overflow-hidden shadow-sm border-light"
-           style="cursor: pointer;"
-           (click)="openModal(video)">
-        <div class="ratio ratio-16x9">
-          <img [src]="video.thumbnail" class="img-fluid" alt="Video Thumbnail" />
+    <div class="col-md-6 col-lg-4" *ngFor="let course of courses">
+      <!-- Only show if course has a videoLink -->
+      <ng-container *ngIf="course.videoLink">
+        <div class="card h-100 rounded-4 overflow-hidden shadow-sm border-light"
+            style="cursor: pointer;"
+            (click)="openModal(course)">
+          <div class="ratio ratio-16x9">
+            <img [src]="'https://img.youtube.com/vi/' + extractYouTubeVideoId(course.videoLink) + '/hqdefault.jpg'" class="img-fluid" alt="Video Thumbnail" />
+          </div>
+          <div class="card-body">
+            <h6 class="card-title text-truncate mb-0" [title]="course.title">{{ course.title }}</h6>
+          </div>
         </div>
-        <div class="card-body">
-          <h6 class="card-title text-truncate mb-0" [title]="video.title">{{ video.title }}</h6>
-        </div>
-      </div>
+      </ng-container>
     </div>
   </div>
 
+
   <!-- Modal -->
   <div class="modal fade show d-block" *ngIf="showModal" style="background-color: rgba(0,0,0,0.85);">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-dialog modal-dialog-centered modal-xl" *ngFor="let course of courses">
       <div class="modal-content border-0 rounded-4 overflow-hidden">
         <div class="modal-header bg-light">
-          <h5 class="modal-title">{{ selectedVideo?.title }}</h5>
+          <h5 class="modal-title">{{ course.title }}</h5>
           <button type="button" class="btn-close" (click)="closeModal()"></button>
         </div>
         <div class="modal-body p-0">
           <div class="ratio ratio-16x9">
-            <iframe [src]="selectedVideo?.url" frameborder="0" allow="autoplay; encrypted-media;" allowfullscreen></iframe>
+            <iframe [src]="course.videoLink" frameborder="0" allow="autoplay; encrypted-media;" allowfullscreen></iframe>
           </div>
         </div>
       </div>

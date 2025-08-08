@@ -19,7 +19,7 @@ const routes: Routes = [
 
    //Courses
    {path:'addcourses', component:AddcoursesComponent},
-   {path:'viewcourses', component:ViewcoursesComponent},
+   {path:'viewcourses/:id', component:ViewcoursesComponent},
 
    //Profile
    {path:'profile', component:ProfileComponent},

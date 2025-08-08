@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { HomeService } from './home.service';
 
 @Component({
   selector: 'app-home',
@@ -41,8 +42,53 @@ searchTerm = '';
       thumbnail: 'https://img.youtube.com/vi/2OHbjep_WjQ/0.jpg'
     }
   ];
+  courses: any[] = [];
+  videoLinks: any[] = [];
+  extract: any[] = [];
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private sanitizer: DomSanitizer,private homeservice: HomeService) {}
+
+  ngOnInit() {
+    this.loadHome();
+    this.extractPlaylistId(this.url)
+  }
+
+  loadHome() {
+    this.homeservice.getCourseList().subscribe({
+      next: (res) => {
+        console.log('Loaded Courses:', res);
+        // this.tableRows = res;
+        // this.courses = res;
+        this.courses = res;
+        this.videoLinks = this.courses
+          .filter(course => course.videoLink)
+          .map(course => this.extractYouTubeVideoId(course.videoLink));
+        this.extract = this.courses
+          .filter(course => course.videoLink)
+          .map(course => this.extractPlaylistId(course.videoLink));
+        console.log("this is Play List ID !=",this.extract)
+        console.log("This is Videos Links !=",this.videoLinks)
+
+
+        // this.paginatedRows = res.slice(0, this.pageSize);
+        // this.totalPages = Math.ceil(res.length / this.pageSize);
+        // this.currentPage = 1;
+        // this.originalUsers = [...this.courses]; // Store original unsorted data
+        //this.selectedCourseId = ''; // Reset selected ID
+      },
+      error: (err) => {
+        console.error('Load courses error:', err);
+      }
+    });
+  }
+
+  extractYouTubeVideoId(url: string): string {
+    const regExp = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^\s&?]+)/;
+    const match = url.match(regExp);
+    return match ? match[1] : '';
+  }
+
+
 
   get filteredVideos() {
     return this.videos.filter(video =>
@@ -63,4 +109,22 @@ searchTerm = '';
     this.showModal = false;
     this.selectedVideo = null;
   }
+
+  url = "https://www.youtube.com/embed/_ayEkOh3SWs?list=RD7Ut4TmCcgZg"
+
+  extractPlaylistId(url: string): string | null {
+    try {
+      const parsedUrl = new URL(url);
+      const searchParams = parsedUrl.searchParams;
+
+      if (searchParams.has("list")) {
+        return searchParams.get("list");
+      }
+    } catch (error) {
+      console.error("Invalid URL:", url);
+    }
+
+    return null;
+  }
+
 }

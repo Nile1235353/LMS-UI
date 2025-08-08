@@ -170,3 +170,10 @@
 
     /* Add any additional styles specific to the add courses component here */
     
+    .ellipsis {
+      max-width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }

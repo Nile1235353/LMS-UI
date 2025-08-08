@@ -2,14 +2,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class AddcoursesService {
+export class HomeService {
 
   private apiUrl = environment.LMSAPIUrl + 'Course/';
   private apiUrl_viewCourse = environment.LMSAPIUrl + 'ViewCourse/';
