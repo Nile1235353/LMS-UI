@@ -180,34 +180,44 @@
       </div>
 
       <!-- Button Group -->
-      <div class="scroll-x mb-3 p-3">
-        <button class="btn btn-outline-dark me-2" (click)="setPage(2)">
-          <i class="bi bi-plus"></i>&nbsp;&nbsp;New
-        </button>
+      <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center gap-3 mb-3 p-3 scroll-x">
+    
+        <div>
+          <button class="btn btn-outline-dark me-2" (click)="setPage(2)">
+            <i class="bi bi-plus"></i>&nbsp;&nbsp;New
+          </button>
 
-        <button class="btn btn-outline-dark me-2"
-          (click)="ViewCourse()"
+          <button class="btn btn-outline-dark me-2" (click)="ViewCourse()">
+            <i class="bi bi-eye"></i>&nbsp;&nbsp;View
+          </button>
+
+          <button class="btn btn-outline-dark me-2" (click)="loadCourseForEdit()" [disabled]="!selectedCourseId">
+            <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
+          </button>
+
+          <button type="button" class="btn btn-outline-danger me-2" [disabled]="!selectedCourseId" (click)="openModal()">
+            <i class="bi bi-trash"></i>&nbsp;&nbsp;Delete
+          </button>
+
+          <button class="btn btn-outline-success me-2" (click)="exportToExcel()">
+            <i class="bi bi-file-earmark-excel"></i>&nbsp;Excel Export
+          </button>
+        </div>
+
+        <div class="input-group" style="min-width: 200px; max-width: 400px;">
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Search courses..." 
+            aria-label="Search" 
+            aria-describedby="basic-addon1"
+            [(ngModel)]="searchTerm"
           >
-          <i class="bi bi-eye"></i>&nbsp;&nbsp;View
-        </button>
-
-        <button class="btn btn-outline-dark me-2"
-          (click)="loadCourseForEdit()"
-          [disabled]="!selectedCourseId">
-          <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
-        </button>
-
-        <button type="button" class="btn btn-outline-danger me-2"  
-          [disabled]="!selectedCourseId"  
-          (click)="openModal()">
-          <i class="bi bi-trash"></i>&nbsp;&nbsp;Delete
-        </button>
-
-        <button class="btn btn-outline-success" (click)="exportToExcel()"><i class="bi bi-file-earmark-excel"></i>Excel Export</button>
-                    
+          <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+        </div>
       </div>
     </div>
-      <!-- Scrollable Table -->
+    <!-- Scrollable Table -->
       <div class="table-responsive scrollable-table-wrapper ">
         <div class="responsive-table-wrapper">
           <table class="table table-bordered table-hover table-sm custom-scroll-table">
@@ -356,7 +366,7 @@
             </thead>
 
             <tbody>
-              <tr *ngFor="let course of courses, let i = index,let page of paginatedCourse;"
+              <tr *ngFor="let course of paginatedCourse, let i = index,let video of filteredVideos| slice:(currentPage-1)*pageSize:(currentPage*pageSize)"
                 (click)="toggleCourseSelection(course.id)"
                 [class.selected]="selectedCourseId === course.id"
                 >

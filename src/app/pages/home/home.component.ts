@@ -5,6 +5,14 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { HomeService } from './home.service';
 
+export interface Course {
+  id: number;
+  title: string;
+  department: string; 
+  videoLink: string;
+  safeUrl?: SafeResourceUrl;
+}
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -17,114 +25,119 @@ import { HomeService } from './home.service';
   ]
 })
 export class HomeComponent {
-searchTerm = '';
-  selectedCategory = 'All';
+  searchTerm: string = '';
+  selectedCategory: string = 'All';
+  allCourses: Course[] = [];
   showModal = false;
-  selectedVideo: { title: string; url: SafeResourceUrl; thumbnail: string } | null = null;
-
-  videos = [
-    {
-      title: 'Mountain Adventure',
-      url: 'https://www.youtube.com/embed/Scxs7L0vhZ4',
-      category: 'Adventure',
-      thumbnail: 'https://img.youtube.com/vi/Scxs7L0vhZ4/0.jpg'
-    },
-    {
-      title: 'Beautiful Nature',
-      url: 'https://www.youtube.com/embed/TlB_eWDSMt4',
-      category: 'Nature',
-      thumbnail: 'https://img.youtube.com/vi/TlB_eWDSMt4/0.jpg'
-    },
-    {
-      title: 'Angular Tutorial',
-      url: 'https://www.youtube.com/embed/2OHbjep_WjQ',
-      category: 'Tutorial',
-      thumbnail: 'https://img.youtube.com/vi/2OHbjep_WjQ/0.jpg'
-    }
-  ];
+  selectedCourse: any;
+  safeVideoUrl?: SafeResourceUrl;
+  safeVideoUrls: any[] = [];
+  selectedVideo: { title: string; url: SafeResourceUrl; thumbnail: string;videoLink: string; } | null = null;
   courses: any[] = [];
   videoLinks: any[] = [];
   extract: any[] = [];
+  course: any[] = [];
 
   constructor(private sanitizer: DomSanitizer,private homeservice: HomeService) {}
 
   ngOnInit() {
     this.loadHome();
-    this.extractPlaylistId(this.url)
+  }
+
+  get filteredVideos(): Course[] {
+    if (!this.allCourses) {
+      return [];
+    }
+
+    let items = this.allCourses;
+
+    if (this.selectedCategory && this.selectedCategory !== 'All') {
+      items = items.filter(course => course.department === this.selectedCategory);
+    }
+
+    console.log("This is Selected All Course ", items)
+
+    if (this.searchTerm) {
+      items = items.filter(course =>
+        course.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+
+    console.log("This is Search Box Selected Course ",items)
+
+    return items;
   }
 
   loadHome() {
     this.homeservice.getCourseList().subscribe({
-      next: (res) => {
+      next: (res: Course[]) => {
         console.log('Loaded Courses:', res);
-        // this.tableRows = res;
-        // this.courses = res;
         this.courses = res;
-        this.videoLinks = this.courses
-          .filter(course => course.videoLink)
-          .map(course => this.extractYouTubeVideoId(course.videoLink));
-        this.extract = this.courses
-          .filter(course => course.videoLink)
-          .map(course => this.extractPlaylistId(course.videoLink));
-        console.log("this is Play List ID !=",this.extract)
-        console.log("This is Videos Links !=",this.videoLinks)
+        console.log("This is Course",this.course);
+        // this.safeVideoUrls = this.courses.map(course => {
+        //   const videoUrl = course.videoLink.includes("?")
+        //     ? course.videoLink + "&mute=0&modestbranding=1&rel=0&controls=0&autohide=1&playsinline=0"
+        //     : course.videoLink + "?mute=0&modestbranding=1&rel=0&controls=0&autohide=1&playsinline=0";
 
+        //   return this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
+        // });
 
-        // this.paginatedRows = res.slice(0, this.pageSize);
-        // this.totalPages = Math.ceil(res.length / this.pageSize);
-        // this.currentPage = 1;
-        // this.originalUsers = [...this.courses]; // Store original unsorted data
-        //this.selectedCourseId = ''; // Reset selected ID
-      },
-      error: (err) => {
-        console.error('Load courses error:', err);
-      }
+        this.safeVideoUrls = this.courses.map(course => {
+          const videoUrl = course.videoLink.includes("?")
+            ? course.videoLink + "&autoplay=0&mute=1&modestbranding=1&rel=0&controls=0&playsinline=1"
+            : course.videoLink + "?autoplay=0&mute=1&modestbranding=1&rel=0&controls=0&playsinline=1";
+
+          return this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
+        });
+
+        // this.videoLinks = this.courses
+        //   .filter(course => course.videoLink)
+        //   .map(course => this.extractYouTubeVideoId(course.videoLink));
+        console.log("Safe Video Links:", this.safeVideoUrls);
+        // this.safeVideoUrls = this.videoLinks.map(link =>
+        //   this.sanitizer.bypassSecurityTrustResourceUrl(link)
+        // );
+        // this.extract = this.courses
+        //   .filter(course => course.videoLink)
+        //   .map(course => this.extractPlaylistId(course.videoLink));
+        // console.log("Extracted Playlist IDs:", this.extract);
+
+        this.allCourses = res.map(course => {
+          const videoUrl = course.videoLink.includes("?")
+            ? course.videoLink + "&autoplay=0&mute=1&modestbranding=1&rel=0&controls=0&playsinline=1"
+            : course.videoLink + "?autoplay=0&mute=1&modestbranding=1&rel=0&controls=0&playsinline=1";
+          return {
+            ...course,
+            safeUrl: this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl)
+          };
+        });
+        
+        console.log('Loaded and Processed Courses:', this.allCourses);
+        },
+        error: (err) => {
+          console.error('Load courses error:', err);
+        }
     });
   }
 
-  extractYouTubeVideoId(url: string): string {
-    const regExp = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^\s&?]+)/;
-    const match = url.match(regExp);
+  private extractYouTubeVideoId(url: string): string {
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^\?&]+)/);
     return match ? match[1] : '';
   }
 
-
-
-  get filteredVideos() {
-    return this.videos.filter(video =>
-      (this.selectedCategory === 'All' || video.category === this.selectedCategory) &&
-      video.title.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-  }
-
-  openModal(video: any) {
-    this.selectedVideo = {
-      ...video,
-      url: this.sanitizer.bypassSecurityTrustResourceUrl(video.url)
-    };
+  openModal(course: any) {
+    const videoId = this.extractYouTubeVideoId(course.videoLink);
+    const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&modestbranding=1&rel=0&controls=1&playsinline=1`;
+    
+    this.safeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
+    this.selectedCourse = course;
     this.showModal = true;
   }
 
   closeModal() {
     this.showModal = false;
-    this.selectedVideo = null;
-  }
-
-  url = "https://www.youtube.com/embed/_ayEkOh3SWs?list=RD7Ut4TmCcgZg"
-
-  extractPlaylistId(url: string): string | null {
-    try {
-      const parsedUrl = new URL(url);
-      const searchParams = parsedUrl.searchParams;
-
-      if (searchParams.has("list")) {
-        return searchParams.get("list");
-      }
-    } catch (error) {
-      console.error("Invalid URL:", url);
-    }
-
-    return null;
+    this.selectedCourse = null;
+    this.safeVideoUrl = undefined;
   }
 
 }

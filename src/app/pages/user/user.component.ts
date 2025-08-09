@@ -49,6 +49,10 @@ throw new Error('Method not implemented.');
   currentPage = 1;
   //userList: any[] = [];
 
+  searchTerm: string = '';
+  selectedCategory: string = 'All';
+  allUsers: User[] = [];
+
   userRoles = [
     { label: 'Admin', value: 0 },
     { label: 'Instructor', value: 1 },
@@ -97,13 +101,42 @@ throw new Error('Method not implemented.');
     });
   }
 
+  get filteredUsers(): User[] {
+    if (!this.allUsers) {
+      return [];
+    }
+  
+    let items = this.allUsers;
+  
+    if (this.selectedCategory && this.selectedCategory !== 'All') {
+      items = items.filter(course => course.FullName === this.selectedCategory);
+    }
+  
+    console.log("This is Selected All Course ", items)
+  
+    if (this.searchTerm) {
+      items = items.filter(course =>
+        course.FullName.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+      this.currentPage = 1;
+    }
+  
+    console.log("This is Search Box Selected Course ",items)
+  
+    return items;
+  }
+
 
   loadUsers(): void {
     this.userService.getUserList().subscribe({
-      next: data => {
+      next: (data: User[]) => {
         this.users = data;
         this.selectedUser = null; // Reset selection on reload
         this.originalUsers = [...this.users]; // Store original unsorted data
+
+        this.allUsers = data;
+        
+        console.log('Loaded and Processed Courses:', this.allUsers);
       },
       error: err => console.error('Error loading users:', err)
     });
@@ -275,7 +308,8 @@ throw new Error('Method not implemented.');
   }
 
   get totalPages() {
-    return Math.ceil(this.users.length / this.usersPerPage);
+    const totalpage = Math.ceil(this.users.length / this.usersPerPage)
+    return Math.ceil(this.users.length / this.usersPerPage)
   }
 
   changePage(page: number) {

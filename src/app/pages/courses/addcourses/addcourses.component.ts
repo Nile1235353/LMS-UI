@@ -8,6 +8,7 @@ import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { title } from 'process';
+import { DomSanitizer } from '@angular/platform-browser';
 
 interface Course {
   courseId: string;
@@ -75,7 +76,12 @@ selectedCourse: any;
   selected: any = null;
   selectedId: string | null = null; // For storing selected course ID
 
-  constructor(private spinner: NgxSpinnerService,private fb: FormBuilder, private courseservice: AddcoursesService,private router: Router) {}
+  searchTerm: string = '';
+  allCourses: any[] = [];      
+  filteredCourses: any[] = [];
+  selectedCategory: string = 'All';
+
+  constructor(private spinner: NgxSpinnerService,private sanitizer: DomSanitizer,private fb: FormBuilder, private courseservice: AddcoursesService,private router: Router) {}
 
   ngOnInit(): void {
     this.courseForm = this.fb.group({
@@ -105,20 +111,57 @@ selectedCourse: any;
 
   loadCourses() {
     this.courseservice.getCourseList().subscribe({
-      next: (res) => {
+      next: (res: Course[]) => {
         console.log('Loaded Courses:', res);
         this.tableRows = res;
         this.courses = res;
+        this.allCourses = res;
+        console.log("This is All Course", this.allCourses)
         this.paginatedRows = res.slice(0, this.pageSize);
         this.totalPages = Math.ceil(res.length / this.pageSize);
         this.currentPage = 1;
         this.originalUsers = [...this.courses]; // Store original unsorted data
         //this.selectedCourseId = ''; // Reset selected ID
+
+         this.allCourses = res.map(course => {
+          const videoUrl = course.videoLink.includes("?")
+            ? course.videoLink + "&autoplay=0&mute=1&modestbranding=1&rel=0&controls=0&playsinline=1"
+            : course.videoLink + "?autoplay=0&mute=1&modestbranding=1&rel=0&controls=0&playsinline=1";
+          return {
+            ...course,
+            safeUrl: this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl)
+          };
+        });
       },
       error: (err) => {
         console.error('Load courses error:', err);
       }
     });
+  }
+
+  get filteredVideos(): Course[] {
+    if (!this.allCourses) {
+      return [];
+    }
+  
+    let items = this.allCourses;
+  
+    if (this.selectedCategory && this.selectedCategory !== 'All') {
+      items = items.filter(course => course.department === this.selectedCategory);
+    }
+  
+    console.log("This is Selected All Course ", items)
+  
+    if (this.searchTerm) {
+      items = items.filter(course =>
+        course.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+  
+    console.log("This is Search Box Selected Course ",items)
+  
+    return items;
+
   }
 
   paginate(): void {

@@ -183,24 +183,46 @@
         <!-- your-component.component.html -->
         <!-- <button class="btn btn-danger" (click)="openModal()">Delete</button> -->
 
+
         <!-- Button Group -->
-        <div class="scroll-x mt-3 p-3">
-          <button class="btn btn-outline-dark me-2" (click)="setPage(2)">
-            <i class="bi bi-plus"></i> New
-          </button>
+        <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center gap-3 mb-3 p-3 scroll-x">
+        
+          <div>
+            <button class="btn btn-outline-dark me-2" (click)="setPage(2)">
+              <i class="bi bi-plus"></i>&nbsp;&nbsp;New
+            </button>
 
-          <button class="btn btn-outline-dark me-2" (click)="setPage(3)" [disabled]="!selectedUser">
-            <i class="bi bi-pencil"></i> Edit
-          </button>
+            <!-- <button class="btn btn-outline-dark me-2" (click)="ViewCourse()">
+              <i class="bi bi-eye"></i>&nbsp;&nbsp;View
+            </button> -->
 
-          <button class="btn btn-outline-danger me-2" (click)="openModal(selectedUser?.UserId)"  [disabled]="!selectedUser">
-            <i class="bi bi-trash"></i> Delete
-          </button>
+            <button class="btn btn-outline-dark me-2" (click)="setPage(3)" [disabled]="!selectedUser">
+              <i class="bi bi-pencil"></i> Edit
+            </button>
 
-          <button class="btn btn-outline-success" (click)="exportToExcel()">
-            <i class="bi bi-file-earmark-excel"></i>Excel Export
-          </button>
+            <button class="btn btn-outline-danger me-2" (click)="openModal(selectedUser?.UserId)"  [disabled]="!selectedUser">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+
+            <button class="btn btn-outline-success me-2" (click)="exportToExcel()">
+              <i class="bi bi-file-earmark-excel"></i>&nbsp;Excel Export
+            </button>
+          </div>
+
+          <div class="input-group" style="min-width: 200px; max-width: 400px;">
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="Search courses..." 
+              aria-label="Search" 
+              aria-describedby="basic-addon1"
+              [(ngModel)]="searchTerm"
+            >
+            <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+          </div>
         </div>
+
+        <!-- [(ngModel)]="searchTerm" -->
 
         <!-- Table -->
         <div class="table-responsive">
@@ -404,7 +426,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let user of users; let i = index;let page of paginatedUsers;"
+                <tr *ngFor="let user of users; let i = index;let page of paginatedUsers;let video of filteredUsers | slice:(currentPage-1)*usersPerPage : currentPage*usersPerPage"
                     [class.table-active]="selectedUsers.length === users.length"
                     (click)="selectUser(user)"
                     [class.table-active]="selectedUser?.UserId === user.UserId">

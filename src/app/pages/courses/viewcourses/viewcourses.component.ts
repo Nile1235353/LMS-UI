@@ -34,6 +34,17 @@ export class ViewcoursesComponent implements OnInit {
   } = {};
 
   ngOnInit() {
+    // this.courseForm = this.fb.group({
+    //   CourseId: [''],
+    //   Role: ['', Validators.required],
+    //   UserId: ['', Validators.required],
+    //   Name: [''],
+    //   Department: [''],
+    //   Title: ['', Validators.required],
+    //   Description: [''],
+    //   VideoLink: [''],
+
+    // });
     const id = this.route.snapshot.paramMap.get('id');
     this.Id = id ? +id : 0; // Convert to number, default to 0 if not found
     console.log('View Course ID:', this.Id);
@@ -54,7 +65,20 @@ export class ViewcoursesComponent implements OnInit {
         this.courses = res;
         console.log(this.courses.courseId)
         console.log(res.videoLink)
-        this.safeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(res.videoLink);
+
+        // Add autoplay parameter to the video link
+        let videoLink = res.videoLink;
+
+        console.log("This is Super Video Link ", videoLink)
+
+        // Check if videoLink already has query params
+        if (videoLink.includes('?')) {
+          videoLink += '&autoplay=1&mute=0&modestbranding=0&rel=0&controls=1&playsinline=0&loop=1';
+        } else {
+          videoLink += '?autoplay=1&mute=0&modestbranding=0&rel=0&controls=1&playsinline=0&loop=1';
+        }
+
+        this.safeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(videoLink);
         console.log("this is Video Link ",this.safeVideoUrl)
         // this.paginatedRows = res.slice(0, this.pageSize);
         // this.totalPages = Math.ceil(res.length / this.pageSize);
