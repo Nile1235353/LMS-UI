@@ -1,0 +1,38 @@
+<!-- <p>viewcoursedetails works!</p> -->
+<div class="container mt-4">
+  <h4 class="mb-3">Finished Courses</h4>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>ViewId</th>
+        <th>userId</th>
+        <th>User Name</th>
+        <th>Course Title</th>
+        <th>VideoLink</th>
+        <th>ViewCount</th>
+        <th>Department</th>
+        <!-- <th>Phone</th> -->
+        <th>Employee ID</th>
+        <!-- <th>NRC</th> -->
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let course of viewCourses">
+        <td>{{course.id}}</td>
+        <td>{{course.viewCourseId }}</td>
+        <td>{{ course.userId }}</td>
+        <td>{{ course.name }}</td>
+        <td>{{ course.title }}</td>
+        <td>{{ course.videoLink }}</td>
+        <td>{{course.viewCount}}</td>
+        <td>{{ course.department }}</td>
+        <!-- <td>{{ course.phoneNumber }}</td> -->
+        <td>{{ course.employeeId }}</td>
+        <!-- <td>{{ course.nrc }}</td> -->
+        <td>{{ course.status }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

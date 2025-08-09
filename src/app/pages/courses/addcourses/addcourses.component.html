@@ -195,26 +195,14 @@
             <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
           </button>
 
-          <button type="button" class="btn btn-outline-danger me-2" [disabled]="!selectedCourseId" (click)="openModal()">
-            <i class="bi bi-trash"></i>&nbsp;&nbsp;Delete
-          </button>
+        <button type="button" class="btn btn-outline-danger me-2"  
+          [disabled]="!selectedCourseId"  
+          (click)="openModal()">
+          <i class="bi bi-trash"></i>&nbsp;&nbsp;Delete
+        </button>
 
-          <button class="btn btn-outline-success me-2" (click)="exportToExcel()">
-            <i class="bi bi-file-earmark-excel"></i>&nbsp;Excel Export
-          </button>
-        </div>
-
-        <div class="input-group" style="min-width: 200px; max-width: 400px;">
-          <input 
-            type="text" 
-            class="form-control" 
-            placeholder="Search courses..." 
-            aria-label="Search" 
-            aria-describedby="basic-addon1"
-            [(ngModel)]="searchTerm"
-          >
-          <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
-        </div>
+        <button class="btn btn-outline-success" (click)="exportToExcel()"><i class="bi bi-file-earmark-excel"></i>Excel Export</button>
+                    
       </div>
     </div>
     <!-- Scrollable Table -->
@@ -585,7 +573,7 @@
                         Finished
                     </button>
                 </form>
-            </div> 
+            </div>
             <hr>
             <div class="card-body">
                 hello
