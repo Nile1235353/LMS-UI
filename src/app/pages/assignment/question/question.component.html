@@ -1,0 +1,599 @@
+<div class="page-content">
+
+    <!-- Assignment Edit Modal -->
+    <div
+        class="modal fade fade-in"
+        tabindex="-1"
+        [ngClass]="{ 'show d-block': editModel }"
+        style="background-color: rgba(0, 0, 0, 0.4);"
+        *ngIf="editModel"
+        >
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content rounded-3 shadow">
+
+            <!-- Header -->
+            <div class="modal-header bg-light">
+                <h3 class="modal-title d-flex align-items-center gap-2">
+                <i class="bi bi-pencil-square"></i>
+                Edit Assignment
+                </h3>
+                <button type="button" class="btn-close" (click)="closeEditModal()"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <form>
+
+                <!-- Assignment ID (read-only) -->
+                <div class="mb-3">
+                    <label class="form-label">Assignment ID</label>
+                    <input
+                    type="text"
+                    class="form-control"
+                    name="assignmentId"
+                    readonly
+                    />
+                </div>
+
+                <!-- Title -->
+                <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <input
+                    type="text"
+                    class="form-control"
+                    name="title"
+                    required
+                    />
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea
+                    class="form-control"
+                    name="description"
+                    rows="3"
+                    ></textarea>
+                </div>
+
+                <!-- Short Date -->
+                <div class="mb-3">
+                    <label class="form-label">Short Date</label>
+                    <input
+                    type="date"
+                    class="form-control"
+                    name="shortDate"
+                    required
+                    />
+                </div>
+
+                <!-- Department -->
+                <div class="mb-3">
+                    <label class="form-label">Department</label>
+                    <select
+                    class="form-select"
+                    name="department"
+                    required
+                    >
+                    <option value="" disabled>Select Department</option>
+                    <option value="IT">IT</option>
+                    <option value="HR">HR</option>
+                    <option value="Finance">Finance</option>
+                    <option value="CS">Customer Service</option>
+                    </select>
+                </div>
+
+                <!-- Minimum Score and Maximum Score side by side -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                    <label class="form-label">Minimum Score</label>
+                    <input
+                        type="number"
+                        class="form-control"
+                        name="minScore"
+                        required
+                        min="0"
+                    />
+                    </div>
+                    <div class="col-md-6">
+                    <label class="form-label">Maximum Score</label>
+                    <input
+                        type="number"
+                        class="form-control"
+                        name="maxScore"
+                        required
+                        min="0"
+                    />
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-flex justify-content-end">
+
+                    <button 
+                        type="button"
+                        class="btn btn-outline-danger px-4 me-2"
+                        (click)="closeEditModal()"
+                        >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-outline-dark px-4"
+                        
+                        >
+                        Update
+                    </button>
+
+                </div>
+
+                </form>
+            </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Assignment Create Modal -->
+    <div
+        class="modal fade fade-in"
+        tabindex="-1"
+        [ngClass]="{ 'show d-block': createModel }"
+        style="background-color: rgba(0, 0, 0, 0.4);"
+        *ngIf="createModel"
+        >
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-3 shadow">
+
+            <!-- Header -->
+            <div class="modal-header bg-light">
+                <h3 class="modal-title d-flex align-items-center gap-2">
+                <i class="bi bi-plus-circle-fill text-primary"></i>
+                Create Assignment
+                </h3>
+                <button type="button" class="btn-close" (click)="closeCreateModal()"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <form>
+                    <div class="row g-3">
+
+                        <!-- Assignment ID -->
+                        <div class="col-12">
+                        <label class="form-label">Assignment ID</label>
+                        <input type="text" class="form-control" placeholder="Enter Assignment ID">
+                        </div>
+
+                        <!-- Title -->
+                        <div class="col-12">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-control" placeholder="Enter Title">
+                        </div>
+
+                        <!-- Description -->
+                        <div class="col-12">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="3" placeholder="Enter Description"></textarea>
+                        </div>
+
+                        <!-- Minimum Score / Max Score -->
+                        <div class="col-md-6">
+                        <label class="form-label">Minimum Score</label>
+                        <input type="number" class="form-control" placeholder="Min">
+                        </div>
+                        <div class="col-md-6">
+                        <label class="form-label">Max Score</label>
+                        <input type="number" class="form-control" placeholder="Max">
+                        </div>
+
+                        <!-- Department / Short Date -->
+                        <div class="col-md-6">
+                        <label class="form-label">Department</label>
+                        <select class="form-select">
+                            <option selected disabled value="default">Select Department</option>
+                            <option value="IT">IT</option>
+                            <option value="HR">HR</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Warehouse">Warehouse</option>
+                            <option value="BD">BD</option>
+                            <option value="CS">Customer Service</option>
+                        </select>
+                        </div>
+                        <div class="col-md-6">
+                        <label class="form-label">Short Date</label>
+                        <input type="date" class="form-control">
+                        </div>
+
+                        <!-- Submit Button -->
+                        <!-- <div class="col-12 text-center mt-3">
+                        <button type="submit" class="btn btn-primary px-4">Create Assignment</button>
+                        </div> -->
+
+                    </div>
+                </form>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-outline-success px-4" (click)="CreateAssignment()">Save</button>
+                <button type="button" class="btn btn-outline-secondary px-4" (click)="closeCreateModal()">Cancel</button>
+            </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <div *ngIf="currentPages === 1">
+        <div>
+            <h3>
+                Assignment List
+            </h3>
+        </div>
+
+        <div class="container-fluid scroll-x">
+
+            <div class="mb-3">
+                <button class="btn btn-outline-dark me-2" (click)="openCreateModal()">
+                    <i class="bi bi-plus"></i>&nbsp;&nbsp;New
+                </button>
+
+                <button class="btn btn-outline-dark me-2" (click)="setPage(2)">
+                    <i class="bi bi-clipboard-data"></i>&nbsp;&nbsp;Detail
+                </button>
+
+                <button class="btn btn-outline-dark me-2" (click)="openEditModal()">
+                    <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
+                </button>
+            </div>
+
+            <!-- Scrollable Table -->
+            <div class="scroll-x">
+                <div class="table-wrapper">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox"/>
+                                </th>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Short Date</th>
+                                <th>Department</th>
+                                <th>MiniMum Score</th>
+                                <th>MaxScore</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" />
+                                </td>
+                                <td>1</td>
+                                <td>Hello</td>
+                                <td>This is Description</td>
+                                <td>12.08.2025</td>
+                                <td>IT & Software</td>
+                                <td>15</td>
+                                <td>20</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Assignment Deatil-->
+    <div *ngIf="currentPages === 2">
+        <div class="card shadow-sm p-4 mb-4">
+
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div>
+                    <h2 class="mb-0"><i class="bi bi-journal-text fs-2 text-primary me-3"></i>Assignment Detail</h2>
+                </div>
+                <div>
+
+                    <button class="btn btn-sm btn-outline-success me-2" (click)="setPage(1)">
+                        &nbsp;&nbsp; Save
+                    </button>
+
+                    <button class="btn btn-sm btn-outline-dark me-2" (click)="setPage(1)">
+                        &nbsp;&nbsp; Back
+                    </button>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+
+                <div class="col-md-6">
+                <div class="bg-light rounded-3 p-3 h-100 border">
+                    <h5 class="text mb-3"><i class="bi bi-hash me-2"></i> Assignment ID</h5>
+                    <p class="fs-5">As-0001</p>
+                </div>
+                </div>
+
+                <div class="col-md-6">
+                <div class="bg-light rounded-3 p-3 h-100 border ">
+                    <h5 class="text mb-3"><i class="bi bi-card-text me-2"></i> Title</h5>
+                    <p class="fs-5">Hello World !</p>
+                </div>
+                </div>
+
+                <div class="col-12">
+                <div class="bg-light rounded-3 p-3 border">
+                    <h5 class="mb-3"><i class="bi bi-file-earmark-text me-2"></i> Description</h5>
+                    <p class="fs-6">This is Description </p>
+                </div>
+                </div>
+
+                <div class="col-md-3">
+                <div class="bg-light rounded-3 p-3 border text-center">
+                    <h6 class="text mb-2"><i class="bi bi-calendar-event me-2"></i> Short Date</h6>
+                    <p class="mb-0">12.08.2025</p>
+                </div>
+                </div>
+
+                <div class="col-md-3">
+                <div class="bg-light rounded-3 p-3 border text-center">
+                    <h6 class="text mb-2"><i class="bi bi-building me-2"></i> Department</h6>
+                    <p class="mb-0">IT & Process</p>
+                </div>
+                </div>
+
+                <div class="col-md-3">
+                <div class="bg-light rounded-3 p-3 border text-center">
+                    <h6 class="text mb-2"><i class="bi bi-arrow-down-short me-2"></i> Minimum Score</h6>
+                    <p class="mb-0">15</p>
+                </div>
+                </div>
+
+                <div class="col-md-3">
+                <div class="bg-light rounded-3 p-3 border text-center">
+                    <h6 class="text mb-2"><i class="bi bi-arrow-up-short me-2"></i> Maximum Score</h6>
+                    <p class="mb-0">20</p>
+                </div>
+                </div>
+
+            </div>
+
+            <hr />
+
+            <!-- Questions Section -->
+            <h4 class="mb-3 text-primary">
+                <i class="bi bi-question-circle me-2"></i> Questions
+            </h4>
+
+            <!-- Button Group -->
+            <div class="mb-3">
+
+                <button class="btn btn-sm btn-outline-dark me-2" (click)="openQuestionModal()">
+                    <i class="bi bi-plus"></i>&nbsp;&nbsp; Add Question
+                </button>
+
+                <button class="btn btn-sm btn-outline-dark me-2" (click)="openOptionModal()">
+                    <i class="bi bi-plus"></i>&nbsp;&nbsp; Add Option
+                </button>
+
+                <button class="btn btn-sm btn-outline-danger" >
+                    <i class="bi bi-trash"></i>&nbsp;&nbsp; Delete
+                </button>
+            </div>
+
+            <!-- Questions Table -->
+             <div class="table-responsive scrollable-table-wrapper ">
+                <div class="responsive-table-wrapper">
+                    <table class="table table-bordered table-hover table-sm custom-scroll-table" style="max-width: 500px;">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox"/>
+                                </th>
+                                <th>ID</th>
+                                <th>Question Text</th>
+                                <th>Type</th>
+                                <th>Point</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox"/>
+                                </td>
+                                <td>001</td>
+                                <td>How to Eat ?</td>
+                                <td>Multiple Chooice</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox"/>
+                                </td>
+                                <td>002</td>
+                                <td>Did you go Bago ?</td>
+                                <td>True False</td>
+                                <td>2</td>
+                            </tr>
+                            <tr> <!-- *ngIf="questions.length === 0"-->
+                                <td colspan="5" class="text-center text-muted">No questions added yet.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Question Add Modal -->
+    <div
+        class="modal fade fade-in"
+        tabindex="-1"
+        [ngClass]="{ 'show d-block': questionModal }"
+        style="background-color: rgba(0, 0, 0, 0.4);"
+        *ngIf="questionModal"
+        >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-3 shadow">
+
+            <!-- Header -->
+            <div class="modal-header bg-light">
+                <h3 class="modal-title d-flex align-items-center gap-2">
+                <i class="bi bi-plus-circle text-success"></i>
+                Add New Question
+                </h3>
+                <button type="button" class="btn-close" (click)="closeQuestionModal()"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <form>
+
+                <div class="mb-3">
+                    <label class="form-label">Question Text</label>
+                    <input
+                    type="text"
+                    class="form-control"
+                    name="text"
+                    ngModel
+                    required
+                    placeholder="Enter question text"
+                    />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Question Type</label>
+                    <select
+                    class="form-select"
+                    name="type"
+                    ngModel
+                    required
+                    >
+                    <option value="" disabled selected>Select type</option>
+                    <option value="Multiple Choice">Multiple Choice</option>
+                    <option value="True/False">True / False</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Max Score</label>
+                    <input
+                    type="number"
+                    class="form-control"
+                    name="maxScore"
+                    ngModel
+                    required
+                    min="0"
+                    placeholder="Enter maximum score"
+                    />
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <button
+                    type="submit"
+                    class="btn btn-success px-4"
+                    
+                        >
+                    Add
+                    </button>
+                </div>
+
+                </form>
+            </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Option Add Modal -->
+    <div
+        class="modal fade fade-in"
+        tabindex="-1"
+        [ngClass]="{ 'show d-block': optionModal }"
+        style="background-color: rgba(0, 0, 0, 0.4);"
+        *ngIf="optionModal"
+        >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-3 shadow">
+
+            <!-- Header -->
+            <div class="modal-header bg-light">
+                <h3 class="modal-title d-flex align-items-center gap-2">
+                <i class="bi bi-list-check text"></i>
+                Add Option
+                </h3>
+                <button type="button" class="btn-close" (click)="closeOptionModal()"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <form>
+
+                <div class="mb-3">
+                    <label class="form-label">Option ID</label>
+                    <input
+                    type="text"
+                    class="form-control"
+                    name="optionId"
+                    ngModel
+                    required
+                    placeholder="Enter Option ID"
+                    />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Question ID</label>
+                    <input
+                    type="text"
+                    class="form-control"
+                    name="questionId"
+                    ngModel
+                    required
+                    placeholder="Enter Question ID"
+                    />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Option Text</label>
+                    <input
+                    type="text"
+                    class="form-control"
+                    name="optionText"
+                    ngModel
+                    required
+                    placeholder="Enter Option Text"
+                    />
+                </div>
+
+                <div class="form-check mb-3">
+                    <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="isCorrect"
+                    name="isCorrect"
+                    ngModel
+                    />
+                    <label class="form-check-label" for="isCorrect">Is Correct?</label>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <button
+                    type="submit"
+                    class="btn btn-outline-success px-4"
+                    >
+                    Add Option
+                    </button>
+                </div>
+
+                </form>
+            </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>

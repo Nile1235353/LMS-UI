@@ -11,6 +11,7 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ViewcoursesComponent } from './courses/viewcourses/viewcourses.component';
 import { ProfileComponent } from './profile/profile.component';
+import { QuestionComponent } from './assignment/question/question.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ProfileComponent } from './profile/profile.component';
     LayoutComponent,
     HomeComponent,
     ViewcoursesComponent,
-    ProfileComponent
+    ProfileComponent,
+    QuestionComponent
   ],
 })
 export class PagesModule {}

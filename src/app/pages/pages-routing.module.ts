@@ -6,6 +6,7 @@ import { AddcoursesComponent } from "./courses/addcourses/addcourses.component";
 import { ViewcoursesComponent } from "./courses/viewcourses/viewcourses.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { ViewcoursedetailsComponent } from "./courses/viewcoursedetails/viewcoursedetails.component";
+import { QuestionComponent } from "./assignment/question/question.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent, data: { breadcrumb: 'Home' }  },
@@ -24,7 +25,10 @@ const routes: Routes = [
 
    //Profile
    {path:'profile', component:ProfileComponent},
-   {path:'viewcoursedetail',component:ViewcoursedetailsComponent}
+   {path:'viewcoursedetail',component:ViewcoursedetailsComponent},
+
+   //Assignment
+   {path:'question',component:QuestionComponent}
  ];
 
 @NgModule({

@@ -87,7 +87,15 @@ export class HomeComponent {
             ? course.videoLink + "&autoplay=0&mute=1&modestbranding=1&rel=0&controls=0&playsinline=1"
             : course.videoLink + "?autoplay=0&mute=1&modestbranding=1&rel=0&controls=0&playsinline=1";
 
-          return this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
+            const extractUrl = this.extractYouTubeVideoId(course.videoLink);
+
+            console.log("This is Course dot videoLink !=", extractUrl)
+
+            const embedUrl = `https://www.youtube.com/embed/${extractUrl}?autoplay=0&mute=1&modestbranding=1&rel=0&controls=1&playsinline=1`;
+
+            console.log("This is Embed Url !=", embedUrl)
+
+          return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
         });
 
         // this.videoLinks = this.courses
@@ -120,18 +128,31 @@ export class HomeComponent {
     });
   }
 
-  private extractYouTubeVideoId(url: string): string {
-    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^\?&]+)/);
-    return match ? match[1] : '';
+  // private extractYouTubeVideoId(url: string): string {
+  //   const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^\?&]+)/);
+  //   return match ? match[1] : '';
+  // }
+
+  private extractYouTubeVideoId(url: string): string | null {
+    if (!url) return null;
+
+    // Regex pattern to match YouTube video IDs from various link formats
+    const pattern = /(?:v=|\/embed\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(pattern);
+
+    return match ? match[1] : null;
   }
 
   openModal(course: any) {
     const videoId = this.extractYouTubeVideoId(course.videoLink);
+
+    console.log("This is one video ID = ",videoId)
     const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&modestbranding=1&rel=0&controls=1&playsinline=1`;
     
     this.safeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
     this.selectedCourse = course;
     this.showModal = true;
+    console.log("This is Selected Course ", this.safeVideoUrl);
   }
 
   closeModal() {

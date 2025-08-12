@@ -111,7 +111,7 @@
 
     .custom-scroll-table {
       border-collapse: collapse;
-      min-width: 2000px; // Enough width to cause horizontal scroll && This can be adjusted based on your content && Table Scroll Main CSS
+      min-width: 1500px; // Enough width to cause horizontal scroll && This can be adjusted based on your content && Table Scroll Main CSS
       // table-layout: fixed; // Ensures that the table respects the width of its columns
       width: 100%;
     }
@@ -141,7 +141,7 @@
     }
 
     .scrollable-table-wrapper {
-      max-height: auto; /* height ကိုလိုသလောက်ပေးနိုင်တယ် */
+      max-height: 400px; /* height ကိုလိုသလောက်ပေးနိုင်တယ် */
       overflow-y: auto;
     }
 

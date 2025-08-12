@@ -87,9 +87,10 @@ export class ViewcoursesComponent implements OnInit {
     }
   }
 
-  ExampleMethod() {
-    // Example method to demonstrate functionality
-    console.log('Example method called with ID:', this.Id);
+  extractVideoId(url: string): string | null {
+    const regex = /(?:youtu\.be\/|youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=))([^"&?\/\s]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
   }
 
   loadCourses() {
@@ -102,16 +103,26 @@ export class ViewcoursesComponent implements OnInit {
         console.log(res.videoLink)
 
         // Add autoplay parameter to the video link
-        let videoLink = res.videoLink;
+        let videoLink = this.extractVideoId(res.videoLink) || res.videoLink;
+
+        // let extractedVideoId = this.extractVideoId(videoLink);
+        // if (extractedVideoId !== null) {
+        //   // extractedVideoId is string here, safe to use
+        //   console.log('Video ID:', extractedVideoId);
+        // } else {
+        //   console.log('Invalid or no video ID found');
+        // }
 
         console.log("This is Super Video Link ", videoLink)
 
         // Check if videoLink already has query params
         if (videoLink.includes('?')) {
-          videoLink += '&autoplay=1&mute=0&modestbranding=0&rel=0&controls=1&playsinline=0&loop=1';
+          videoLink = `https://www.youtube.com/embed/${videoLink}&autoplay=1&mute=0&modestbranding=1&rel=0&controls=1&playsinline=1`;
         } else {
-          videoLink += '?autoplay=1&mute=0&modestbranding=0&rel=0&controls=1&playsinline=0&loop=1';
+          videoLink = `https://www.youtube.com/embed/${videoLink}?autoplay=1&mute=0&modestbranding=1&rel=0&controls=1&playsinline=1`;
         }
+
+        console.log("This is Very Super Video Link ", videoLink);
 
         this.safeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(videoLink);
         console.log("this is Video Link ",this.safeVideoUrl)
