@@ -110,7 +110,7 @@
                 <!-- Submit Button -->
                 <div class="d-flex justify-content-end">
 
-                    <button 
+                    <button
                         type="button"
                         class="btn btn-outline-danger px-4 me-2"
                         (click)="closeEditModal()"
@@ -121,7 +121,7 @@
                     <button
                         type="submit"
                         class="btn btn-outline-dark px-4"
-                        
+
                         >
                         Update
                     </button>
@@ -162,10 +162,10 @@
                     <div class="row g-3">
 
                         <!-- Assignment ID -->
-                        <div class="col-12">
+                        <!-- <div class="col-12">
                         <label class="form-label">Assignment ID</label>
                         <input type="text" class="form-control" placeholder="Enter Assignment ID">
-                        </div>
+                        </div> -->
 
                         <!-- Title -->
                         <div class="col-12">
@@ -202,10 +202,10 @@
                             <option value="CS">Customer Service</option>
                         </select>
                         </div>
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                         <label class="form-label">Short Date</label>
                         <input type="date" class="form-control">
-                        </div>
+                        </div> -->
 
                         <!-- Submit Button -->
                         <!-- <div class="col-12 text-center mt-3">
@@ -225,7 +225,7 @@
             </div>
         </div>
     </div>
-    
+
     <div *ngIf="currentPages === 1">
         <div>
             <h3>
@@ -258,29 +258,36 @@
                                 <th>
                                     <input type="checkbox"/>
                                 </th>
-                                <th>ID</th>
+                                <th>AssignmentID</th>
                                 <th>Title</th>
                                 <th>Description</th>
-                                <th>Short Date</th>
                                 <th>Department</th>
-                                <th>MiniMum Score</th>
+                                <th>StartDate</th>
+                                <th>DueDate</th>
                                 <th>MaxScore</th>
+                                <th>MinimumScore</th>
+
+                                <th>AssignmentCreatedDate</th>
+
                             </tr>
                         </thead>
+
                         <tbody>
-                            <tr>
-                                <td>
-                                    <input type="checkbox" />
-                                </td>
-                                <td>1</td>
-                                <td>Hello</td>
-                                <td>This is Description</td>
-                                <td>12.08.2025</td>
-                                <td>IT & Software</td>
-                                <td>15</td>
-                                <td>20</td>
-                            </tr>
+                          <tr *ngFor="let item of assignments">
+                            <td><input type="checkbox" /></td>
+                            <td>{{ item.assignmentId }}</td>
+                            <td>{{ item.title }}</td>
+                            <td>{{ item.description }}</td>
+                            <td>{{ item.department }}</td>
+                            <td>{{ item.startDate | date:'yyyy-MM-dd' }}</td>
+                            <td>{{ item.dueDate | date:'yyyy-MM-dd' }}</td>
+                            <td>{{ item.maxScore }}</td>
+                            <td>{{ item.minimumScore }}</td>
+
+                            <td>{{ item.createdDate | date:'yyyy-MM-dd' }}</td>
+                          </tr>
                         </tbody>
+
                     </table>
                 </div>
             </div>
@@ -426,7 +433,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Question Add Modal -->
     <div
         class="modal fade fade-in"
@@ -494,7 +501,7 @@
                     <button
                     type="submit"
                     class="btn btn-success px-4"
-                    
+
                         >
                     Add
                     </button>

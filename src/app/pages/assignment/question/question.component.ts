@@ -1,17 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { QuestionService } from './question.service';
 
 @Component({
   selector: 'app-question',
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,ReactiveFormsModule
   ],
   templateUrl: './question.component.html',
   styleUrl: './question.component.scss'
 })
 export class QuestionComponent {
+  assignments: any[] = [];
 
 currentPages: number = 1;
 createModel: boolean = false;
@@ -20,6 +23,23 @@ editModel: boolean = false;
 questionModal: boolean = false;
 optionModal: boolean = false;
 
+constructor(private assignmentService: QuestionService) {}
+
+ngOnInit(): void {
+  this.getallassignments();
+}
+
+getallassignments(): void {
+  this.assignmentService.getAllAssignments().subscribe({
+    next: (data) => {
+      this.assignments = data;
+    },
+
+    error: (err) => {
+      console.error('Error fetching assignments:', err);
+    }
+  });
+}
 openOptionModal() {
   this.optionModal = true;
 }
@@ -65,13 +85,9 @@ CreateAssignment() {
   this.setPage(2);
 }
 
-
 setPage(pageNumber: number): void {
   this.currentPages = pageNumber;
 
-  // if (pageNumber === 3 && this.selectedCourseId) {
-  //   //this.editCourse(this.selectedCourseId); // Load course for editing
-  // }
 }
 
 }
