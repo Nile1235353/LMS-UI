@@ -12,6 +12,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { ViewcoursesComponent } from './courses/viewcourses/viewcourses.component';
 import { ProfileComponent } from './profile/profile.component';
 import { QuestionComponent } from './assignment/question/question.component';
+import { HttpClientModule } from '@angular/common/http';
+import { AnswerComponent } from './assignment/answer/answer.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { QuestionComponent } from './assignment/question/question.component';
     HomeComponent,
     ViewcoursesComponent,
     ProfileComponent,
-    QuestionComponent
+    QuestionComponent,
+    AnswerComponent,
+    HttpClientModule
   ],
 })
 export class PagesModule {}

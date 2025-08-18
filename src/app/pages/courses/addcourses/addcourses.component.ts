@@ -81,7 +81,7 @@ selectedCourse: any;
   filteredCourses: any[] = [];
   selectedCategory: string = 'All';
 
-  constructor(private spinner: NgxSpinnerService,private sanitizer: DomSanitizer,private fb: FormBuilder, private courseservice: AddcoursesService,private router: Router) {}
+  constructor(private http: HttpClient,private spinner: NgxSpinnerService,private sanitizer: DomSanitizer,private fb: FormBuilder, private courseservice: AddcoursesService,private router: Router) {}
 
   ngOnInit(): void {
     this.courseForm = this.fb.group({
@@ -188,10 +188,54 @@ selectedCourse: any;
     });
   }
 
-  onSubmit(): void {
+  allowedChannelId = 'UC9UbUeCcIZBxm-qQvPSJzmA'; // သင့် Channel ID
+  apiKey = 'AIzaSyA8V74wLhQc5Wjnm6uhUwqEpadYToGIvos'; // သင့် API Key
+
+  checkVideoLink(videoLink: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      const videoIdMatch = videoLink.match(/(?:v=|\/embed\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+      const videoId = videoIdMatch ? videoIdMatch[1] : null;
+
+      if (!videoId) {
+        alert('Invalid YouTube URL');
+        resolve(false);
+        return;
+      }
+
+      const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${this.apiKey}`;
+
+      this.http.get<any>(apiUrl).subscribe(res => {
+        if (res.items && res.items.length > 0) {
+          const channelId = res.items[0].snippet.channelId;
+          if (channelId === this.allowedChannelId) {
+            resolve(true); // Allowed
+          } else {
+            alert('❌ Video is NOT from your channel.');
+            resolve(false);
+          }
+        } else {
+          alert('Video not found.');
+          resolve(false);
+        }
+      }, _ => {
+        alert('API Error.');
+        resolve(false);
+      });
+    });
+  }
+
+
+  async onSubmit(): Promise<void> {
     if (this.courseForm.invalid) {
       this.courseForm.markAllAsTouched();
       return;
+    }
+
+    const videoLink = this.courseForm.value.VideoLink || '';
+
+    const isAllowed = await this.checkVideoLink(videoLink);
+    if (!isAllowed) {
+      return; // Validation fail → Submit မလုပ်
     }
 
     const formData = new FormData();
@@ -221,7 +265,7 @@ selectedCourse: any;
   }
 
 
-  updateCourse(): void {
+  async updateCourse(): Promise<void> {
     if (!this.selectedCourseId) {
       alert('No course selected for update.');
       return;
