@@ -14,6 +14,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { QuestionComponent } from './assignment/question/question.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AnswerComponent } from './assignment/answer/answer.component';
+import { ExamComponent } from './assignment/exam/exam.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { AnswerComponent } from './assignment/answer/answer.component';
     ProfileComponent,
     QuestionComponent,
     AnswerComponent,
-    HttpClientModule
+    HttpClientModule,
+    ExamComponent
   ],
 })
 export class PagesModule {}

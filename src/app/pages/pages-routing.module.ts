@@ -8,6 +8,7 @@ import { ProfileComponent } from "./profile/profile.component";
 import { ViewcoursedetailsComponent } from "./courses/viewcoursedetails/viewcoursedetails.component";
 import { QuestionComponent } from "./assignment/question/question.component";
 import { AnswerComponent } from "./assignment/answer/answer.component";
+import { ExamComponent } from "./assignment/exam/exam.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent, data: { breadcrumb: 'Home' }  },
@@ -30,7 +31,9 @@ const routes: Routes = [
 
    //Assignment
    {path:'question',component:QuestionComponent},
-   {path:'answer',component:AnswerComponent}
+   {path:'answer',component:AnswerComponent},
+   {path:'exam',component:ExamComponent}
+   
  ];
 
 @NgModule({

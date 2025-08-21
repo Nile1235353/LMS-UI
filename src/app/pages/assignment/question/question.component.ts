@@ -46,6 +46,7 @@ getallassignments(): void {
     }
   });
 }
+
 openOptionModal() {
   this.optionModal = true;
 }
