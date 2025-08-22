@@ -16,15 +16,19 @@ export class QuestionService {
 getAllAssignments(): Observable <any[]> {
   return this.http.get<any[]>(`${this.baseUrl}`);
 }
+
 getAssignmentById(id: string): Observable<any> {
   return this.http.get<any>(`${this.baseUrl}/${id}`);
 }
+
 createAssignment(assignment: any): Observable<any> {
   return this.http.post<any>(`${this.baseUrl}`, assignment);
 }
+
 updateAssignment(id: string, assignment: any): Observable<any> {
   return this.http.put<any>(`${this.baseUrl}/${id}`, assignment);
 }
+
 deleteAssignment(id: string): Observable<any> {
   return this.http.delete<any>(`${this.baseUrl}/${id}`);
 }
@@ -35,28 +39,18 @@ getQuestionsByAssignment(assignmentId: string): Observable<any[]> {
   return this.http.get<any[]>(`${this.baseUrl}/${assignmentId}/questions`);
 }
 
-// createQuestion(assignmentId: string, question: any): Observable<any> {
-//   return this.http.post<any>(`${this.baseUrl}/${assignmentId}/questions`, question);
-// }
-
-createQuestion(id: string, question: any): Observable<any> {
-
-  const payload = [question];
-  console.log('ERROR',question)
-  console.log(JSON.stringify(question));
-
-  return this.http.post<any>(`${this.baseUrl}/AddQuestions?assignmentId=${id}`, payload);
+createQuestion(assignmentId: string, question: any): Observable<any> {
+  return this.http.post(
+    `${this.baseUrl}/AddQuestions?assignmentId=${assignmentId}`,
+    question,
+    { responseType: 'text' }
+  );
 }
 
-// createQuestion(assignmentId: string, question: any): Observable<any> {
-//   return this.http.post<any>(`${this.baseUrl}/${assignmentId}/questions`, question);
+// updateQuestion(assignmentId: string, questionId: string, question: any): Observable<any> {
+//   return this.http.put<any>(`${this.baseUrl}/${assignmentId}/questions/${questionId}`, question);
 // }
 
-
-
-updateQuestion(assignmentId: string, questionId: string, question: any): Observable<any> {
-  return this.http.put<any>(`${this.baseUrl}/${assignmentId}/questions/${questionId}`, question);
-}
 
 deleteQuestion(assignmentId: string, questionId: string): Observable<any> {
   return this.http.delete<any>(`${this.baseUrl}/${assignmentId}/questions/${questionId}`);
@@ -65,21 +59,21 @@ deleteQuestion(assignmentId: string, questionId: string): Observable<any> {
 //#endregion
 
 //#region Option CRUD
-getOptionsByQuestion(questionId: string): Observable<any[]> {
-  return this.http.get<any[]>(`${this.baseUrl}/questions/${questionId}/options`);
-}
+// getOptionsByQuestion(questionId: string): Observable<any[]> {
+//   return this.http.get<any[]>(`${this.baseUrl}/questions/${questionId}/options`);
+// }
 
-createOption(questionId: string, option: any): Observable<any> {
-  return this.http.post<any>(`${this.baseUrl}/questions/${questionId}/options`, option);
-}
+// createOption(questionId: string, option: any): Observable<any> {
+//   return this.http.post<any>(`${this.baseUrl}/questions/${questionId}/options`, option);
+// }
 
-updateOption(questionId: string, optionId: string, option: any): Observable<any> {
-  return this.http.put<any>(`${this.baseUrl}/questions/${questionId}/options/${optionId}`, option);
-}
+// updateOption(questionId: string, optionId: string, option: any): Observable<any> {
+//   return this.http.put<any>(`${this.baseUrl}/questions/${questionId}/options/${optionId}`, option);
+// }
 
-deleteOption(questionId: string, optionId: string): Observable<any> {
-  return this.http.delete<any>(`${this.baseUrl}/questions/${questionId}/options/${optionId}`);
-}
+// deleteOption(questionId: string, optionId: string): Observable<any> {
+//   return this.http.delete<any>(`${this.baseUrl}/questions/${questionId}/options/${optionId}`);
+// }
 //#endregion
 
 }
