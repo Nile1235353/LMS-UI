@@ -1,73 +1,63 @@
-    <!-- Exam main Page -->    
-    
+    <!-- Exam main Page -->
     <div *ngIf="currentPages === 1">
         <div>
             <h3>
                 Exam List
             </h3>
         </div>
-
         <div class="container-fluid scroll-x">
 
             <div class="mb-3">
-                <button class="btn btn-outline-dark me-2" (click)="setPage(2)">
-                    <i class="bi bi-plus"></i>&nbsp;&nbsp;Exam
+
+                <!-- <button class="btn btn-outline-dark me-2" (click)="setPage(3)">
+                    <i class="bi bi-clipboard-data"></i>&nbsp;&nbsp;Exam
                 </button>
 
-                <button class="btn btn-outline-dark me-2" (click)="setPage(3)">
-                    <i class="bi bi-clipboard-data"></i>&nbsp;&nbsp;Detail
-                </button>
-
-                <!-- <button class="btn btn-outline-dark me-2">
+                <button class="btn btn-outline-dark me-2">
                     <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
                 </button> -->
+                <button class="btn btn-outline-dark me-2" (click)="gotoexam()" [disabled]="!selectedAssignment">
+                  <i class="bi bi-plus"></i> Exam
+                </button>
+
+                <button class="btn btn-outline-dark me-2" (click)="goToDetail()" [disabled]="!selectedAssignment">
+                  <i class="bi bi-clipboard-data"></i> Detail
+                </button>
             </div>
 
-            <!-- Scrollable Table -->
             <div class="scroll-x">
                 <div class="table-wrapper">
                     <table class="table table-bordered table-hover table-sm">
                         <thead>
                             <tr>
                                 <th>
-                                    <input type="checkbox"/>
+
                                 </th>
                                 <th>AssignmentID</th>
                                 <th>Title</th>
                                 <th>Description</th>
                                 <th>Department</th>
-                                <th>StartDate</th>
-                                <th>DueDate</th>
-                                <th>MaxScore</th>
-                                <th>MinimumScore</th>
-
-                                <th>AssignmentCreatedDate</th>
 
                             </tr>
                         </thead>
-
                         <tbody>
-                          <tr>
-                            <td><input type="checkbox" /></td>
-                            <td>1</td>
-                            <td>This is Testing</td>
-                            <td>This is Testing</td>
-                            <td>This is Testing</td>
-                            <td>This is Testing</td>
-                            <td>This is Testing</td>
-                            <td>This is Testing</td>
-                            <td>This is Testing</td>
-
-                            <td>This is Testing</td>
-                          </tr>
+                          <tr *ngFor="let a of assignments"
+                          [class.table-active]="a === selectedAssignment"
+                          (click)="selectRow(a)">
+                        <td><input type="radio" [checked]="a === selectedAssignment"/></td>
+                        <td>{{ a.assignmentId }}</td>
+                        <td>{{ a.title }}</td>
+                        <td>{{ a.description }}</td>
+                        <td>{{ a.department }}</td>
+                      </tr>
                         </tbody>
 
                     </table>
                 </div>
             </div>
         </div>
-    </div>
 
+    </div>
 
 
     <!-- Assignment Quiz -->
@@ -79,7 +69,7 @@
             <label class="form-label fw-bold">{{ i + 1 }}. {{ q.text }}</label>
 
             <!-- True/False Type -->
-            <div *ngIf="q.type === 'true_false'">
+            <!-- <div *ngIf="q.type === 'true_false'">
                 <div class="form-check">
                     <input class="form-check-input" type="radio" [name]="'q' + i" value="true" [(ngModel)]="answers[q.id]">
                     <label class="form-check-label">True</label>
@@ -88,43 +78,58 @@
                     <input class="form-check-input" type="radio" [name]="'q' + i" value="false" [(ngModel)]="answers[q.id]">
                     <label class="form-check-label">False</label>
                 </div>
+            </div> -->
+            <div *ngIf="q.type === 'true_false' || q.type === 'true/false'">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" [name]="'q' + i" [value]="true" [(ngModel)]="answers[q.id]">
+                <label class="form-check-label">True</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" [name]="'q' + i" [value]="false" [(ngModel)]="answers[q.id]">
+                <label class="form-check-label">False</label>
+              </div>
             </div>
 
             <!-- Multiple Choice Type -->
+
             <div *ngIf="q.type === 'multiple_choice'">
-                <div class="form-check" *ngFor="let option of q.options">
-                    <input class="form-check-input" type="checkbox" [value]="option" (change)="onCheckboxChange($event, q.id)">
-                    <label class="form-check-label">{{ option }}</label>
-                </div>
+              <div class="form-check" *ngFor="let option of q.options">
+                <input class="form-check-input" type="checkbox" [value]="option.optionId" (change)="onCheckboxChange($event, q.id)">
+                <label class="form-check-label">{{ option.optionText }}</label>
+              </div>
             </div>
         </div>
-
         <!-- Submit Button -->
-        <button class="btn btn-primary w-100 mt-2" (click)="submitAnswers()">
+
+        <div class="d-flex justify-content-between mt-3">
+          <button class="btn btn-secondary" (click)="setPage(1)">
+            <i class="bi bi-arrow-left"></i> Back
+          </button>
+          <button class="btn btn-primary" (click)="submitAnswers()">
             <i class="bi bi-send"></i> Submit Answers
-        </button>
+          </button>
+        </div>
+
     </div>
-
-
 
     <!-- Assignment Exam Detail -->
 
-    <div class="card shadow rounded-3 p-4 mt-3" *ngIf="currentPages === 3">
+    <!-- <div class="card shadow rounded-3 p-4 mt-3" *ngIf="currentPages === 3">
         <h4 class="mb-3"><i class="bi bi-file-earmark-text"></i> Assignment Details</h4>
 
-        <!-- Title -->
+
         <div class="mb-3">
             <label class="form-label fw-bold">Title:</label>
             <p class="form-control-plaintext">{{ assignment.title }}</p>
         </div>
 
-        <!-- Description / Instruction -->
+
         <div class="mb-3">
             <label class="form-label fw-bold">Description:</label>
             <p class="form-control-plaintext">{{ assignment.description }}</p>
         </div>
 
-        <!-- Deadline -->
+
         <div class="mb-3">
             <label class="form-label fw-bold">Deadline:</label>
             <p class="form-control-plaintext text-danger">
@@ -132,13 +137,13 @@
             </p>
         </div>
 
-        <!-- Marks -->
+
         <div class="mb-3">
             <label class="form-label fw-bold">Total Marks:</label>
             <p class="form-control-plaintext">{{ assignment.totalMarks }}</p>
         </div>
 
-        <!-- Attached File -->
+
         <div class="mb-3" *ngIf="assignment.file">
             <label class="form-label fw-bold">Attached File:</label><br>
             <a [href]="assignment.file" target="_blank" class="btn btn-outline-secondary btn-sm">
@@ -146,10 +151,10 @@
             </a>
         </div>
 
-        <!-- Back Button -->
+
         <button class="btn btn-secondary mt-3" (click)="setPage(1)">
             <i class="bi bi-arrow-left"></i> Back to Assignments
         </button>
-    </div>
+    </div> -->
 
 
