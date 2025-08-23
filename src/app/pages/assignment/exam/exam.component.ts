@@ -23,6 +23,8 @@ export class ExamComponent implements OnInit{
   questions: any[] = [];
   answers: any = {};
 
+  FinishModal: boolean = false;
+
   constructor(private examService: ExamService) {}
 
   setPage(pageNumber: number): void {
@@ -108,6 +110,14 @@ gotoexam() {
     },
     error: err => console.error("❌ Error loading questions:", err)
   });
+}
+
+openFinishedModal() {
+  this.FinishModal = true;
+}
+
+closeFinishedModal() {
+  this.FinishModal = false;
 }
 
 
