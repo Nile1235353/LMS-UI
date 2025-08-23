@@ -16,7 +16,7 @@
                 <button class="btn btn-outline-dark me-2">
                     <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
                 </button> -->
-                <button class="btn btn-outline-dark me-2" (click)="gotoexam()" [disabled]="!selectedAssignment">
+                <button class="btn btn-outline-dark me-2" (click)="openFinishedModal()" [disabled]="!selectedAssignment">
                   <i class="bi bi-plus"></i> Exam
                 </button>
 
@@ -96,7 +96,7 @@
           <button class="btn btn-secondary" (click)="setPage(1)">
             <i class="bi bi-arrow-left"></i> Back
           </button>
-          <button class="btn btn-primary" (click)="openFinishedModal()">
+          <button class="btn btn-primary" (click)="submitAnswers()">
             <i class="bi bi-send"></i> Submit Answers
           </button>
         </div>
@@ -157,7 +157,7 @@
                 <!-- Footer -->
                 <div class="modal-footer justify-content-between px-3">
                 <button type="button" class="btn btn-outline-secondary" (click)="closeFinishedModal()">Cancel</button>
-                <button type="button" class="btn btn-success" (click)="submitAnswers()">Done</button>
+                <button type="button" class="btn btn-success" (click)="gotoexam()">Done</button>
                 </div>
             </form>
 

@@ -102,7 +102,7 @@ gotoexam() {
           trueFalseAnswer: q.trueFalseAnswer
         };
       });
-
+      this.closeFinishedModal();
       console.log("✅ Final Questions:", this.questions);
 
       this.answers = {};
