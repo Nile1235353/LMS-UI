@@ -6,20 +6,10 @@
             </h3>
         </div>
         <div class="container-fluid scroll-x">
-
             <div class="mb-3">
-
-                <!-- <button class="btn btn-outline-dark me-2" (click)="setPage(3)">
-                    <i class="bi bi-clipboard-data"></i>&nbsp;&nbsp;Exam
-                </button>
-
-                <button class="btn btn-outline-dark me-2">
-                    <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
-                </button> -->
                 <button class="btn btn-outline-dark me-2" (click)="openFinishedModal()" [disabled]="!selectedAssignment">
                   <i class="bi bi-plus"></i> Exam
                 </button>
-
                 <button class="btn btn-outline-dark me-2" (click)="goToDetail()" [disabled]="!selectedAssignment">
                   <i class="bi bi-clipboard-data"></i> Detail
                 </button>
@@ -30,14 +20,11 @@
                     <table class="table table-bordered table-hover table-sm">
                         <thead>
                             <tr>
-                                <th>
-
-                                </th>
+                                <th></th>
                                 <th>AssignmentID</th>
                                 <th>Title</th>
                                 <th>Description</th>
                                 <th>Department</th>
-
                             </tr>
                         </thead>
                         <tbody>
@@ -45,31 +32,44 @@
                           [class.table-active]="a === selectedAssignment"
                           (click)="selectRow(a)">
                         <td><input type="radio" [checked]="a === selectedAssignment"/></td>
+                        <!-- <td>
+                          <input type="radio"
+                                 name="assignmentRadio"
+                                 [value]="a"
+                                 [(ngModel)]="selectedAssignment">
+                        </td> -->
                         <td>{{ a.assignmentId }}</td>
                         <td>{{ a.title }}</td>
                         <td>{{ a.description }}</td>
                         <td>{{ a.department }}</td>
                       </tr>
+                      <!-- <tr *ngFor="let a of assignments"
+                [class.table-active]="a.assignmentId === selectedAssignment?.assignmentId"
+                (click)="selectRow(a)">
+              <td><input type="radio" [checked]="a.assignmentId === selectedAssignment?.assignmentId"/></td>
+              <td>{{ a.assignmentId }}</td>
+              <td>{{ a.title }}</td>
+              <td>{{ a.description }}</td>
+              <td>{{ a.department }}</td>
+            </tr> -->
                         </tbody>
-
                     </table>
                 </div>
             </div>
         </div>
-
     </div>
-
 
     <!-- Assignment Quiz -->
     <div class="card shadow rounded-3 p-4 mt-3" *ngIf="currentPages === 2">
         <h4 class="mb-3">Assignment Quiz</h4>
-
-        <!-- Loop All Questions -->
+  <!-- User Info -->
+  <div class="mb-3 p-3 border rounded bg-light">
+    <p><strong>User Name:</strong> {{ selectedUserName }}</p>
+    <p><strong>User ID:</strong> {{ selectedUserId }}</p>
+    <p><strong>Employee ID:</strong> {{ selectedEmployeeId }}</p>
+  </div>
         <div class="mb-3" *ngFor="let q of questions; let i = index">
             <label class="form-label fw-bold">{{ i + 1 }}. {{ q.text }}</label>
-
-            <!-- True/False Type -->
-
             <div *ngIf="q.type === 'true_false' || q.type === 'true/false'">
               <div class="form-check">
                 <input class="form-check-input" type="radio" [name]="'q' + i" [value]="true" [(ngModel)]="answers[q.id]">
@@ -81,8 +81,6 @@
               </div>
             </div>
 
-            <!-- Multiple Choice Type -->
-
             <div *ngIf="q.type === 'multiple_choice'">
               <div class="form-check" *ngFor="let option of q.options">
                 <input class="form-check-input" type="checkbox" [value]="option.optionId" (change)="onCheckboxChange($event, q.id)">
@@ -90,7 +88,7 @@
               </div>
             </div>
         </div>
-        <!-- Submit Button -->
+
 
         <div class="d-flex justify-content-between mt-3">
           <button class="btn btn-secondary" (click)="setPage(1)">
@@ -100,9 +98,7 @@
             <i class="bi bi-send"></i> Submit Answers
           </button>
         </div>
-
     </div>
-
 
     <div
         class="modal fade fade-in"
@@ -114,51 +110,47 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content rounded-3 shadow">
 
-            <!-- Header -->
             <div class="modal-header bg-light">
                 <h3 class="modal-title d-flex align-items-center gap-2">
                 <i class="bi bi-pencil-square text-primary"></i>
-                Finished Assignment
+                User Info
                 </h3>
                 <button type="button" class="btn-close" (click)="closeFinishedModal()"></button>
             </div>
 
-            <!-- Body -->
             <form>
-                <div class="modal-body">
-
+              <div class="modal-body">
                 <div class="mb-3">
-                    <label class="form-label">User Name</label>
-                    <select class="form-control"
-                            >
-                    <option >
-                        
-                    </option>
-                    </select>
-                </div>
+                  <label class="form-label">User Name</label>
 
-                <div class="mb-3">
-                    <label class="form-label">User ID</label>
-                    <input type="text" class="form-control" readonly />
-                </div>
+    <select class="form-control"
+        [(ngModel)]="selectedUser"
+        (ngModelChange)="onUserChange($event)">
+  <option [ngValue]="null">-- Select User --</option>
+  <option *ngFor="let u of userList" [ngValue]="u">{{ u.FullName }}</option>
+</select>
 
+  </div>
                 <div class="mb-3">
-                    <label class="form-label">Department</label>
-                    <input type="text" class="form-control" readonly />
+                  <label class="form-label">User ID</label>
+                  <input type="text" class="form-control" [value]="selectedUser?.UserId" readonly />
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Employee ID</label>
-                    <input type="text" class="form-control" readonly />
+                  <label class="form-label">Department</label>
+                  <input type="text" class="form-control" [value]="selectedUser?.Department" readonly />
                 </div>
 
+                <div class="mb-3">
+                  <label class="form-label">Employee ID</label>
+                  <input type="text" class="form-control" [value]="selectedUser?.EmployeeId" readonly />
                 </div>
+              </div>
 
-                <!-- Footer -->
-                <div class="modal-footer justify-content-between px-3">
+              <div class="modal-footer justify-content-between px-3">
                 <button type="button" class="btn btn-outline-secondary" (click)="closeFinishedModal()">Cancel</button>
                 <button type="button" class="btn btn-success" (click)="gotoexam()">Done</button>
-                </div>
+              </div>
             </form>
 
             </div>
@@ -168,49 +160,6 @@
 
 
 
-    <!-- Assignment Exam Detail -->
 
-    <!-- <div class="card shadow rounded-3 p-4 mt-3" *ngIf="currentPages === 3">
-        <h4 class="mb-3"><i class="bi bi-file-earmark-text"></i> Assignment Details</h4>
-
-
-        <div class="mb-3">
-            <label class="form-label fw-bold">Title:</label>
-            <p class="form-control-plaintext">{{ assignment.title }}</p>
-        </div>
-
-
-        <div class="mb-3">
-            <label class="form-label fw-bold">Description:</label>
-            <p class="form-control-plaintext">{{ assignment.description }}</p>
-        </div>
-
-
-        <div class="mb-3">
-            <label class="form-label fw-bold">Deadline:</label>
-            <p class="form-control-plaintext text-danger">
-            {{ assignment.deadline | date:'medium' }}
-            </p>
-        </div>
-
-
-        <div class="mb-3">
-            <label class="form-label fw-bold">Total Marks:</label>
-            <p class="form-control-plaintext">{{ assignment.totalMarks }}</p>
-        </div>
-
-
-        <div class="mb-3" *ngIf="assignment.file">
-            <label class="form-label fw-bold">Attached File:</label><br>
-            <a [href]="assignment.file" target="_blank" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-paperclip"></i> View File
-            </a>
-        </div>
-
-
-        <button class="btn btn-secondary mt-3" (click)="setPage(1)">
-            <i class="bi bi-arrow-left"></i> Back to Assignments
-        </button>
-    </div> -->
 
 
