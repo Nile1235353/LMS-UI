@@ -75,6 +75,13 @@ export class QuestionComponent implements OnInit {
     });
   }
 
+  goback() {
+    // This is Go Back Function
+    this.selectedAssignment = false;
+    this.setPage(1);
+    this.getAllAssignments();
+  }
+
 
   createAssignment() {
     if (!this.assignmentForm.valid) {
