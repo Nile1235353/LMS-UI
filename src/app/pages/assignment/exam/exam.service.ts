@@ -10,6 +10,8 @@ import { Observable } from 'rxjs';
 export class ExamService {
 
   private baseUrl = environment.LMSAPIUrl + 'Assignment';
+  private apiUrl = environment.LMSAPIUrl + 'User';
+  private submissionUrl = environment.LMSAPIUrl + 'AssignmentSubmission';
 
   constructor(private http: HttpClient) { }
 
@@ -21,5 +23,14 @@ export class ExamService {
     return this.http.get<any[]>(`${this.baseUrl}/${assignmentId}/questions`);
   }
 
+  getUserList(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/GetUserList`);
+  }
 
+  // Submit assignment (answers)
+  submitAssignment(payload: any): Observable<any> {
+    return this.http.post<any>(`${this.submissionUrl}`, payload);
+  }
 }
+
+
