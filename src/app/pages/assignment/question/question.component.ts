@@ -30,7 +30,7 @@ export class QuestionComponent implements OnInit {
   multipleOptions: { text: string; correct: boolean }[] = [{ text: '', correct: false }];
   trueFalseAnswer = false;
   editForm!: FormGroup;
-
+points?: number;
 
 
   constructor(private assignmentService: QuestionService, private fb: FormBuilder) {}
@@ -45,6 +45,7 @@ export class QuestionComponent implements OnInit {
       department: ['', Validators.required],
       startDate: ['', Validators.required],
       dueDate: ['', Validators.required],
+
     });
 
     // Question form
@@ -94,6 +95,7 @@ export class QuestionComponent implements OnInit {
       dueDate: this.assignmentForm.value.dueDate ?? new Date(),
       maxScore: this.assignmentForm.value.maxScore ?? 100,
       minimumScore: this.assignmentForm.value.minimumScore ?? 0,
+
       questions: []
     };
 
@@ -178,6 +180,7 @@ export class QuestionComponent implements OnInit {
     this.questionType = '';
     this.multipleOptions = [{ text: '', correct: false }];
     this.trueFalseAnswer = false;
+    this.points = undefined; // clear previous value
   }
 
   saveQuestion(form: NgForm) {
@@ -193,8 +196,11 @@ export class QuestionComponent implements OnInit {
     const baseQuestion = {
       questionText: formValue.questionText,
       questionType: formValue.questionType,
+      points: this.points,
       trueFalseAnswer: formValue.questionType === 'True/False' ? formValue.trueFalseAnswer : null,
-      point: formValue.points || 0, // <-- Use 'point' to match your table binding
+      //point: formValue.points || 0, // <-- Use 'point' to match your table binding
+
+
       createdDate: now,
       createdUser: "system",
       updatedDate: now,

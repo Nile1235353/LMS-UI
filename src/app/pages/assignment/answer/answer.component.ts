@@ -29,12 +29,11 @@ export class AnswerComponent {
 
   questions = [
     { id: 'q1', text: 'The Earth is flat.', type: 'truefalse', correctAnswer: 'false' },
-    { id: 'q2', text: 'Which of the following are programming languages?', type: 'mcq', 
+    { id: 'q2', text: 'Which of the following are programming languages?', type: 'mcq',
       options: ['Python', 'HTML', 'C++', 'Photoshop'], correctAnswer: ['Python', 'C++'] },
       { id: 'q3', text: 'The Earth is flat.', type: 'truefalse', correctAnswer: 'false' },
-      { id: 'q4', text: 'Which of the following are programming languages?', type: 'mcq', 
+      { id: 'q4', text: 'Which of the following are programming languages?', type: 'mcq',
       options: ['Python', 'HTML', 'C++', 'Photoshop'], correctAnswer: ['Python', 'C++'] },
-     
   ];
 
   answers: any = {
@@ -43,7 +42,6 @@ export class AnswerComponent {
     q3: 'false',
     q4: ['C++','Photoshop']
   };
-
 
   // questionshowModal = false;
   // questionType = '';
@@ -68,5 +66,5 @@ export class AnswerComponent {
   //   this.closeModal();
   // }
 
- 
+
 }

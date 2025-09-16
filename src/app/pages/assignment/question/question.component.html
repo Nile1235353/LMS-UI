@@ -164,6 +164,7 @@
                     type="date" class="form-control" formControlName="dueDate"
                   />
                 </div>
+
               </div>
             </form>
           </div>
@@ -185,7 +186,7 @@
       </div>
 
         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center gap-3 mb-3 p-3 scroll-x">
-        
+
           <div>
             <button class="btn btn-outline-dark me-2" (click)="openCreateModal()">
               <i class="bi bi-plus"></i>&nbsp;&nbsp;New
@@ -199,8 +200,8 @@
               <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
             </button>
 
-            <!-- <button type="button" class="btn btn-outline-danger me-2"  
-              [disabled]="!selectedCourseId"  
+            <!-- <button type="button" class="btn btn-outline-danger me-2"
+              [disabled]="!selectedCourseId"
               (click)="openModal()">
               <i class="bi bi-trash"></i>&nbsp;&nbsp;Delete
             </button> -->
@@ -212,11 +213,11 @@
           </div>
 
           <!-- <div class="input-group" style="min-width: 200px; max-width: 400px;">
-            <input 
-              type="text" 
-              class="form-control" 
-              placeholder="Search courses..." 
-              aria-label="Search" 
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search courses..."
+              aria-label="Search"
               aria-describedby="basic-addon1"
               [(ngModel)]="searchTerm"
             >
@@ -225,19 +226,7 @@
         </div>
 
       <div class="container-fluid scroll-x">
-        <!-- <div class="mb-3">
-          <button class="btn btn-outline-dark me-2" (click)="openCreateModal()">
-            <i class="bi bi-plus"></i>&nbsp;&nbsp;New
-          </button>
 
-          <button class="btn btn-outline-dark me-2" (click)="setPage(2)">
-            <i class="bi bi-clipboard-data"></i>&nbsp;&nbsp;Detail
-          </button>
-
-          <button class="btn btn-outline-dark me-2" (click)="openEditModal()">
-            <i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit
-          </button>
-        </div> -->
 
         <!-- Scrollable Table -->
         <div class="table-responsive scrollable-table-wrapper ">
@@ -389,7 +378,7 @@
                   <th>Question Text</th>
                   <th>QuestionType</th>
                   <th>Status</th>
-                  <th>Point</th>
+                  <th>Points</th>
                 </tr>
               </thead>
               <tbody>
@@ -407,7 +396,7 @@
                   : '' }}
                 </td>
                 <!-- <td>{{q.point}}</td> -->
-                <td>{{ q.point || 0 }}</td>
+                <td>{{ q.points || 0 }}</td>
               </tr>
 
               <tr *ngIf="!selectedAssignment.questions?.length">
@@ -445,6 +434,22 @@
                 Question text is required.
               </div>
             </div>
+            <div class="mb-3">
+              <label>Points <span class="text-danger">*</span></label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="points"
+                name="points"
+                min="1"
+                required
+                placeholder="Enter points for this question"
+              />
+              <div *ngIf="questionForm.submitted && (!points || points < 1)" class="text-danger small">
+                Points must be at least 1.
+              </div>
+            </div>
+
 
             <!-- Question Type -->
             <div class="mb-3">

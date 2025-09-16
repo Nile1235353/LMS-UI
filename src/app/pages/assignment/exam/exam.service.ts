@@ -31,6 +31,8 @@ export class ExamService {
   submitAssignment(payload: any): Observable<any> {
     return this.http.post<any>(`${this.submissionUrl}`, payload);
   }
+
+
 }
 
 

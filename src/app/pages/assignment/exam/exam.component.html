@@ -32,26 +32,13 @@
                           [class.table-active]="a === selectedAssignment"
                           (click)="selectRow(a)">
                         <td><input type="radio" [checked]="a === selectedAssignment"/></td>
-                        <!-- <td>
-                          <input type="radio"
-                                 name="assignmentRadio"
-                                 [value]="a"
-                                 [(ngModel)]="selectedAssignment">
-                        </td> -->
+
                         <td>{{ a.assignmentId }}</td>
                         <td>{{ a.title }}</td>
                         <td>{{ a.description }}</td>
                         <td>{{ a.department }}</td>
                       </tr>
-                      <!-- <tr *ngFor="let a of assignments"
-                [class.table-active]="a.assignmentId === selectedAssignment?.assignmentId"
-                (click)="selectRow(a)">
-              <td><input type="radio" [checked]="a.assignmentId === selectedAssignment?.assignmentId"/></td>
-              <td>{{ a.assignmentId }}</td>
-              <td>{{ a.title }}</td>
-              <td>{{ a.description }}</td>
-              <td>{{ a.department }}</td>
-            </tr> -->
+
                         </tbody>
                     </table>
                 </div>
@@ -68,7 +55,7 @@
     <p><strong>User ID:</strong> {{ selectedUserId }}</p>
     <p><strong>Employee ID:</strong> {{ selectedEmployeeId }}</p>
   </div>
-        <div class="mb-3" *ngFor="let q of questions; let i = index">
+        <!-- <div class="mb-3" *ngFor="let q of questions; let i = index">
             <label class="form-label fw-bold">{{ i + 1 }}. {{ q.text }}</label>
             <div *ngIf="q.type === 'true_false' || q.type === 'true/false'">
               <div class="form-check">
@@ -87,7 +74,26 @@
                 <label class="form-check-label">{{ option.optionText }}</label>
               </div>
             </div>
+        </div> -->
+
+        <div *ngFor="let q of questions; let i = index">
+          <p><strong>{{ i + 1 }}. {{ q.text }}</strong></p>
+
+
+          <div *ngIf="q.type === 'true_false' || q.type === 'true/false'">
+            <input type="radio" [name]="'q' + i" [value]="true" [(ngModel)]="answers[q.id]"> True
+            <input type="radio" [name]="'q' + i" [value]="false" [(ngModel)]="answers[q.id]"> False
+          </div>
+
+
+          <div *ngIf="q.type === 'multiple_choice'">
+            <div *ngFor="let option of q.options">
+              <input type="checkbox" [value]="option.optionId" (change)="onCheckboxChange($event, q.id)">
+              {{ option.optionText }}
+            </div>
+          </div>
         </div>
+
 
 
         <div class="d-flex justify-content-between mt-3">
