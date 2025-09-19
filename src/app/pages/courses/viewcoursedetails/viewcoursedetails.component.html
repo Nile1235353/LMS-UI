@@ -174,7 +174,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let course of paginatedCourse, let i = index,let video of filteredVideos| slice:(currentPage-1)*pageSize:(currentPage*pageSize)">
+          <tr *ngFor="let course of paginatedCourses, let i = index,let video of filteredAndSortedCourses| slice:(currentPage-1)*pageSize:(currentPage*pageSize)">
             <td>{{course.id}}</td>
             <td>{{course.viewCourseId }}</td>
             <td>{{ course.userId }}</td>

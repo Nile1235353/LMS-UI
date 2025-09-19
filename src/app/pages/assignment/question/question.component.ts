@@ -5,6 +5,19 @@ import { FormArray, FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsMo
 import { RouterModule } from '@angular/router';
 import { QuestionService } from './question.service';
 
+interface Assignment {
+  assignmentId: string; // ID ဖြစ်တဲ့အတွက် number (သို့မဟုတ် string)
+  title: string;
+  description: string;
+  department: string;
+  startDate: string | Date;
+  dueDate: string | Date;
+  maxScore: number;
+  minimumScore: number;
+  createdDate: string | Date;
+
+}
+
 @Component({
   selector: 'app-question',
   standalone: true,
@@ -30,7 +43,17 @@ export class QuestionComponent implements OnInit {
   multipleOptions: { text: string; correct: boolean }[] = [{ text: '', correct: false }];
   trueFalseAnswer = false;
   editForm!: FormGroup;
-points?: number;
+  points?: number;
+
+  currentPage = 1;
+  // totalPages = 1; // Removed duplicate property
+  paginatedCourses: any[] = [];
+  courses: any[] = [];
+  pageSize = 7;
+  tableRows: any[] = [];
+  searchTerm: any;
+
+  selectedCourseId: string | null = null;
 
 
   constructor(private assignmentService: QuestionService, private fb: FormBuilder) {}
@@ -68,12 +91,41 @@ points?: number;
     this.getAllAssignments();
   }
 
+  toggleCourseSelection(courseId: string): void {
+    if (this.selectedAssignment === courseId) {
+      this.selectedAssignment = null; // deselect
+    } else {
+      this.selectedAssignment = courseId; // select
+    }
+    console.log('Selected Course ID:', this.selectedAssignment);
+  }
+
+  toggleAllCheckboxes(event: any) {
+    const checked = event.target.checked;
+    this.assignments.forEach(row => (row.selected = checked));
+    this.paginate();
+  }
+
   // Assignments
+  // getAllAssignments(): void {
+  //   this.assignmentService.getAllAssignments().subscribe({
+  //     next: (data) => (this.assignments = data),
+  //     error: (err) => console.error('Error fetching assignments:', err)
+  //   });
+  // }
+
   getAllAssignments(): void {
     this.assignmentService.getAllAssignments().subscribe({
-      next: (data) => (this.assignments = data),
+      next: (data) => {
+        this.assignments = data;
+        this.originalUsers = [...data]; // <-- FIX: Original data ကို copy ကူးထားပါ
+      },
       error: (err) => console.error('Error fetching assignments:', err)
     });
+  }
+
+  isAllSelected() {
+    return this.assignments.length > 0 && this.assignments.every(row => row.selected);
   }
 
   goback() {
@@ -146,9 +198,23 @@ points?: number;
     else if (pageNumber === 2 && this.selectedAssignmentId) this.loadAssignmentDetail(this.selectedAssignmentId);
   }
 
+  paginate(): void {
+    const start = (this.currentPage - 1) * this.pageSize;
+    this.paginatedCourses = this.courses.slice(start, start + this.pageSize);
+  }
+
+  // toggleAllCheckboxes(event: any) {
+  //   const checked = event.target.checked;
+  //   this.tableRows.forEach(row => (row.selected = checked));
+  //   this.paginate();
+  // }
+
   loadAssignments() {
     this.assignmentService.getAllAssignments().subscribe({
-      next: (res) => this.assignments = res,
+      next: (res) => { 
+        this.assignments = res,
+        this.originalUsers = [...res]
+      },
       error: (err) => console.error('Failed to load assignments', err)
     });
   }
@@ -157,6 +223,7 @@ points?: number;
     this.assignmentService.getAssignmentById(id).subscribe({
       next: (res) => {
         this.selectedAssignment = res;
+        console.log(this.selectedAssignment);
         this.questions = res.questions || [];
       },
       error: (err) => console.error('Failed to load assignment detail', err)
@@ -265,8 +332,18 @@ points?: number;
   }
 
 /// radio button change event
-onSelectAssignment(item: any) {
-  this.selectedAssignment = item;
+// onSelectAssignment(item: any) {
+//   this.selectedAssignment = item;
+// }
+
+onSelectAssignment(item: any): void {
+  if (this.selectedAssignment === item) {
+    // (Row တူတူကို ထပ်နှိပ်ရင်)
+    this.selectedAssignment = null; // null (deselect) လုပ်လိုက်ပါ
+  } else {
+    // (Row အသစ်ကို နှိပ်ရင်)
+    this.selectedAssignment = item; // select လုပ်ပါ
+  }
 }
 
 // modal open function
@@ -349,5 +426,191 @@ deleteSelectedQuestions() {
   }
 }
 
+ // Sorting Table Fields
+
+  // user: Assignment[] = [];
+  originalUsers: Assignment[] = []; // Store original unsorted data
+  sortedColumn: string | null = null;
+  sortState: 'normal' | 'asc' | 'desc' = 'normal';
+  // courses: any[] = [];
+
+  // onHeaderDoubleClick(column: string): void {
+  //   console.log(column)
+  //   console.log(this.sortedColumn)
+  //   if (this.sortedColumn !== column) {
+  //     // New column - start with ascending
+  //     this.sortedColumn = column;
+  //     this.sortState = 'asc';
+  //     // console.log(this.sortedColumn);
+  //   } else {
+  //     // Same column - cycle through states
+  //     switch (this.sortState) {
+  //       case 'normal':
+  //         this.sortState = 'asc';
+  //         this.sortedColumn = column;
+  //         break;
+  //       case 'asc':
+  //         this.sortState = 'desc';
+  //         break;
+  //       case 'desc':
+  //         this.sortState = 'normal';
+  //         this.sortedColumn = null;
+  //         break;
+  //     }
+  //   }
+
+  //   console.log(this.sortState)
+
+  //   // this.applySorting();
+  // }
+
+  onHeaderDoubleClick(column: string): void {
+    console.log(column);
+    console.log(this.sortedColumn);
+
+    if (this.sortedColumn !== column) {
+      this.sortedColumn = column;
+      this.sortState = 'asc';
+    } else {
+      switch (this.sortState) {
+        case 'normal':
+          this.sortState = 'asc';
+          this.sortedColumn = column;
+          break;
+        case 'asc':
+          this.sortState = 'desc';
+          break;
+        case 'desc':
+          this.sortState = 'normal';
+          this.sortedColumn = null;
+          break;
+      }
+    }
+
+    this.currentPage = 1; // Reset page
+    
+    // function အသစ်ကို ခေါ်ပါ
+    this.applyFilterAndSort(); // <-- (applySorting() အစား ဒါကို ပြောင်းခေါ်ပါ)
+  }
+
+  // applySorting(): void {
+    
+  //   if (this.sortState === 'normal') {
+  //     // Reset to original order
+  //     this.assignments = [...this.originalUsers];
+  //     return;
+  //   }
+
+  //   // Create a new array to sort
+  //   this.assignments = [...this.assignments].sort((a, b) => {
+  //     const aValue = a[this.sortedColumn as keyof Assignment];
+  //     const bValue = b[this.sortedColumn as keyof Assignment];
+
+  //     // For numeric values
+  //     if (typeof aValue === 'number' && typeof bValue === 'number') {
+  //       return this.sortState === 'asc' ? aValue - bValue : bValue - aValue;
+  //     }
+
+  //     // For string values
+  //     if (typeof aValue === 'string' && typeof bValue === 'string') {
+  //       return this.sortState === 'asc'
+  //         ? aValue.localeCompare(bValue)
+  //         : bValue.localeCompare(aValue);
+  //     }
+
+  //     if (aValue == null) return 1;
+  //     if (bValue == null) return -1;
+
+  //     // For date values (string or Date)
+  //     if ((typeof aValue === 'string' || aValue instanceof Date) &&
+  //         (typeof bValue === 'string' || bValue instanceof Date)) {
+  //       const aTime = new Date(aValue).getTime();
+  //       const bTime = new Date(bValue).getTime();
+  //       return this.sortState === 'asc' ? aTime - bTime : bTime - aTime;
+  //     }
+
+  //     console.log("This is aValue = !",aValue)
+
+  //     return 0;
+  //   });
+  // }
+
+  /**
+   * Filter (Search) အရင်လုပ်ပြီး၊ ရလာတဲ့ Data ကိုမှ Sort ဆက်လုပ်မယ့် Function
+   */
+  applyFilterAndSort(): void {
+    
+    // 1. မူရင်း data (originalUsers) ကနေ အမြဲတမ်း ပြန်စပါ
+    let items: Assignment[] = [...this.originalUsers];
+
+    // 2. Filter Logic (Search Term)
+    if (this.searchTerm) {
+      const lowerSearchTerm = this.searchTerm.toLowerCase();
+      items = items.filter(assignment => 
+        (assignment.title && assignment.title.toLowerCase().includes(lowerSearchTerm)) ||
+        (assignment.department && assignment.department.toLowerCase().includes(lowerSearchTerm))
+      );
+    }
+
+    // 3. Sorting Logic (သင့် logic အတိုင်းပါပဲ)
+    if (this.sortState !== 'normal' && this.sortedColumn) {
+      items.sort((a, b) => {
+        const aValue = a[this.sortedColumn as keyof Assignment];
+        const bValue = b[this.sortedColumn as keyof Assignment];
+
+        if (aValue == null) return 1;
+        if (bValue == null) return -1;
+
+        if (typeof aValue === 'number' && typeof bValue === 'number') {
+          return this.sortState === 'asc' ? aValue - bValue : bValue - aValue;
+        }
+        if (typeof aValue === 'string' && typeof bValue === 'string') {
+          return this.sortState === 'asc'
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+        }
+        if ((typeof aValue === 'string' || aValue instanceof Date) &&
+            (typeof bValue === 'string' || bValue instanceof Date)) {
+          const aTime = new Date(aValue).getTime();
+          const bTime = new Date(bValue).getTime();
+          return this.sortState === 'asc' ? aTime - bTime : bTime - aTime;
+        }
+        return 0;
+      });
+    }
+    
+    // 4. အဓိက 'assignments' array ကို Filter + Sort လုပ်ပြီးသား data နဲ့ အစားထိုးပါ
+    this.assignments = items;
+  }
+
+  onSearch(): void {
+    this.currentPage = 1; // Search လုပ်ရင် Page 1 ကို အမြဲပြန်သွားပါ
+    this.applyFilterAndSort();
+  }
+
+
+  get paginatedAssignments(): Assignment[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    return this.assignments.slice(start, end); // assignments array (Filter+Sort လုပ်ပြီးသား) ကို ဖြတ်ပါ
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.assignments.length / this.pageSize); // assignments (Filter+Sort လုပ်ပြီးသား) အရေအတွက်ပေါ် တွက်ပါ
+  }
+
+  changePage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+  
+  nextPage(): void {
+    this.changePage(this.currentPage + 1);
+  }
+
+  prevPage(): void {
+    this.changePage(this.currentPage - 1);
+  }
 
 }

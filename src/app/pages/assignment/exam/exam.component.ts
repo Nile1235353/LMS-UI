@@ -31,10 +31,14 @@ export class ExamComponent implements OnInit{
   selectedUserId: string = '';
 
   selectedUserName: string = '';
-selectedEmployeeId: string = '';
+  selectedEmployeeId: string = '';
 
-answers: { [questionId: string]: any } = {};   // true/false or text
+  answers: { [questionId: string]: any } = {};   // true/false or text
   multiAnswers: { [questionId: string]: string[] } = {}; // multiple choice
+
+  originalAssignments: any[] = [];
+  searchTerm: string = '';           
+  paginatedCourses: any;
 
   constructor(private examService: ExamService,private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -53,12 +57,24 @@ answers: { [questionId: string]: any } = {};   // true/false or text
     this.loadAssignments();
     this.loadUsers();
   }
+  // loadAssignments() {
+  //   this.examService.getAllAssignments().subscribe({
+  //     next: res => this.assignments = res,
+  //     error: err => console.error(err)
+  //   });
+  //   //console.log("Assignment:", this.selectedAssignment)
+  // }
+
   loadAssignments() {
     this.examService.getAllAssignments().subscribe({
-      next: res => this.assignments = res,
+      next: res => {
+        this.assignments = res;
+        console.log("This is All Assignments Before Filter !=",this.assignments);
+        this.originalAssignments = [...res]; // <-- FIX: Backup copy ကူးထားပါ
+        console.log("This is All Assignments !=",this.assignments);
+      },
       error: err => console.error(err)
     });
-    //console.log("Assignment:", this.selectedAssignment)
   }
 
 // Load all users
@@ -70,8 +86,27 @@ answers: { [questionId: string]: any } = {};   // true/false or text
     });
   }
 // select assignment row
-  selectRow(assignment: any) {
-    this.selectedAssignment = assignment;
+  // selectRow(assignment: any) {
+  //   this.selectedAssignment = assignment;
+  // }
+
+  selectRow(a: any): void {
+    this.selectedAssignment = (this.selectedAssignment === a) ? null : a;
+  }
+
+  toggleAllCheckboxes(event: any) {
+    const checked = event.target.checked;
+    this.assignments.forEach(row => (row.selected = checked));
+    this.paginate();
+  }
+
+  paginate(): void {
+    const start = (this.currentPage - 1) * this.pageSize;
+    this.paginatedCourses = this.assignments.slice(start, start + this.pageSize);
+  }
+
+  isAllSelected() {
+    return this.assignments.length > 0 && this.assignments.every(row => row.selected);
   }
 
   goToDetail() {
@@ -300,4 +335,120 @@ submitAnswers() {
     }
   });
 }
+
+sortedColumn: string | null = null;
+sortState: 'normal' | 'asc' | 'desc' = 'normal';
+
+currentPage = 1;
+pageSize = 7; 
+
+applyFilterAndSort(): void {
+    
+    let items: any[] = [...this.originalAssignments];
+
+    // 2. Filter Logic (Search Term)
+    // assignment data 'title'
+    if (this.searchTerm) {
+      const lowerSearchTerm = this.searchTerm.toLowerCase();
+      items = items.filter(item => 
+        (item.title && item.title.toLowerCase().includes(lowerSearchTerm)) ||
+        (item.department && item.department.toLowerCase().includes(lowerSearchTerm))
+      );
+    }
+
+    // 3. Sorting Logic
+    if (this.sortState !== 'normal' && this.sortedColumn) {
+      const col = this.sortedColumn;
+      items.sort((a, b) => {
+        const aValue = a[col];
+        const bValue = b[col];
+
+        if (aValue == null) return 1;
+        if (bValue == null) return -1;
+
+        if (typeof aValue === 'number' && typeof bValue === 'number') {
+          return this.sortState === 'asc' ? aValue - bValue : bValue - aValue;
+        }
+        if (typeof aValue === 'string' && typeof bValue === 'string') {
+          return this.sortState === 'asc'
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+        }
+        if ((typeof aValue === 'string' || aValue instanceof Date) &&
+            (typeof bValue === 'string' || bValue instanceof Date)) {
+          const aTime = new Date(aValue).getTime();
+          const bTime = new Date(bValue).getTime();
+          return this.sortState === 'asc' ? aTime - bTime : bTime - aTime;
+        }
+        return 0;
+      });
+    }
+    
+    this.assignments = items;
+  }
+
+  onSearch(): void {
+    this.currentPage = 1; // Search to page 1
+    this.applyFilterAndSort();
+  }
+
+  /**
+   * Header Double Click
+   */
+  onHeaderDoubleClick(column: string): void {
+    if (this.sortedColumn !== column) {
+      this.sortedColumn = column;
+      this.sortState = 'asc';
+    } else {
+      switch (this.sortState) {
+        case 'normal':
+          this.sortState = 'asc';
+          this.sortedColumn = column;
+          break;
+        case 'asc':
+          this.sortState = 'desc';
+          break;
+        case 'desc':
+          this.sortState = 'normal';
+          this.sortedColumn = null;
+          break;
+      }
+    }
+    this.currentPage = 1; // Sort to page 1
+    this.applyFilterAndSort();
+  }
+
+  /**
+   * HTML in *ngFor 
+   */
+  get paginatedAssignments(): any[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    return this.assignments.slice(start, end); // assignments array (Filter+Sort )
+  }
+
+  /**
+   * Page Getter
+   */
+  get totalPages(): number {
+    return Math.ceil(this.assignments.length / this.pageSize); // assignments (Filter+Sort )
+  }
+
+  /**
+   * Page changing Function
+   */
+  changePage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+  
+  nextPage(): void {
+    this.changePage(this.currentPage + 1);
+  }
+
+  prevPage(): void {
+    this.changePage(this.currentPage - 1);
+  }
+
 }

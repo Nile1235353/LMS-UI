@@ -212,17 +212,16 @@
 
           </div>
 
-          <!-- <div class="input-group" style="min-width: 200px; max-width: 400px;">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Search courses..."
-              aria-label="Search"
-              aria-describedby="basic-addon1"
-              [(ngModel)]="searchTerm"
-            >
+          <div class="input-group" style="min-width: 200px; max-width: 400px;">
+            <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Search by title or department..."
+          [(ngModel)]="searchTerm" 
+          (input)="onSearch()"
+        >
             <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
-          </div> -->
+          </div>
         </div>
 
       <div class="container-fluid scroll-x">
@@ -235,22 +234,160 @@
               <thead>
                 <tr>
                   <th>
-                    <input type="checkbox"/>
+                    <input type="checkbox" (change)="toggleAllCheckboxes($event)"/>
                   </th>
-                  <th>AssignmentID</th>
-                  <th>Title</th>
-                  <th>Description</th>
-                  <th>Department</th>
-                  <th>StartDate</th>
-                  <th>DueDate</th>
-                  <th>MaxScore</th>
-                  <th>MinimumScore</th>
-                  <th>AssignmentCreatedDate</th>
+
+                  <!-- <th>AssignmentID</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('assignmentId')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      AssignmentID
+                      <span *ngIf="sortedColumn === 'assignmentId'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- <th>Title</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('title')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Title
+                      <span *ngIf="sortedColumn === 'title'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- <th>Description</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('description')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Description
+                      <span *ngIf="sortedColumn === 'description'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- <th>Department</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('department')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      Department
+                      <span *ngIf="sortedColumn === 'department'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- <th>StartDate</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('startDate')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      StartDate
+                      <span *ngIf="sortedColumn === 'startDate'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- <th>DueDate</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('dueDate')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      DueDate
+                      <span *ngIf="sortedColumn === 'dueDate'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- <th>MaxScore</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('maxScore')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      MaxScore
+                      <span *ngIf="sortedColumn === 'maxScore'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- <th>MinimumScore</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('minimumScore')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      MinimumScore
+                      <span *ngIf="sortedColumn === 'minimumScore'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
+                  <!-- <th>AssignmentCreatedDate</th> -->
+                  <th (dblclick)="onHeaderDoubleClick('createdDate')">
+                    <div class="resizable d-flex align-items-center justify-content-between">
+                      AssignmentCreatedDate
+                      <span *ngIf="sortedColumn === 'createdDate'">
+                        <i class="bi"
+                          [ngClass]="{
+                            'bi-caret-up-fill': sortState === 'asc',
+                            'bi-caret-down-fill': sortState === 'desc'
+                          }">
+                        </i>
+                      </span>
+                    </div>
+                  </th>
+
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of assignments">
-                  <td><input type="radio" name="selectedAssignment" (change)="onSelectAssignment(item)"/></td>
+                <tr *ngFor="let item of paginatedAssignments"
+                  (click)="onSelectAssignment(item)"
+                  [class.table-active]="item === selectedAssignment"
+                  style="cursor: pointer;"
+                  >
+                  <td>
+                    <input type="checkbox"
+                      name="selectedAssignment" 
+                      [checked]="item === selectedAssignment"
+                      (click)="onSelectAssignment(item); $event.stopPropagation();"
+                      [checked]="isAllSelected()"
+                      />
+                  </td>
                   <td>{{ item.assignmentId }}</td>
                   <td>{{ item.title }}</td>
                   <td>{{ item.description }}</td>
@@ -265,6 +402,43 @@
             </table>
           </div>
         </div>
+      </div>
+
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3 gap-2">
+
+        <!-- Pagination Navigation -->
+        <nav *ngIf="totalPages > 1">
+          <ul class="pagination mb-0 justify-content-center justify-content-md-start">
+            <!-- Previous -->
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
+            </li>
+
+            <!-- Page Numbers -->
+            <li
+              class="page-item"
+              *ngFor="let page of [].constructor(totalPages); let i = index"
+              [class.active]="currentPage === i + 1"
+              >
+              <a class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</a>
+            </li>
+
+              <!-- Next -->
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Page Info Text -->
+        <div class="text-muted small">
+          Page {{ currentPage }} of {{ totalPages }}
+        </div>
+        <!-- Total Users -->
+        <div class="text-muted small">
+          Total Users: {{ courses.length }}
+        </div>
+
       </div>
     </div>
 
@@ -412,7 +586,7 @@
     <!-- Modal -->
     <div class="modal fade show d-block" *ngIf="questionshowModal" tabindex="-1" style="background-color: rgba(0,0,0,0.4);">
       <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content rounded-3 shadow">
+        <div class="modal-content rounded-3 shadow p-3">
           <div class="modal-header bg-light">
             <h5 class="modal-title">Add New Question</h5>
             <button type="button" class="btn-close" (click)="closeModal()"></button>

@@ -120,7 +120,7 @@ selectedCourse: any;
         this.paginatedRows = res.slice(0, this.pageSize);
         this.totalPages = Math.ceil(res.length / this.pageSize);
         this.currentPage = 1;
-        this.originalUsers = [...this.courses]; // Store original unsorted data
+        this.originalUsers = [...res]; // Store original unsorted data
         //this.selectedCourseId = ''; // Reset selected ID
 
          this.allCourses = res.map(course => {
@@ -137,31 +137,6 @@ selectedCourse: any;
         console.error('Load courses error:', err);
       }
     });
-  }
-
-  get filteredVideos(): Course[] {
-    if (!this.allCourses) {
-      return [];
-    }
-  
-    let items = this.allCourses;
-  
-    if (this.selectedCategory && this.selectedCategory !== 'All') {
-      items = items.filter(course => course.department === this.selectedCategory);
-    }
-  
-    console.log("This is Selected All Course ", items)
-  
-    if (this.searchTerm) {
-      items = items.filter(course =>
-        course.title.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-    }
-  
-    console.log("This is Search Box Selected Course ",items)
-  
-    return items;
-
   }
 
   paginate(): void {
@@ -514,21 +489,16 @@ loadCourseForEdit(): void {
 
   // Sorting Table Fields
 
-  user: Course[] = [];
+  // user: Course[] = [];
   originalUsers: Course[] = []; // Store original unsorted data
   sortedColumn: string | null = null;
   sortState: 'normal' | 'asc' | 'desc' = 'normal';
 
   onHeaderDoubleClick(column: string): void {
-    console.log(column)
-    console.log(this.sortedColumn)
     if (this.sortedColumn !== column) {
-      // New column - start with ascending
       this.sortedColumn = column;
       this.sortState = 'asc';
-      // console.log(this.sortedColumn);
     } else {
-      // Same column - cycle through states
       switch (this.sortState) {
         case 'normal':
           this.sortState = 'asc';
@@ -543,44 +513,99 @@ loadCourseForEdit(): void {
           break;
       }
     }
-
-    this.applySorting();
+    // this.applySorting(); // <-- ဒီလိုင်းကို ဖျက်ပါ (DELETE THIS LINE)
   }
 
-  applySorting(): void {
-    if (this.sortState === 'normal') {
-      // Reset to original order
-      this.courses = [...this.originalUsers];
-      return;
+  get filteredVideos(): Course[] {
+    if (!this.allCourses) {
+      return [];
     }
+  
+    // 1. မူရင်း Data (allCourses) ကနေ စပါ
+    // (originalUsers ကနေ စတာ ပိုကောင်းပါတယ်)
+    let items = [...this.originalUsers]; 
+  
+    // 2. Category Filter အရင်လုပ်ပါ
+    if (this.selectedCategory && this.selectedCategory !== 'All') {
+      items = items.filter(course => course.department === this.selectedCategory);
+    }
+  
+    // 3. Search Term Filter ဆက်လုပ်ပါ
+    if (this.searchTerm) {
+      items = items.filter(course =>
+        course.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+  
+    // 4. (အသစ်) Sorting ကို ဒီနေရာမှာ လုပ်ပါ
+    if (this.sortState !== 'normal' && this.sortedColumn) {
+      const column = this.sortedColumn; // Get current sort column
+      
+      items.sort((a, b) => {
+        const aValue = a[column as keyof Course];
+        const bValue = b[column as keyof Course];
+        
+        // သင့်ရဲ့ sorting logic (number, string, date)
+        // For numeric values
+        if (typeof aValue === 'number' && typeof bValue === 'number') {
+          return this.sortState === 'asc' ? aValue - bValue : bValue - aValue;
+        }
+        // For string values
+        if (typeof aValue === 'string' && typeof bValue === 'string') {
+          return this.sortState === 'asc'
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+        }
+        // For date values
+        const aDate = new Date(aValue as any);
+        const bDate = new Date(bValue as any);
+        if (!isNaN(aDate.getTime()) && !isNaN(bDate.getTime())) {
+          const aTime = aDate.getTime();
+          const bTime = bDate.getTime();
+          return this.sortState === 'asc' ? aTime - bTime : bTime - aTime;
+        }
+        return 0;
+      });
+    }
+  
+    // 5. Filter + Sort လုပ်ပြီးသား data ကို ပြန်ပေးပါ
+    return items;
+  } 
 
-    // Create a new array to sort
-    this.courses = [...this.courses].sort((a, b) => {
-      const aValue = a[this.sortedColumn as keyof Course];
-      const bValue = b[this.sortedColumn as keyof Course];
+  // applySorting(): void {
+  //   if (this.sortState === 'normal') {
+  //     // Reset to original order
+  //     this.courses = [...this.originalUsers];
+  //     return;
+  //   }
 
-      // For numeric values
-      if (typeof aValue === 'number' && typeof bValue === 'number') {
-        return this.sortState === 'asc' ? aValue - bValue : bValue - aValue;
-      }
+  //   // Create a new array to sort
+  //   this.courses = [...this.courses].sort((a, b) => {
+  //     const aValue = a[this.sortedColumn as keyof Course];
+  //     const bValue = b[this.sortedColumn as keyof Course];
 
-      // For string values
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
-        return this.sortState === 'asc'
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
-      }
+  //     // For numeric values
+  //     if (typeof aValue === 'number' && typeof bValue === 'number') {
+  //       return this.sortState === 'asc' ? aValue - bValue : bValue - aValue;
+  //     }
 
-      // For date values
-      if (aValue instanceof Date && bValue instanceof Date) {
-        const aTime = aValue.getTime();
-        const bTime = bValue.getTime();
-        return this.sortState === 'asc' ? aTime - bTime : bTime - aTime;
-      }
+  //     // For string values
+  //     if (typeof aValue === 'string' && typeof bValue === 'string') {
+  //       return this.sortState === 'asc'
+  //         ? aValue.localeCompare(bValue)
+  //         : bValue.localeCompare(aValue);
+  //     }
 
-      return 0;
-    });
-  }
+  //     // For date values
+  //     if (aValue instanceof Date && bValue instanceof Date) {
+  //       const aTime = aValue.getTime();
+  //       const bTime = bValue.getTime();
+  //       return this.sortState === 'asc' ? aTime - bTime : bTime - aTime;
+  //     }
+
+  //     return 0;
+  //   });
+  // }
 
   exportToExcel(): void {
     console.log('Exporting userList:', this.courses);  // 👉 check this

@@ -8,7 +8,10 @@
 
         <div class="container-fluid scroll-x">
 
-            <div class="mb-3">
+          <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center gap-3 mb-3 p-3 scroll-x">
+
+              <div>
+
                 <button class="btn btn-outline-dark me-2"  [disabled]="!selectedSubmissionId"
                 (click)="viewDetails(selectedSubmissionId)">
                     <i class="bi bi-plus"></i>&nbsp;&nbsp;View Detail
@@ -17,7 +20,19 @@
                 <button class="btn btn-outline-dark me-2">
                     <i class="bi bi-clipboard-data"></i>&nbsp;&nbsp;Certificate
                 </button>
+                
+              </div>
 
+              <div class="input-group" style="min-width: 200px; max-width: 400px;">
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Search by title or department..."
+                  [(ngModel)]="searchTerm" 
+                  (input)="onSearch()"
+                >
+                <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+              </div>
             </div>
 
             <!-- Scrollable Table -->
@@ -30,24 +45,157 @@
                                     <input type="checkbox"/>
                                 </th>
 
-                                <th>Submission ID</th>
-                                <th>Assignment ID</th>
-                                <th>Exam Title</th>
-                                <th>Description</th>
-                                <th>User ID</th>
-                                <th>User Name</th>
-                                <th>Score</th>
-                                <th>Exam Result</th>
-                                <th>Submission Date</th>
+                                <!-- <th>Submission ID</th> -->
+                                <th (dblclick)="onHeaderDoubleClick('submissionId')">
+                                  <div class="resizable d-flex align-items-center justify-content-between">
+                                    Submission ID
+                                    <span *ngIf="sortedColumn === 'submissionId'">
+                                      <i class="bi"
+                                        [ngClass]="{
+                                          'bi-caret-up-fill': sortState === 'asc',
+                                          'bi-caret-down-fill': sortState === 'desc'
+                                        }">
+                                      </i>
+                                    </span>
+                                  </div>
+                                </th>
+
+                                <!-- <th>Assignment ID</th> -->
+                                <th (dblclick)="onHeaderDoubleClick('assignmentId')">
+                                  <div class="resizable d-flex align-items-center justify-content-between">
+                                    Assignment ID
+                                    <span *ngIf="sortedColumn === 'assignmentId'">
+                                      <i class="bi"
+                                        [ngClass]="{
+                                          'bi-caret-up-fill': sortState === 'asc',
+                                          'bi-caret-down-fill': sortState === 'desc'
+                                        }">
+                                      </i>
+                                    </span>
+                                  </div>
+                                </th>
+
+                                <!-- <th>Exam Title</th> -->
+                                <th (dblclick)="onHeaderDoubleClick('assignmentTitle')">
+                                  <div class="resizable d-flex align-items-center justify-content-between">
+                                    Exam Title
+                                    <span *ngIf="sortedColumn === 'assignmentTitle'">
+                                      <i class="bi"
+                                        [ngClass]="{
+                                          'bi-caret-up-fill': sortState === 'asc',
+                                          'bi-caret-down-fill': sortState === 'desc'
+                                        }">
+                                      </i>
+                                    </span>
+                                  </div>
+                                </th>
+
+                                <!-- <th>Description</th> -->
+                                <th (dblclick)="onHeaderDoubleClick('assignmentDescription')">
+                                  <div class="resizable d-flex align-items-center justify-content-between">
+                                    Description
+                                    <span *ngIf="sortedColumn === 'assignmentDescription'">
+                                      <i class="bi"
+                                        [ngClass]="{
+                                          'bi-caret-up-fill': sortState === 'asc',
+                                          'bi-caret-down-fill': sortState === 'desc'
+                                        }">
+                                      </i>
+                                    </span>
+                                  </div>
+                                </th>
+
+                                <!-- <th>User ID</th> -->
+                                <th (dblclick)="onHeaderDoubleClick('userId')">
+                                  <div class="resizable d-flex align-items-center justify-content-between">
+                                    User ID
+                                    <span *ngIf="sortedColumn === 'userId'">
+                                      <i class="bi"
+                                        [ngClass]="{
+                                          'bi-caret-up-fill': sortState === 'asc',
+                                          'bi-caret-down-fill': sortState === 'desc'
+                                        }">
+                                      </i>
+                                    </span>
+                                  </div>
+                                </th>
+
+                                <!-- <th>User Name</th> -->
+                                <th (dblclick)="onHeaderDoubleClick('createdUser')">
+                                  <div class="resizable d-flex align-items-center justify-content-between">
+                                    User Name
+                                    <span *ngIf="sortedColumn === 'createdUser'">
+                                      <i class="bi"
+                                        [ngClass]="{
+                                          'bi-caret-up-fill': sortState === 'asc',
+                                          'bi-caret-down-fill': sortState === 'desc'
+                                        }">
+                                      </i>
+                                    </span>
+                                  </div>
+                                </th>
+
+                                <!-- <th>Score</th> -->
+                                <th (dblclick)="onHeaderDoubleClick('score')">
+                                  <div class="resizable d-flex align-items-center justify-content-between">
+                                    Score
+                                    <span *ngIf="sortedColumn === 'score'">
+                                      <i class="bi"
+                                        [ngClass]="{
+                                          'bi-caret-up-fill': sortState === 'asc',
+                                          'bi-caret-down-fill': sortState === 'desc'
+                                        }">
+                                      </i>
+                                    </span>
+                                  </div>
+                                </th>
+
+                                <!-- <th>Exam Result</th> -->
+                                <th (dblclick)="onHeaderDoubleClick('examResult')">
+                                  <div class="resizable d-flex align-items-center justify-content-between">
+                                    Exam Resul
+                                    <span *ngIf="sortedColumn === 'examResult'">
+                                      <i class="bi"
+                                        [ngClass]="{
+                                          'bi-caret-up-fill': sortState === 'asc',
+                                          'bi-caret-down-fill': sortState === 'desc'
+                                        }">
+                                      </i>
+                                    </span>
+                                  </div>
+                                </th>
+
+                                <!-- <th>Submission Date</th> -->
+                                <th (dblclick)="onHeaderDoubleClick('submittedAt')">
+                                  <div class="resizable d-flex align-items-center justify-content-between">
+                                    Submission Date
+                                    <span *ngIf="sortedColumn === 'submittedAt'">
+                                      <i class="bi"
+                                        [ngClass]="{
+                                          'bi-caret-up-fill': sortState === 'asc',
+                                          'bi-caret-down-fill': sortState === 'desc'
+                                        }">
+                                      </i>
+                                    </span>
+                                  </div>
+                                </th>
 
                             </tr>
                         </thead>
 
                         <tbody>
-                          <tr *ngFor="let item of submissions; let i = index">
-                            <td>   <input type="radio" name="selectedSub"
+                          <tr *ngFor="let item of paginatedSubmissions; let i = index"
+                            (click)="onSelectSubmission(item)"
+                            [class.table-active]="item.submissionId === selectedSubmissionId"
+                            style="cursor: pointer;"
+                            >
+                            <td>   
+                              <input type="checkbox" name="selectedSub"
                               [value]="item.submissionId"
-                              (change)="selectedSubmissionId = item.submissionId" /></td>
+                              [checked]="item.submissionId === selectedSubmissionId"
+                              (click)="onSelectSubmission(item); $event.stopPropagation();" 
+                              />
+                            </td>
                             <td>{{ item.submissionId }}</td>
                             <td>{{ item.assignmentId }}</td>
                             <td>{{ item.assignmentTitle }}</td>
@@ -65,54 +213,100 @@
                 </div>
             </div>
         </div>
+
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3 gap-2">
+
+          <!-- Pagination Navigation -->
+          <nav *ngIf="totalPages > 1">
+            <ul class="pagination mb-0 justify-content-center justify-content-md-start">
+              <!-- Previous -->
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
+              </li>
+
+              <!-- Page Numbers -->
+              <li
+                class="page-item"
+                *ngFor="let page of [].constructor(totalPages); let i = index"
+                [class.active]="currentPage === i + 1"
+                >
+                <a class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</a>
+              </li>
+
+                <!-- Next -->
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+              </li>
+            </ul>
+          </nav>
+
+          <!-- Page Info Text -->
+          <div class="text-muted small">
+            Page {{ currentPage }} of {{ totalPages }}
+          </div>
+          <!-- Total Users -->
+          <div class="text-muted small">
+            Total Users: {{ submissions.length }}
+          </div>
+
+        </div>
       </div>
 
       <div *ngIf="currentPages === 2">
-        <h4 class="mb-3">Submitted Answers for {{ selectedSubmissionId }}</h4>
+  <h4 class="mb-3">Submitted Answers for {{ selectedSubmissionId }}</h4>
 
-        <div *ngFor="let q of questions; let i = index" class="mb-3">
-          <p><strong>{{ i + 1 }}. {{ q.questionText }}</strong></p>
+  <div *ngFor="let q of questions; let i = index" 
+       class="mb-4 p-3 border rounded-3 shadow-sm bg-white">
+       
+    <p class="fw-semibold mb-3">{{ i + 1 }}. {{ q.questionText }}</p>
 
-      <!-- True/False -->
-<div *ngIf="q.questionType?.toLowerCase() === 'true/false' || q.questionType?.toLowerCase() === 'truefalse'">
-  <label class="me-3">
-    <input type="radio" [name]="'q' + i"
-           value="True"
-           [checked]="'True'.toLowerCase() === q.answers?.[0]?.answerText?.toLowerCase() || 'True'.toLowerCase() === q.answers?.[0]?.selectedOptionId?.toLowerCase()"
-           disabled>
-    <span [ngClass]="{'fw-bold': 'True'.toLowerCase() === q.answers?.[0]?.answerText?.toLowerCase() || 'True'.toLowerCase() === q.answers?.[0]?.selectedOptionId?.toLowerCase()}">
-      True
-    </span>
-  </label>
+    <!-- True/False -->
+    <div *ngIf="q.questionType?.toLowerCase() === 'true/false' || q.questionType?.toLowerCase() === 'truefalse'"
+         class="d-flex gap-2 flex-wrap">
+      <div class="btn rounded-pill px-3 py-1 disabled"
+           [ngClass]="{
+             'btn-primary text-white': 'true' === q.answers?.[0]?.answerText?.toLowerCase() || 
+                                        'true' === q.answers?.[0]?.selectedOptionId?.toLowerCase(),
+             'btn-outline-primary': !('true' === q.answers?.[0]?.answerText?.toLowerCase() || 
+                                      'true' === q.answers?.[0]?.selectedOptionId?.toLowerCase())
+           }">
+        True
+      </div>
 
-  <label class="me-3">
-    <input type="radio" [name]="'q' + i"
-           value="False"
-           [checked]="'False'.toLowerCase() === q.answers?.[0]?.answerText?.toLowerCase() || 'False'.toLowerCase() === q.answers?.[0]?.selectedOptionId?.toLowerCase()"
-           disabled>
-    <span [ngClass]="{'fw-bold': 'False'.toLowerCase() === q.answers?.[0]?.answerText?.toLowerCase() || 'False'.toLowerCase() === q.answers?.[0]?.selectedOptionId?.toLowerCase()}">
-      False
-    </span>
-  </label>
+      <div class="btn rounded-pill px-3 py-1 disabled"
+           [ngClass]="{
+             'btn-primary text-white': 'false' === q.answers?.[0]?.answerText?.toLowerCase() || 
+                                        'false' === q.answers?.[0]?.selectedOptionId?.toLowerCase(),
+             'btn-outline-primary': !('false' === q.answers?.[0]?.answerText?.toLowerCase() || 
+                                      'false' === q.answers?.[0]?.selectedOptionId?.toLowerCase())
+           }">
+        False
+      </div>
+    </div>
+
+    <!-- Multiple Choice -->
+    <div *ngIf="q.questionType?.toLowerCase() === 'multiple choice' || q.questionType?.toLowerCase() === 'mcq'"
+         class="d-flex gap-2 flex-wrap">
+      <div *ngFor="let option of q.options ?? []"
+           class="btn rounded-pill px-3 py-1 disabled"
+           [ngClass]="{
+             'btn-primary text-white': option.optionId === q.answers?.[0]?.selectedOptionId || 
+                                       option.optionText === q.answers?.[0]?.answerText,
+             'btn-outline-primary': !(option.optionId === q.answers?.[0]?.selectedOptionId || 
+                                      option.optionText === q.answers?.[0]?.answerText)
+           }">
+        {{ option.optionText }}
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-outline-primary w-100 mt-3" (click)="setPage(1)">
+    <i class="bi bi-arrow-left-circle"></i> Back
+  </button>
 </div>
 
-          <!-- Multiple Choice -->
-          <div *ngIf="q.questionType?.toLowerCase() === 'multiple choice' || q.questionType?.toLowerCase() === 'mcq'">
-            <div *ngFor="let option of q.options ?? []" class="form-check">
-              <input type="checkbox" class="form-check-input"
-                     [checked]="option.optionId === q.answers?.[0]?.selectedOptionId || option.optionText === q.answers?.[0]?.answerText"
-                     disabled>
-              <label class="form-check-label"
-                     [ngClass]="{'fw-bold': option.optionId === q.answers?.[0]?.selectedOptionId || option.optionText === q.answers?.[0]?.answerText}">
-                {{ option.optionText }}
-              </label>
-            </div>
-          </div>
-        </div>
 
-        <button class="btn btn-outline-primary w-100 mt-3" (click)="setPage(1)">
-          <i class="bi bi-arrow-left-circle"></i> Back
-        </button>
-      </div>
+
+
 
 
