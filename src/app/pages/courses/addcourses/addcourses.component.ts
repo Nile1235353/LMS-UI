@@ -164,40 +164,90 @@ selectedCourse: any;
   }
 
   allowedChannelId = 'UC9UbUeCcIZBxm-qQvPSJzmA'; // သင့် Channel ID
-  apiKey = 'AIzaSyA8V74wLhQc5Wjnm6uhUwqEpadYToGIvos'; // သင့် API Key
+  apiKey = 'AIzaSyCcmBERMN-ZrlRkFhJWg1PkxYJJW3HIlqU'; // သင့် API Key
 
-  checkVideoLink(videoLink: string): Promise<boolean> {
-    return new Promise((resolve) => {
-      const videoIdMatch = videoLink.match(/(?:v=|\/embed\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-      const videoId = videoIdMatch ? videoIdMatch[1] : null;
+  // 
+  
+//   checkVideoLink(videoLink: string): Promise<boolean> {
+//   return new Promise((resolve) => {
+//     const videoIdMatch = videoLink.match(/(?:v=|\/embed\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+//     const videoId = videoIdMatch ? videoIdMatch[1] : null;
 
-      if (!videoId) {
-        alert('Invalid YouTube URL');
-        resolve(false);
-        return;
-      }
+//     if (!videoId) {
+//       alert('Invalid YouTube URL');
+//       resolve(false);
+//       return;
+//     }
 
-      const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${this.apiKey}`;
+//     const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${this.apiKey}`;
 
-      this.http.get<any>(apiUrl).subscribe(res => {
-        if (res.items && res.items.length > 0) {
-          const channelId = res.items[0].snippet.channelId;
-          if (channelId === this.allowedChannelId) {
-            resolve(true); // Allowed
-          } else {
-            alert('❌ Video is NOT from your channel.');
-            resolve(false);
-          }
+//     this.http.get<any>(apiUrl).subscribe(res => {
+//       if (res.items && res.items.length > 0) {
+//         // Option 1: API ကနေ video ကို ရှာတွေ့တဲ့အခါ
+//         const channelId = res.items[0].snippet.channelId;
+//         if (channelId === this.allowedChannelId) {
+//           resolve(true); // ခွင့်ပြုထားတဲ့ channel ကဖြစ်လို့ Allowed
+//         } else {
+//           alert('❌ Video is NOT from your channel.');
+//           resolve(false);
+//         }
+//       } else {
+//         // Option 2: API က video ကို ရှာမတွေ့တဲ့အခါ
+//         const isPrivate = confirm("Video not found. Is this a private video?");
+//         if (isPrivate) {
+//           resolve(true); // User က private video ဖြစ်တယ်လို့ အတည်ပြုတဲ့အတွက် ခွင့်ပြုမယ်
+//         } else {
+//           alert('Video not found or link is invalid.');
+//           resolve(false);
+//         }
+//       }
+//     }, _ => {
+//       // API request ချိတ်ဆက်မှု Error တက်တဲ့အခါ
+//       alert('API Error.');
+//       resolve(false);
+//     });
+//   });
+// }
+
+checkVideoLink(videoLink: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    const videoIdMatch = videoLink.match(/(?:v=|\/embed\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    const videoId = videoIdMatch ? videoIdMatch[1] : null;
+
+    if (!videoId) {
+      alert('Invalid YouTube URL');
+      resolve(false);
+      return;
+    }
+
+    const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet,status&id=${videoId}&key=${this.apiKey}`;
+
+    this.http.get<any>(apiUrl).subscribe(res => {
+      if (res.items && res.items.length > 0) {
+        const videoStatus = res.items[0].status.privacyStatus;
+        const channelId = res.items[0].snippet.channelId;
+          console.log("Video Status:", videoStatus); // ✅ Debug line
+        if (channelId === this.allowedChannelId && videoStatus === 'private') {
+          resolve(true);  // Allowed because it's a private video from your channel
         } else {
-          alert('Video not found.');
+          alert('❌ Only private videos from your channel are allowed.');
           resolve(false);
         }
-      }, _ => {
-        alert('API Error.');
-        resolve(false);
-      });
+      } else {
+        const isPrivate = confirm("Video not found. Is this a private video?");
+        if (isPrivate) {
+          resolve(true);
+        } else {
+          alert('Video not found or link is invalid.');
+          resolve(false);
+        }
+      }
+    }, _ => {
+      alert('API Error.');
+      resolve(false);
     });
-  }
+  });
+}
 
 
   async onSubmit(): Promise<void> {

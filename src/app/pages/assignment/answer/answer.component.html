@@ -42,7 +42,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <input type="checkbox"/>
+                                    <input type="checkbox" (change)="toggleAllCheckboxes($event)"/>
                                 </th>
 
                                 <!-- <th>Submission ID</th> -->
@@ -194,6 +194,7 @@
                               [value]="item.submissionId"
                               [checked]="item.submissionId === selectedSubmissionId"
                               (click)="onSelectSubmission(item); $event.stopPropagation();" 
+                              [checked]="isAllSelected()"
                               />
                             </td>
                             <td>{{ item.submissionId }}</td>
@@ -253,57 +254,57 @@
       </div>
 
       <div *ngIf="currentPages === 2">
-  <h4 class="mb-3">Submitted Answers for {{ selectedSubmissionId }}</h4>
+      <h4 class="mb-3">Submitted Answers for {{ selectedSubmissionId }}</h4>
 
-  <div *ngFor="let q of questions; let i = index" 
-       class="mb-4 p-3 border rounded-3 shadow-sm bg-white">
-       
-    <p class="fw-semibold mb-3">{{ i + 1 }}. {{ q.questionText }}</p>
+      <div *ngFor="let q of questions; let i = index" 
+          class="mb-4 p-3 border rounded-3 shadow-sm bg-white">
+          
+        <p class="fw-semibold mb-3">{{ i + 1 }}. {{ q.questionText }}</p>
 
-    <!-- True/False -->
-    <div *ngIf="q.questionType?.toLowerCase() === 'true/false' || q.questionType?.toLowerCase() === 'truefalse'"
-         class="d-flex gap-2 flex-wrap">
-      <div class="btn rounded-pill px-3 py-1 disabled"
-           [ngClass]="{
-             'btn-primary text-white': 'true' === q.answers?.[0]?.answerText?.toLowerCase() || 
-                                        'true' === q.answers?.[0]?.selectedOptionId?.toLowerCase(),
-             'btn-outline-primary': !('true' === q.answers?.[0]?.answerText?.toLowerCase() || 
-                                      'true' === q.answers?.[0]?.selectedOptionId?.toLowerCase())
-           }">
-        True
+        <!-- True/False -->
+        <div *ngIf="q.questionType?.toLowerCase() === 'true/false' || q.questionType?.toLowerCase() === 'truefalse'"
+            class="d-flex gap-2 flex-wrap">
+          <div class="btn rounded-pill px-3 py-1 disabled"
+              [ngClass]="{
+                'btn-primary text-white': 'true' === q.answers?.[0]?.answerText?.toLowerCase() || 
+                                            'true' === q.answers?.[0]?.selectedOptionId?.toLowerCase(),
+                'btn-outline-primary': !('true' === q.answers?.[0]?.answerText?.toLowerCase() || 
+                                          'true' === q.answers?.[0]?.selectedOptionId?.toLowerCase())
+              }">
+            True
+          </div>
+
+          <div class="btn rounded-pill px-3 py-1 disabled"
+              [ngClass]="{
+                'btn-primary text-white': 'false' === q.answers?.[0]?.answerText?.toLowerCase() || 
+                                            'false' === q.answers?.[0]?.selectedOptionId?.toLowerCase(),
+                'btn-outline-primary': !('false' === q.answers?.[0]?.answerText?.toLowerCase() || 
+                                          'false' === q.answers?.[0]?.selectedOptionId?.toLowerCase())
+              }">
+            False
+          </div>
+        </div>
+
+        <!-- Multiple Choice -->
+        <div *ngIf="q.questionType?.toLowerCase() === 'multiple choice' || q.questionType?.toLowerCase() === 'mcq'"
+            class="d-flex gap-2 flex-wrap">
+          <div *ngFor="let option of q.options ?? []"
+              class="btn rounded-pill px-3 py-1 disabled"
+              [ngClass]="{
+                'btn-primary text-white': option.optionId === q.answers?.[0]?.selectedOptionId || 
+                                          option.optionText === q.answers?.[0]?.answerText,
+                'btn-outline-primary': !(option.optionId === q.answers?.[0]?.selectedOptionId || 
+                                          option.optionText === q.answers?.[0]?.answerText)
+              }">
+            {{ option.optionText }}
+          </div>
+        </div>
       </div>
 
-      <div class="btn rounded-pill px-3 py-1 disabled"
-           [ngClass]="{
-             'btn-primary text-white': 'false' === q.answers?.[0]?.answerText?.toLowerCase() || 
-                                        'false' === q.answers?.[0]?.selectedOptionId?.toLowerCase(),
-             'btn-outline-primary': !('false' === q.answers?.[0]?.answerText?.toLowerCase() || 
-                                      'false' === q.answers?.[0]?.selectedOptionId?.toLowerCase())
-           }">
-        False
-      </div>
+      <button class="btn btn-outline-primary w-100 mt-3" (click)="setPage(1)">
+        <i class="bi bi-arrow-left-circle"></i> Back
+      </button>
     </div>
-
-    <!-- Multiple Choice -->
-    <div *ngIf="q.questionType?.toLowerCase() === 'multiple choice' || q.questionType?.toLowerCase() === 'mcq'"
-         class="d-flex gap-2 flex-wrap">
-      <div *ngFor="let option of q.options ?? []"
-           class="btn rounded-pill px-3 py-1 disabled"
-           [ngClass]="{
-             'btn-primary text-white': option.optionId === q.answers?.[0]?.selectedOptionId || 
-                                       option.optionText === q.answers?.[0]?.answerText,
-             'btn-outline-primary': !(option.optionId === q.answers?.[0]?.selectedOptionId || 
-                                      option.optionText === q.answers?.[0]?.answerText)
-           }">
-        {{ option.optionText }}
-      </div>
-    </div>
-  </div>
-
-  <button class="btn btn-outline-primary w-100 mt-3" (click)="setPage(1)">
-    <i class="bi bi-arrow-left-circle"></i> Back
-  </button>
-</div>
 
 
 

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormsModule } from '@angular/forms';
 import { AnswerserviceService, AssignmentQuestionDto } from './answerservice.service';
+import { Subscription } from 'rxjs';
 
 interface Submission {
   submissionId: string;
@@ -14,6 +15,7 @@ interface Submission {
   score: number;
   examResult: string;
   submittedAt: string | Date;
+  selected?: boolean; // Add selected property
   [key: string]: any; 
 }
 
@@ -40,7 +42,7 @@ export class AnswerComponent implements OnInit {
   searchTerm: string = '';
   sortedColumn: string | null = null;
   sortState: 'normal' | 'asc' | 'desc' = 'normal';
-  currentPage = 1;  
+  currentPage = 1;  
   pageSize = 7;
 
   // Detail page properties
@@ -59,7 +61,7 @@ export class AnswerComponent implements OnInit {
 
   getAllData(): void {
     this.AnswerserviceService.getallsubmission().subscribe({
-      next: (res: Submission[]) => { // <-- FIX: API response type 
+      next: (res: Submission[]) => { 
         this.submissions = res;
         this.originalSubmissions = [...res];
         console.log("All Submissions:", this.submissions);
@@ -78,7 +80,6 @@ export class AnswerComponent implements OnInit {
     this.AnswerserviceService.getQuestionsWithAnswers(submissionId).subscribe({
       next: (res) => {
         this.questions = res;
-        // Reset answers before populating
         this.answers = {};
         this.questions.forEach(q => {
           if (q.questionType === 'truefalse') {
@@ -104,7 +105,6 @@ export class AnswerComponent implements OnInit {
     if (this.searchTerm) {
       const lowerSearchTerm = this.searchTerm.toLowerCase();
       items = items.filter(sub =>
-        
         (sub.fullName && sub.fullName.toLowerCase().includes(lowerSearchTerm)) ||
         (sub.assignmentTitle && sub.assignmentTitle.toLowerCase().includes(lowerSearchTerm))
       );
@@ -182,5 +182,15 @@ export class AnswerComponent implements OnInit {
   onSelectSubmission(item: Submission): void {
     this.selectedSubmissionId = (this.selectedSubmissionId === item.submissionId) ? null : item.submissionId;
     console.log('Selected Submission ID:', this.selectedSubmissionId);
+  }
+
+  toggleAllCheckboxes(event: any) {
+    const checked = event.target.checked;
+    this.submissions.forEach(row => (row.selected = checked));
+    this.applyFilterAndSort(); // To update the displayed list based on selection
+  }
+
+  isAllSelected() {
+    return this.submissions.length > 0 && this.submissions.every(row => row.selected);
   }
 }
