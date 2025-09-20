@@ -215,7 +215,7 @@ checkVideoLink(videoLink: string): Promise<boolean> {
     const videoId = videoIdMatch ? videoIdMatch[1] : null;
 
     if (!videoId) {
-      alert('Invalid YouTube URL');
+      alert('❌ Invalid YouTube URL');
       resolve(false);
       return;
     }
@@ -223,31 +223,40 @@ checkVideoLink(videoLink: string): Promise<boolean> {
     const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet,status&id=${videoId}&key=${this.apiKey}`;
 
     this.http.get<any>(apiUrl).subscribe(res => {
+      
       if (res.items && res.items.length > 0) {
         const videoStatus = res.items[0].status.privacyStatus;
         const channelId = res.items[0].snippet.channelId;
-          console.log("Video Status:", videoStatus); // ✅ Debug line
+
+        console.log("Video Status:", videoStatus, "Channel ID:", channelId);
+
         if (channelId === this.allowedChannelId && videoStatus === 'private') {
-          resolve(true);  // Allowed because it's a private video from your channel
+          resolve(true); // ✅ API မှာတိကျစွာ detect လုပ်နိုင်တဲ့ case
         } else {
-          alert('❌ Only private videos from your channel are allowed.');
+          alert('❌ Only private videos from your own channel are allowed.');
           resolve(false);
         }
       } else {
-        const isPrivate = confirm("Video not found. Is this a private video?");
-        if (isPrivate) {
+
+        
+        // ✅ API က item မပေးလို့ (မိမိ channel private ဖြစ်စေနိုင်)
+        const confirmPrivate = confirm("⚠ API could not find this video. Is this your private video?");
+        if (confirmPrivate) {
           resolve(true);
         } else {
-          alert('Video not found or link is invalid.');
+          alert('❌ Video not found or link is invalid.');
           resolve(false);
         }
       }
     }, _ => {
-      alert('API Error.');
+      alert('❌ API Error.');
       resolve(false);
     });
   });
 }
+
+
+
 
 
   async onSubmit(): Promise<void> {
