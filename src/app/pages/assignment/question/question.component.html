@@ -1,5 +1,84 @@
 <div class="page-content">
 
+
+    <!-- Question Created Success Box -->
+    <div
+      class="modal fade fade-in"
+      tabindex="-1"
+      [ngClass]="{ 'show d-block': createQuestionSuccessModal }"
+      style="background-color: rgba(0, 0, 0, 0.4);"
+      *ngIf="createQuestionSuccessModal"
+      >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-3 shadow">
+
+          <!-- Header -->
+          <div class="modal-header bg-light">
+            <h3 class="modal-title d-flex align-items-center gap-2">
+              <i class="bi bi-check-circle-fill text-primary"></i>
+              Success
+            </h3>
+            <button type="button" class="btn-close" (click)="closeCreateQuestionSuccessModal()"></button>
+          </div>
+
+          <!-- Body -->
+          <div class="modal-body text-center">
+            <h5 class="mb-0">Question Created Successfully!</h5>
+          </div>
+
+          <!-- Footer -->
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-outline-success px-4" (click)="closeCreateQuestionSuccessModal()">
+              OK !
+            </button>
+            <!-- <button type="button" class="btn btn-danger px-4" (click)="confirmDeleteCourse()">
+              Delete
+            </button> -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Created Success Box -->
+    <div
+      class="modal fade fade-in"
+      tabindex="-1"
+      [ngClass]="{ 'show d-block': createSuccessModal }"
+      style="background-color: rgba(0, 0, 0, 0.4);"
+      *ngIf="createSuccessModal"
+      >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-3 shadow">
+
+          <!-- Header -->
+          <div class="modal-header bg-light">
+            <h3 class="modal-title d-flex align-items-center gap-2">
+              <i class="bi bi-check-circle-fill text-primary"></i>
+              Success
+            </h3>
+            <button type="button" class="btn-close" (click)="closeCreateSuccessModal()"></button>
+          </div>
+
+          <!-- Body -->
+          <div class="modal-body text-center">
+            <h5 class="mb-0">Assignment Created Successfully!</h5>
+          </div>
+
+          <!-- Footer -->
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-outline-success px-4" (click)="closeCreateSuccessModal()">
+              OK !
+            </button>
+            <!-- <button type="button" class="btn btn-danger px-4" (click)="confirmDeleteCourse()">
+              Delete
+            </button> -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+
     <!-- Assignment Edit Modal -->
     <div
       class="modal fade fade-in"

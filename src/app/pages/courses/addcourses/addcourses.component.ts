@@ -14,6 +14,7 @@ interface Course {
   courseId: string;
   userId: string;
   name: string;
+  level: string;
   title: string;
   department: string;
   description: string;
@@ -58,6 +59,14 @@ selectedCourse: any;
     "Truck"
   ];
 
+  levellist: string[] = [
+    "Foundation",
+    "Basic",
+    "Intermediate",
+    "Advanced",
+    "Basic-Intermediate"
+  ];
+
   userList: any[] = [];
   userIds: string[] = [];
   name: string = '';
@@ -89,6 +98,7 @@ selectedCourse: any;
       Role: ['', Validators.required],
       UserId: ['', Validators.required],
       Name: [''],
+      Level: [''],
       Department: [''],
       Title: ['', Validators.required],
       Description: [''],
@@ -275,6 +285,7 @@ checkVideoLink(videoLink: string): Promise<boolean> {
     const formData = new FormData();
     formData.append('UserId', this.courseForm.value.UserId || '');
     formData.append('Name', this.courseForm.value.Name || '');
+    formData.append('Level', this.courseForm.value.Level || '');
     formData.append('IsActive', 'true');
     formData.append('Department', this.courseForm.value.Department || '');
     formData.append('CreatedUser', 'system');
@@ -320,6 +331,7 @@ checkVideoLink(videoLink: string): Promise<boolean> {
     formData.append('Role', this.courseForm.value.Role);       // if Role is int, send as string
     formData.append('UserId', this.courseForm.value.UserId);
     formData.append('Name', this.courseForm.value.Name);
+    formData.append('Level', this.courseForm.value.Level);
     //formData.append('IsActive', this.courseForm.value.IsActive.toString());
 
     this.spinner.show();
@@ -397,6 +409,7 @@ loadCourseForEdit(): void {
         Role: course.role,
         UserId: course.userId,
         Name: course.name,
+        Level: course.level,
         IsActive: course.isActive
       });
 

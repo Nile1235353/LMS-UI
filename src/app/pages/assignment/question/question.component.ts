@@ -100,6 +100,25 @@ export class QuestionComponent implements OnInit {
     console.log('Selected Course ID:', this.selectedAssignment);
   }
 
+  createSuccessModal: boolean = false;
+  createQuestionSuccessModal: boolean = false;
+
+  openCreateQuestionSuccessModal() {
+    this.createQuestionSuccessModal = true;
+  }
+
+  closeCreateQuestionSuccessModal() {
+    this.createQuestionSuccessModal = false;
+  }
+
+  openCreateSuccessModal() {
+    this.createSuccessModal = true;
+  }
+
+  closeCreateSuccessModal() {
+    this.createSuccessModal = false;
+  }
+
   toggleAllCheckboxes(event: any) {
     const checked = event.target.checked;
     this.assignments.forEach(row => (row.selected = checked));
@@ -153,7 +172,7 @@ export class QuestionComponent implements OnInit {
 
     this.assignmentService.createAssignment(newAssignment).subscribe({
       next: (res) => {
-        alert('✅ Assignment Created Successfully!');
+        this.openCreateSuccessModal();
         this.closeCreateModal();
         this.assignments.unshift(res);
         this.assignments = [...this.assignments];
@@ -312,7 +331,8 @@ export class QuestionComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log('✅ Question saved', res);
-          alert('✅ Question saved successfully!');
+          // alert('✅ Question saved successfully!');
+          this.openCreateQuestionSuccessModal();
 
   // ✅ Refresh questions from backend
   this.assignmentService.getQuestionsByAssignment(this.selectedAssignment.assignmentId)
